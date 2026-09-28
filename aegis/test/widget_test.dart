@@ -19,6 +19,15 @@ void main() {
 
     // Verify Aegis header and radar are present
     expect(find.text('AEGIS'), findsOneWidget);
-    expect(find.text('TOTAL LIABILITIES'), findsOneWidget);
+    expect(find.text('UNIFIED NET WORTH'), findsOneWidget);
+    expect(find.text('CARD REVOLVING DEBT'), findsOneWidget);
+  });
+
+  test('AppState calculates Unified Net Worth correctly', () {
+    final state = AppState();
+    expect(state.totalAssetValue, greaterThan(0));
+    expect(state.totalLiabilityValue, greaterThan(0));
+    expect(state.netWorth, equals(state.totalAssetValue - state.totalLiabilityValue));
+    expect(state.netWorthHistory.length, equals(6));
   });
 }

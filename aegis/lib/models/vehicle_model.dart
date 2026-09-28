@@ -32,6 +32,7 @@ class VehicleModel {
   });
 
   double get positiveEquity => (estimatedMarketValue - loanBalance).clamp(0.0, double.infinity);
+  double get estimatedValue => estimatedMarketValue;
 
   VehicleModel copyWith({
     String? id,

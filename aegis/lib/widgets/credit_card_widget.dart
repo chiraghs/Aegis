@@ -120,29 +120,35 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 32,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.25),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.white30),
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 32,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.25),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: Colors.white30),
+                      ),
+                      child: const Icon(Icons.credit_card, size: 16, color: Colors.white),
                     ),
-                    child: const Icon(Icons.credit_card, size: 16, color: Colors.white),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    widget.card.issuer.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1.5,
-                      color: Colors.white,
+                    const SizedBox(width: 10),
+                    Flexible(
+                      child: Text(
+                        widget.card.issuer.toUpperCase(),
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.5,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),

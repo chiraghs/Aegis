@@ -59,9 +59,9 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildNavItem(icon: Icons.radar, label: 'Radar', index: 0),
                 _buildNavItem(icon: Icons.credit_card, label: 'Cards', index: 1),
@@ -82,7 +82,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
       onTap: () => _onTabSelected(index),
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

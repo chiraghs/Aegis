@@ -7,7 +7,9 @@ import '../providers/app_state.dart';
 import '../widgets/credit_card_widget.dart';
 import '../widgets/coin_counter.dart';
 import '../widgets/glass_container.dart';
+import '../widgets/asset_allocation_bar.dart';
 import 'paywall_screen.dart';
+import 'networth_detail_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   final Function(int) onNavigateToTab;
@@ -286,32 +288,135 @@ class DashboardScreen extends StatelessWidget {
                 ),
               ),
 
-            // Financial Summary Card
+            // Unified Net Worth Hero Radar Card
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const NetWorthDetailScreen()),
+                  );
+                },
+                child: GlassContainer(
+                  borderColor: AppTheme.emeraldAccent.withValues(alpha: 0.35),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Row(
+                            children: [
+                              Icon(Icons.shield, size: 14, color: AppTheme.emeraldAccent),
+                              SizedBox(width: 6),
+                              Text(
+                                'UNIFIED NET WORTH',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  letterSpacing: 1.2,
+                                  color: AppTheme.textSecondary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.trending_up, size: 12, color: AppTheme.emeraldAccent),
+                                const SizedBox(width: 3),
+                                Text(
+                                  '+${appState.monthlyNetWorthChangePercent.toStringAsFixed(1)}% mo',
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppTheme.emeraldAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                currency.format(appState.netWorth),
+                                style: const TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  letterSpacing: -0.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Row(
+                            children: [
+                              Text(
+                                'Deep Dive',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppTheme.goldAccent,
+                                ),
+                              ),
+                              SizedBox(width: 2),
+                              Icon(Icons.arrow_forward_ios, size: 10, color: AppTheme.goldAccent),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      AssetAllocationBar(appState: appState),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            // Revolving Credit Health Card
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
               child: GlassContainer(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'TOTAL LIABILITIES',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1, color: AppTheme.textSecondary),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          currency.format(appState.totalCurrentBalance),
-                          style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Colors.white),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Limit: ${currency.format(appState.totalCreditLimit)}',
-                          style: const TextStyle(fontSize: 11, color: AppTheme.textMuted),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'CARD REVOLVING DEBT',
+                            style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1, color: AppTheme.textSecondary),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            currency.format(appState.totalCurrentBalance),
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            'Total Limit: ${currency.format(appState.totalCreditLimit)}',
+                            style: const TextStyle(fontSize: 11, color: AppTheme.textMuted),
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 12),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -323,14 +428,14 @@ class DashboardScreen extends StatelessWidget {
                         Text(
                           '${(appState.overallUtilization * 100).toStringAsFixed(1)}%',
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 20,
                             fontWeight: FontWeight.w900,
                             color: appState.overallUtilization > 0.3
                                 ? AppTheme.crimsonAccent
                                 : AppTheme.emeraldAccent,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 2),
                         Text(
                           appState.overallUtilization < 0.1 ? 'Excellent (<10%)' : 'Good Standing',
                           style: const TextStyle(fontSize: 11, color: AppTheme.emeraldAccent),
