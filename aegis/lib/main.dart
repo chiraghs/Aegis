@@ -46,6 +46,33 @@ class AegisFintechApp extends StatelessWidget {
       title: 'Aegis - US Asset & Liabilities Radar',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
+      builder: (context, child) {
+        return Scaffold(
+          backgroundColor: const Color(0xFF040406),
+          body: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 440),
+              decoration: BoxDecoration(
+                color: AppTheme.background,
+                border: Border.symmetric(
+                  vertical: BorderSide(
+                    color: AppTheme.surfaceBorder.withValues(alpha: 0.6),
+                    width: 1,
+                  ),
+                ),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black87,
+                    blurRadius: 40,
+                    spreadRadius: 10,
+                  ),
+                ],
+              ),
+              child: child,
+            ),
+          ),
+        );
+      },
       home: const NavigationScaffold(),
     );
   }
