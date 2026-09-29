@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import '../models/credit_card_model.dart';
 import '../models/vehicle_model.dart';
@@ -21,6 +22,7 @@ class AppState extends ChangeNotifier {
     claimedPerkIds: [],
   );
   SubscriptionTier _tier = SubscriptionTier.free;
+  StreamSubscription<SubscriptionTier>? _tierSubscription;
 
   AppState() {
     _init();
@@ -39,7 +41,7 @@ class AppState extends ChangeNotifier {
   bool get isBlackEdition => _tier == SubscriptionTier.black;
 
   bool get canAddMoreCards => isGoldOrHigher || _cards.length < 2;
-  bool get canAddMoreVehicles => isGoldOrHigher || _vehicles.length < 1;
+  bool get canAddMoreVehicles => isGoldOrHigher || _vehicles.isEmpty;
   bool get hasAiCardOptimizer => isBlackEdition;
   bool get hasDeepNetWorthAnalytics => isGoldOrHigher;
   bool get hasFireProjectionSimulator => isBlackEdition;
@@ -119,10 +121,16 @@ class AppState extends ChangeNotifier {
     _fixedLiabilities = NetWorthService.getInitialLiabilities();
     _tier = RevenueCatService.instance.currentTier;
 
-    RevenueCatService.instance.tierStream.listen((newTier) {
+    _tierSubscription = RevenueCatService.instance.tierStream.listen((newTier) {
       _tier = newTier;
       notifyListeners();
     });
+  }
+
+  @override
+  void dispose() {
+    _tierSubscription?.cancel();
+    super.dispose();
   }
 
   void addAsset(AssetItem asset) {

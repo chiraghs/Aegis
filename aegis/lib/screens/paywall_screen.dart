@@ -173,7 +173,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         if (!mounted) return;
                         setState(() => _isProcessing = false);
 
-                        if (success) {
+                        if (success && context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: AppTheme.surfaceCardElevated,
@@ -212,7 +212,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppTheme.surfaceCard.withOpacity(0.5),
+                color: AppTheme.surfaceCard.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.white12),
               ),
@@ -260,7 +260,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
       },
       style: OutlinedButton.styleFrom(
         side: BorderSide(color: isActive ? AppTheme.goldAccent : Colors.white24),
-        backgroundColor: isActive ? AppTheme.goldAccent.withOpacity(0.15) : Colors.transparent,
+        backgroundColor: isActive ? AppTheme.goldAccent.withValues(alpha: 0.15) : Colors.transparent,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       ),
       child: Text(
@@ -297,7 +297,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
           boxShadow: [
             if (isSelected)
               BoxShadow(
-                color: AppTheme.goldAccent.withOpacity(0.15),
+                color: AppTheme.goldAccent.withValues(alpha: 0.15),
                 blurRadius: 16,
                 offset: const Offset(0, 4),
               ),
@@ -324,7 +324,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: AppTheme.goldAccent.withOpacity(0.2),
+                          color: AppTheme.goldAccent.withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: AppTheme.goldAccent),
                         ),

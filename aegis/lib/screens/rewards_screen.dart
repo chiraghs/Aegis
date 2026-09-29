@@ -257,7 +257,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
-                            color: perk.isExclusiveBlackTier ? AppTheme.goldAccent.withOpacity(0.15) : AppTheme.surfaceCardElevated,
+                            color: perk.isExclusiveBlackTier ? AppTheme.goldAccent.withValues(alpha: 0.15) : AppTheme.surfaceCardElevated,
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
                               color: perk.isExclusiveBlackTier ? AppTheme.goldAccent : AppTheme.surfaceBorder,
@@ -287,7 +287,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                     Container(
                                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                                       decoration: BoxDecoration(
-                                        color: AppTheme.goldAccent.withOpacity(0.2),
+                                        color: AppTheme.goldAccent.withValues(alpha: 0.2),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: const Text(

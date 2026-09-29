@@ -127,11 +127,14 @@ class _GarageScreenState extends State<GarageScreen> {
 
                           setModalState(() => _isLoadingVin = true);
                           await appState.addVehicleByVin(vin);
+                          if (!mounted) return;
                           setModalState(() => _isLoadingVin = false);
 
-                          if (mounted) {
+                          if (ctx.mounted) {
                             Navigator.of(ctx).pop();
-                            _vinController.clear();
+                          }
+                          _vinController.clear();
+                          if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Vehicle decoded via NHTSA and added to Garage!')),
                             );
@@ -193,7 +196,7 @@ class _GarageScreenState extends State<GarageScreen> {
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppTheme.cyanAccent.withOpacity(0.3)),
+                border: Border.all(color: AppTheme.cyanAccent.withValues(alpha: 0.3)),
               ),
               child: Row(
                 children: [
@@ -267,7 +270,7 @@ class _GarageScreenState extends State<GarageScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: car.activeRecalls == 0 ? AppTheme.emeraldAccent.withOpacity(0.15) : AppTheme.crimsonAccent.withOpacity(0.15),
+                    color: car.activeRecalls == 0 ? AppTheme.emeraldAccent.withValues(alpha: 0.15) : AppTheme.crimsonAccent.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: car.activeRecalls == 0 ? AppTheme.emeraldAccent : AppTheme.crimsonAccent,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../constants/theme.dart';
-import '../models/subscription_tier.dart';
 import '../providers/app_state.dart';
 import '../widgets/credit_card_widget.dart';
 import '../widgets/coin_counter.dart';
@@ -51,7 +50,7 @@ class DashboardScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppTheme.surface,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.goldAccent.withOpacity(0.3)),
+                border: Border.all(color: AppTheme.goldAccent.withValues(alpha: 0.3)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,17 +230,17 @@ class DashboardScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [AppTheme.crimsonAccent.withOpacity(0.15), AppTheme.surfaceCard],
+                    colors: [AppTheme.crimsonAccent.withValues(alpha: 0.15), AppTheme.surfaceCard],
                   ),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppTheme.crimsonAccent.withOpacity(0.3)),
+                  border: Border.all(color: AppTheme.crimsonAccent.withValues(alpha: 0.3)),
                 ),
                 child: Row(
                   children: [
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppTheme.crimsonAccent.withOpacity(0.2),
+                        color: AppTheme.crimsonAccent.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(Icons.timer_outlined, size: 20, color: AppTheme.crimsonAccent),

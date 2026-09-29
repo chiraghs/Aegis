@@ -91,13 +91,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.4),
+                    color: Colors.black.withValues(alpha: 0.4),
                     blurRadius: 18,
                     offset: const Offset(0, 10),
                   ),
                 ],
                 border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -128,7 +128,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                       width: 32,
                       height: 24,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.25),
+                        color: Colors.white.withValues(alpha: 0.25),
                         borderRadius: BorderRadius.circular(6),
                         border: Border.all(color: Colors.white30),
                       ),
@@ -154,8 +154,8 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
                   color: widget.card.isPaidThisCycle
-                      ? AppTheme.emeraldAccent.withOpacity(0.2)
-                      : Colors.black.withOpacity(0.3),
+                      ? AppTheme.emeraldAccent.withValues(alpha: 0.2)
+                      : Colors.black.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: widget.card.isPaidThisCycle
@@ -199,7 +199,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w400,
-                  color: Colors.white.withOpacity(0.85),
+                  color: Colors.white.withValues(alpha: 0.85),
                 ),
               ),
             ],
@@ -220,7 +220,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                           fontSize: 9,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                         ),
                       ),
                       Text(
@@ -242,7 +242,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                           fontSize: 9,
                           fontWeight: FontWeight.w600,
                           letterSpacing: 1,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                         ),
                       ),
                       Text(
@@ -262,7 +262,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                 borderRadius: BorderRadius.circular(4),
                 child: LinearProgressIndicator(
                   value: widget.card.utilizationRate,
-                  backgroundColor: Colors.white.withOpacity(0.2),
+                  backgroundColor: Colors.white.withValues(alpha: 0.2),
                   valueColor: AlwaysStoppedAnimation<Color>(
                     widget.card.utilizationRate > 0.3
                         ? AppTheme.crimsonAccent
@@ -300,7 +300,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 1.2,
-                    color: Colors.white.withOpacity(0.8),
+                    color: Colors.white.withValues(alpha: 0.8),
                   ),
                 ),
                 Text(
@@ -343,7 +343,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                     children: [
                       Text(
                         'STATEMENT DUE',
-                        style: TextStyle(fontSize: 9, color: Colors.white.withOpacity(0.7)),
+                        style: TextStyle(fontSize: 9, color: Colors.white.withValues(alpha: 0.7)),
                       ),
                       Text(
                         currency.format(widget.card.statementBalance),

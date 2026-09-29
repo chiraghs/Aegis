@@ -46,7 +46,7 @@ class CoinCounter extends StatelessWidget {
           boxShadow: [
             if (tier == SubscriptionTier.black)
               BoxShadow(
-                color: AppTheme.goldAccent.withOpacity(0.2),
+                color: AppTheme.goldAccent.withValues(alpha: 0.2),
                 blurRadius: 10,
                 offset: const Offset(0, 2),
               ),
@@ -77,7 +77,7 @@ class CoinCounter extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
               decoration: BoxDecoration(
-                color: AppTheme.goldAccent.withOpacity(0.15),
+                color: AppTheme.goldAccent.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(

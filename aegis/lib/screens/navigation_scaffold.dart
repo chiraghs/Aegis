@@ -117,8 +117,8 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: isBlack
-              ? AppTheme.goldAccent.withOpacity(0.2)
-              : (isGold ? AppTheme.goldAccent.withOpacity(0.1) : AppTheme.surfaceCard),
+              ? AppTheme.goldAccent.withValues(alpha: 0.2)
+              : (isGold ? AppTheme.goldAccent.withValues(alpha: 0.1) : AppTheme.surfaceCard),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: isBlack || isGold ? AppTheme.goldAccent : AppTheme.surfaceBorder,

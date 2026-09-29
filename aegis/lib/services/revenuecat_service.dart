@@ -95,7 +95,7 @@ class RevenueCatService {
       }
 
       if (targetPackage != null) {
-        final result = await Purchases.purchasePackage(targetPackage);
+        final result = await Purchases.purchase(PurchaseParams.package(targetPackage));
         _updateTierFromCustomerInfo(result.customerInfo);
         return true;
       } else {
