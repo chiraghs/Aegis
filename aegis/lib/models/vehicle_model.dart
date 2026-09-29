@@ -13,6 +13,7 @@ class VehicleModel {
   final DateTime nextServiceDate;
   final int activeRecalls;
   final String imageUrl;
+  final String licensePlate;
 
   VehicleModel({
     required this.id,
@@ -29,6 +30,7 @@ class VehicleModel {
     required this.nextServiceDate,
     required this.activeRecalls,
     this.imageUrl = '',
+    this.licensePlate = 'KA13EW7454',
   });
 
   double get positiveEquity => (estimatedMarketValue - loanBalance).clamp(0.0, double.infinity);
@@ -49,6 +51,7 @@ class VehicleModel {
     DateTime? nextServiceDate,
     int? activeRecalls,
     String? imageUrl,
+    String? licensePlate,
   }) {
     return VehicleModel(
       id: id ?? this.id,
@@ -65,6 +68,7 @@ class VehicleModel {
       nextServiceDate: nextServiceDate ?? this.nextServiceDate,
       activeRecalls: activeRecalls ?? this.activeRecalls,
       imageUrl: imageUrl ?? this.imageUrl,
+      licensePlate: licensePlate ?? this.licensePlate,
     );
   }
 }

@@ -265,6 +265,12 @@ class AppTheme {
   static Color get crimsonAccent => palette.crimsonAccent;
   static Color get amberAccent => palette.amberAccent;
 
+  // Convenience Aliases
+  static Color get accentGold => palette.goldAccent;
+  static Color get accentEmerald => palette.emeraldAccent;
+  static Color get accentCyan => palette.cyanAccent;
+  static Color get accentCrimson => palette.crimsonAccent;
+
   // Typography Colors
   static Color get textPrimary => palette.textPrimary;
   static Color get textSecondary => palette.textSecondary;

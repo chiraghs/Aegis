@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 import '../constants/theme.dart';
-import '../models/vehicle_model.dart';
 import '../providers/app_state.dart';
-import '../widgets/glass_container.dart';
+import '../widgets/garage_vehicle_3d_stage.dart';
+import '../widgets/garage_challans_and_compliance_card.dart';
+import '../widgets/garage_insurance_hub.dart';
+import '../widgets/garage_glovebox_card.dart';
+import '../widgets/garage_rush_hour_rewards.dart';
+import '../widgets/garage_rewards_meter.dart';
 import 'paywall_screen.dart';
 
 class GarageScreen extends StatefulWidget {
@@ -23,11 +26,14 @@ class _GarageScreenState extends State<GarageScreen> {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          backgroundColor: AppTheme.surfaceCardElevated,
+          backgroundColor: AppTheme.surfaceCard,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Text('GARAGE LIMIT REACHED', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
+          title: const Text(
+            'GARAGE LIMIT REACHED',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1),
+          ),
           content: Text(
-            'Aegis Member (Free) tier includes 1 vehicle in the garage.\n\nUpgrade to Gold Pass or Black Edition with RevenueCat to unlock unlimited vehicle tracking, real-time telematics, and NHTSA safety recall alerts.',
+            'Aegis Member (Free) tier includes up to 5 vehicles in your garage.\n\nUpgrade to Gold Pass or Black Edition with RevenueCat to unlock unlimited vehicle tracking, real-time telematics, and NHTSA safety recall alerts.',
             style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
           ),
           actions: [
@@ -42,7 +48,10 @@ class _GarageScreenState extends State<GarageScreen> {
                   MaterialPageRoute(builder: (context) => const PaywallScreen()),
                 );
               },
-              style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, foregroundColor: Colors.black),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.accentGold,
+                foregroundColor: Colors.black,
+              ),
               child: const Text('Upgrade Pass', style: TextStyle(fontWeight: FontWeight.w800)),
             ),
           ],
@@ -51,10 +60,12 @@ class _GarageScreenState extends State<GarageScreen> {
       return;
     }
 
+    final isDark = appState.isDarkMode;
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: AppTheme.surfaceCard,
+      backgroundColor: isDark ? const Color(0xFF161922) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
@@ -68,9 +79,14 @@ class _GarageScreenState extends State<GarageScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'ADD VEHICLE TO GARAGE',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.5,
+                      color: isDark ? Colors.white : Colors.black,
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close, size: 20),
@@ -90,14 +106,14 @@ class _GarageScreenState extends State<GarageScreen> {
                 style: const TextStyle(fontSize: 14, letterSpacing: 2, fontWeight: FontWeight.w700),
                 decoration: InputDecoration(
                   hintText: 'e.g. 5YJ3E1EB8KF194821',
-                  hintStyle: TextStyle(color: AppTheme.textMuted, letterSpacing: 1),
+                  hintStyle: TextStyle(color: AppTheme.textSecondary, letterSpacing: 1),
                   filled: true,
-                  fillColor: AppTheme.surfaceCardElevated,
+                  fillColor: isDark ? const Color(0xFF222634) : const Color(0xFFF3F5FA),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: AppTheme.surfaceBorder),
+                    borderSide: BorderSide.none,
                   ),
-                  prefixIcon: Icon(Icons.directions_car, color: AppTheme.cyanAccent),
+                  prefixIcon: Icon(Icons.directions_car, color: AppTheme.accentGold),
                 ),
               ),
               const SizedBox(height: 12),
@@ -106,23 +122,23 @@ class _GarageScreenState extends State<GarageScreen> {
                 runSpacing: 6,
                 children: [
                   ActionChip(
-                    label: const Text('Tesla Model 3', style: TextStyle(fontSize: 10)),
+                    label: const Text('Tesla Model 3', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
                     onPressed: () => _vinController.text = '5YJ3E1EB8KF194821',
                   ),
                   ActionChip(
-                    label: const Text('Porsche Taycan 4S', style: TextStyle(fontSize: 10)),
+                    label: const Text('Porsche Taycan 4S', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
                     onPressed: () => _vinController.text = 'WP0AB2Y14MSA83921',
                   ),
                   ActionChip(
-                    label: const Text('Ford Mustang GT', style: TextStyle(fontSize: 10)),
+                    label: const Text('Ford Mustang GT', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
                     onPressed: () => _vinController.text = '1FA6P8CF5L5100000',
                   ),
                   ActionChip(
-                    label: const Text('BMW 330e EV', style: TextStyle(fontSize: 10)),
+                    label: const Text('BMW 330e EV', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
                     onPressed: () => _vinController.text = 'WBA8E1C55JKA00000',
                   ),
                   ActionChip(
-                    label: const Text('Rivian R1T Truck', style: TextStyle(fontSize: 10)),
+                    label: const Text('Rivian R1T Truck', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700)),
                     onPressed: () => _vinController.text = '7FCTGAAA3NN000000',
                   ),
                 ],
@@ -154,8 +170,8 @@ class _GarageScreenState extends State<GarageScreen> {
                           }
                         },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.cyanAccent,
-                    foregroundColor: Colors.black,
+                    backgroundColor: isDark ? Colors.white : Colors.black,
+                    foregroundColor: isDark ? Colors.black : Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   child: _isLoadingVin
@@ -164,7 +180,10 @@ class _GarageScreenState extends State<GarageScreen> {
                           height: 20,
                           child: CircularProgressIndicator(strokeWidth: 2, color: Colors.black),
                         )
-                      : const Text('Decode & Add Vehicle', style: TextStyle(fontWeight: FontWeight.w800)),
+                      : const Text(
+                          'DECODE & ADD VEHICLE',
+                          style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.2),
+                        ),
                 ),
               ),
             ],
@@ -174,80 +193,61 @@ class _GarageScreenState extends State<GarageScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context);
-    final currency = NumberFormat.simpleCurrency();
+  void _showSettingsModal(BuildContext context, AppState appState) {
+    final isDark = appState.isDarkMode;
 
-    return Scaffold(
-      backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        title: const Text(
-          'AEGIS GARAGE',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 2),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add, color: AppTheme.cyanAccent),
-            onPressed: () => _showAddVehicleModal(context, appState),
-          ),
-          const SizedBox(width: 8),
-        ],
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: isDark ? const Color(0xFF161922) : Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(24),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Garage Banner
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF0F2027), Color(0xFF203A43), Color(0xFF2C5364)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'GARAGE SETTINGS',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.2),
                 ),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppTheme.cyanAccent.withValues(alpha: 0.3)),
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.black38,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Icon(Icons.electric_car, size: 28, color: AppTheme.cyanAccent),
-                  ),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'AUTOMOTIVE TELEMATICS & EQUITY',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, color: AppTheme.cyanAccent),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          'NHTSA Recalls, Loan Equity & Service Tracker',
-                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () => Navigator.pop(ctx),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.dark_mode_outlined),
+              title: const Text('Theme Mode', style: TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: Text(isDark ? 'Dark Mode (Stealth Carbon)' : 'Light Mode (Clean Studio)'),
+              trailing: Switch(
+                value: isDark,
+                onChanged: (_) {
+                  appState.toggleThemeMode();
+                  Navigator.pop(ctx);
+                },
               ),
             ),
-            const SizedBox(height: 20),
-
-            // Vehicle Cards
-            Column(
-              children: appState.vehicles.map((car) {
-                return _buildVehicleCard(car, currency);
-              }).toList(),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.notifications_active_outlined),
+              title: const Text('Traffic Challan Alerts', style: TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: const Text('Instant notification when speed camera tags vehicle'),
+              trailing: Icon(Icons.check_circle, color: AppTheme.accentEmerald),
+            ),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.security),
+              title: const Text('DigiLocker Auto-Sync', style: TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: const Text('Real-time sync with Parivahan Gov database'),
+              trailing: Icon(Icons.check_circle, color: AppTheme.accentEmerald),
             ),
           ],
         ),
@@ -255,111 +255,46 @@ class _GarageScreenState extends State<GarageScreen> {
     );
   }
 
-  Widget _buildVehicleCard(VehicleModel car, NumberFormat currency) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      child: GlassContainer(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Top Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${car.year} ${car.make} ${car.model}'.toUpperCase(),
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      car.trim,
-                      style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: car.activeRecalls == 0 ? AppTheme.emeraldAccent.withValues(alpha: 0.15) : AppTheme.crimsonAccent.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: car.activeRecalls == 0 ? AppTheme.emeraldAccent : AppTheme.crimsonAccent,
-                    ),
-                  ),
-                  child: Text(
-                    car.activeRecalls == 0 ? '✓ 0 RECALLS' : '${car.activeRecalls} RECALLS',
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w800,
-                      color: car.activeRecalls == 0 ? AppTheme.emeraldAccent : AppTheme.crimsonAccent,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Divider(color: AppTheme.surfaceBorder, height: 24),
+  @override
+  Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
 
-            // Metrics Grid
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('MARKET VALUE', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
-                      const SizedBox(height: 2),
-                      Text(currency.format(car.estimatedMarketValue), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('NET EQUITY', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
-                      const SizedBox(height: 2),
-                      Text(
-                        currency.format(car.positiveEquity),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(car.isElectric ? 'BATTERY' : 'FUEL', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
-                      const SizedBox(height: 2),
-                      Text(
-                        '${(car.fuelOrBatteryLevel * 100).toInt()}%',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.cyanAccent),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
+    return Scaffold(
+      backgroundColor: AppTheme.background,
+      body: SafeArea(
+        top: false,
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. CRED Garage 3D Rotatable Playground Stage
+              GarageVehicle3DStage(
+                appState: appState,
+                onAddVehiclePressed: () => _showAddVehicleModal(context, appState),
+                onSettingsPressed: () => _showSettingsModal(context, appState),
+              ),
 
-            // VIN & Service Status
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'VIN: ${car.vin.substring(0, 11)}••••••',
-                  style: TextStyle(fontSize: 11, color: AppTheme.textMuted, letterSpacing: 1),
-                ),
-                Text(
-                  'Service Due: ${DateFormat('MMM yyyy').format(car.nextServiceDate)}',
-                  style: TextStyle(fontSize: 11, color: AppTheme.goldAccentLight),
-                ),
-              ],
-            ),
-          ],
+              const SizedBox(height: 12),
+
+              // 2. Traffic Challans ("CHECK NOW") & PUCC Dual-Card Grid
+              GarageChallansAndComplianceCard(appState: appState),
+
+              // 3. Insurance Hub (Active Policies + Sell & Buy Commission Marketplace)
+              GarageInsuranceHub(appState: appState),
+
+              // 4. Digital Glovebox Card (RC, DL, Policy docs linked to DigiLocker)
+              GarageGloveboxCard(appState: appState),
+
+              // 5. RUSH HOUR REWARDS Podium Carousel (Peak Traffic Hour Drops)
+              GarageRushHourRewards(appState: appState),
+
+              // 6. September Rewards Meter (Segmented Battery Bar + You Won Card + Spends Breakdown)
+              GarageRewardsMeter(appState: appState),
+
+              const SizedBox(height: 40),
+            ],
+          ),
         ),
       ),
     );

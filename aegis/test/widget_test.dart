@@ -98,4 +98,39 @@ void main() {
     expect(appState.isDarkMode, isTrue);
     expect(find.byTooltip('Switch to Light Mode'), findsOneWidget);
   });
+
+  test('Garage AppState supports vehicle selection, challan clearing with 2X coins, and insurance selling', () {
+    final state = AppState();
+
+    // Verify initial vehicles
+    expect(state.vehicles.length, greaterThanOrEqualTo(3));
+    expect(state.activeVehicle.model, equals('Activa 6G'));
+    expect(state.activeVehicle.licensePlate, equals('KA13EW7454'));
+
+    // Switch vehicle
+    state.selectGarageVehicle(1);
+    expect(state.activeVehicle.model, equals('Model 3'));
+    expect(state.activeVehicle.licensePlate, equals('CA 8TSL921'));
+
+    // Check unpaid challans
+    expect(state.unpaidChallansCount, equals(1));
+    final initialCoins = state.rewards.totalCoins;
+
+    // Settle challan
+    final paid = state.payChallan('chl_1');
+    expect(paid, isTrue);
+    expect(state.unpaidChallansCount, equals(0));
+    // 1000 challan * 2 = 2000 coins awarded
+    expect(state.rewards.totalCoins, equals(initialCoins + 2000));
+
+    // Selling insurance policy awards ₹1,500 commission in coins
+    final preInsCoins = state.rewards.totalCoins;
+    state.purchaseOrSellInsurancePolicy(state.insurancePolicies.first, isSelling: true);
+    expect(state.rewards.totalCoins, equals(preInsCoins + 1500));
+
+    // Claim rush hour reward
+    final claimed = state.claimRushHourReward('rh_1');
+    expect(claimed, isTrue);
+    expect(state.rushHourRewards.first.isClaimed, isTrue);
+  });
 }
