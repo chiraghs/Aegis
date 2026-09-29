@@ -36,11 +36,13 @@ class GlassContainer extends StatelessWidget {
               color: borderColor ?? AppTheme.surfaceBorder,
               width: 1,
             ),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color(0x22000000),
-            blurRadius: 16,
-            offset: Offset(0, 8),
+            color: AppThemeConfig.isDark
+                ? const Color(0x33000000)
+                : const Color(0x0C000000),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
           ),
         ],
       ),

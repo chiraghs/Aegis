@@ -30,11 +30,11 @@ class DashboardScreen extends StatelessWidget {
       builder: (ctx) => AlertDialog(
         backgroundColor: AppTheme.surfaceCardElevated,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: const Row(
+        title: Row(
           children: [
             Icon(Icons.verified_rounded, color: AppTheme.emeraldAccent, size: 28),
-            SizedBox(width: 10),
-            Text(
+            const SizedBox(width: 10),
+            const Text(
               'EXTERNAL PAY VERIFIED',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1),
             ),
@@ -46,7 +46,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
             Text(
               'Plaid detected that your bank bill of ${currency.format(cleared)} was cleared externally.',
-              style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
+              style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
             ),
             const SizedBox(height: 16),
             Container(
@@ -67,7 +67,7 @@ class DashboardScreen extends StatelessWidget {
                     children: [
                       Text(
                         '+$coins Coins',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w900,
                           color: AppTheme.goldAccent,
@@ -76,7 +76,7 @@ class DashboardScreen extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         '(${multiplier}x Tier)',
-                        style: const TextStyle(fontSize: 11, color: AppTheme.goldAccentLight),
+                        style: TextStyle(fontSize: 11, color: AppTheme.goldAccentLight),
                       ),
                     ],
                   ),
@@ -88,7 +88,7 @@ class DashboardScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('AWESOME', style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.w800)),
+            child: Text('AWESOME', style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -120,7 +120,7 @@ class DashboardScreen extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.all(8),
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     gradient: AppTheme.goldGradient,
                   ),
@@ -134,7 +134,7 @@ class DashboardScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Real-Time Merchant Optimization (Black Edition)',
               style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
             ),
@@ -164,12 +164,12 @@ class DashboardScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(category, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white)),
+              Text(category, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
               const SizedBox(height: 2),
-              Text(benefit, style: const TextStyle(fontSize: 11, color: AppTheme.goldAccentLight)),
+              Text(benefit, style: TextStyle(fontSize: 11, color: AppTheme.goldAccentLight)),
             ],
           ),
-          Text(bestCard, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary)),
+          Text(bestCard, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary)),
         ],
       ),
     );
@@ -194,7 +194,7 @@ class DashboardScreen extends StatelessWidget {
               Container(
                 width: 28,
                 height: 28,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   gradient: AppTheme.goldGradient,
                 ),
@@ -227,7 +227,7 @@ class DashboardScreen extends StatelessWidget {
                   isLabelVisible: unread > 0,
                   label: Text('$unread', style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold)),
                   backgroundColor: AppTheme.crimsonAccent,
-                  child: const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 20),
+                  child: Icon(Icons.notifications_none_rounded, color: AppTheme.textPrimary, size: 20),
                 ),
                 tooltip: 'OneSignal Push Center',
                 onPressed: () {
@@ -241,14 +241,25 @@ class DashboardScreen extends StatelessWidget {
           IconButton(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             constraints: const BoxConstraints(),
-            icon: const Icon(Icons.ios_share_rounded, color: AppTheme.cyanAccent, size: 19),
+            icon: Icon(Icons.ios_share_rounded, color: AppTheme.cyanAccent, size: 19),
             tooltip: 'Flex Shield Story',
             onPressed: () => ViralShieldStoryModal.show(context, appState),
           ),
           IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            constraints: const BoxConstraints(),
+            icon: Icon(
+              appState.isDarkMode ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+              color: AppTheme.textPrimary,
+              size: 20,
+            ),
+            tooltip: appState.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
+            onPressed: () => appState.toggleThemeMode(),
+          ),
+          IconButton(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             constraints: const BoxConstraints(),
-            icon: const Icon(Icons.workspace_premium, color: AppTheme.goldAccent, size: 20),
+            icon: Icon(Icons.workspace_premium, color: AppTheme.goldAccent, size: 20),
             tooltip: 'Aegis Club Pass',
             onPressed: () {
               Navigator.of(context).push(
@@ -284,7 +295,7 @@ class DashboardScreen extends StatelessWidget {
                         color: AppTheme.crimsonAccent.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.timer_outlined, size: 20, color: AppTheme.crimsonAccent),
+                      child: Icon(Icons.timer_outlined, size: 20, color: AppTheme.crimsonAccent),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -293,7 +304,7 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           Text(
                             'NEXT PAYMENT DUE IN ${nearest.daysUntilDue} DAYS',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w900,
                               letterSpacing: 1,
@@ -303,7 +314,7 @@ class DashboardScreen extends StatelessWidget {
                           const SizedBox(height: 2),
                           Text(
                             '${nearest.cardName} • ${currency.format(nearest.statementBalance)}',
-                            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white),
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
                           ),
                         ],
                       ),
@@ -345,10 +356,10 @@ class DashboardScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Row(
+                          Row(
                             children: [
                               Icon(Icons.shield, size: 14, color: AppTheme.emeraldAccent),
-                              SizedBox(width: 6),
+                              const SizedBox(width: 6),
                               Text(
                                 'UNIFIED NET WORTH',
                                 style: TextStyle(
@@ -368,11 +379,11 @@ class DashboardScreen extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                const Icon(Icons.trending_up, size: 12, color: AppTheme.emeraldAccent),
+                                Icon(Icons.trending_up, size: 12, color: AppTheme.emeraldAccent),
                                 const SizedBox(width: 3),
                                 Text(
                                   '+${appState.monthlyNetWorthChangePercent.toStringAsFixed(1)}% mo',
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w800,
                                     color: AppTheme.emeraldAccent,
@@ -394,17 +405,17 @@ class DashboardScreen extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 currency.format(appState.netWorth),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 28,
                                   fontWeight: FontWeight.w900,
-                                  color: Colors.white,
+                                  color: AppTheme.textPrimary,
                                   letterSpacing: -0.5,
                                 ),
                               ),
                             ),
                           ),
                           const SizedBox(width: 8),
-                          const Row(
+                          Row(
                             children: [
                               Text(
                                 'Deep Dive',
@@ -414,7 +425,7 @@ class DashboardScreen extends StatelessWidget {
                                   color: AppTheme.goldAccent,
                                 ),
                               ),
-                              SizedBox(width: 2),
+                              const SizedBox(width: 2),
                               Icon(Icons.arrow_forward_ios, size: 10, color: AppTheme.goldAccent),
                             ],
                           ),
@@ -439,19 +450,19 @@ class DashboardScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'CARD REVOLVING DEBT',
                             style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1, color: AppTheme.textSecondary),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             currency.format(appState.totalCurrentBalance),
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white),
+                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             'Total Limit: ${currency.format(appState.totalCreditLimit)}',
-                            style: const TextStyle(fontSize: 11, color: AppTheme.textMuted),
+                            style: TextStyle(fontSize: 11, color: AppTheme.textMuted),
                           ),
                         ],
                       ),
@@ -460,7 +471,7 @@ class DashboardScreen extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text(
+                        Text(
                           'UTILIZATION',
                           style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1, color: AppTheme.textSecondary),
                         ),
@@ -478,7 +489,7 @@ class DashboardScreen extends StatelessWidget {
                         const SizedBox(height: 2),
                         Text(
                           appState.overallUtilization < 0.1 ? 'Excellent (<10%)' : 'Good Standing',
-                          style: const TextStyle(fontSize: 11, color: AppTheme.emeraldAccent),
+                          style: TextStyle(fontSize: 11, color: AppTheme.emeraldAccent),
                         ),
                       ],
                     ),
@@ -495,13 +506,13 @@ class DashboardScreen extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () => _showAiSwipeAdvisor(context, appState),
-                      icon: const Icon(Icons.auto_awesome, size: 14, color: AppTheme.goldAccent),
+                      icon: Icon(Icons.auto_awesome, size: 14, color: AppTheme.goldAccent),
                       label: Text(
                         appState.hasAiCardOptimizer ? 'AI Swipe Advisor' : 'Unlock AI Advisor 🔒',
-                        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white),
+                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
                       ),
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppTheme.surfaceBorder),
+                        side: BorderSide(color: AppTheme.surfaceBorder),
                         backgroundColor: AppTheme.surfaceCard,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -512,13 +523,13 @@ class DashboardScreen extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () => onNavigateToTab(2), // Garage
-                      icon: const Icon(Icons.directions_car, size: 14, color: AppTheme.cyanAccent),
-                      label: const Text(
+                      icon: Icon(Icons.directions_car, size: 14, color: AppTheme.cyanAccent),
+                      label: Text(
                         'View Garage',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: Colors.white),
+                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
                       ),
                       style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: AppTheme.surfaceBorder),
+                        side: BorderSide(color: AppTheme.surfaceBorder),
                         backgroundColor: AppTheme.surfaceCard,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -541,13 +552,13 @@ class DashboardScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'PORTFOLIO CARDS',
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.5, color: AppTheme.textSecondary),
                   ),
                   GestureDetector(
                     onTap: () => onNavigateToTab(1),
-                    child: const Text(
+                    child: Text(
                       'Manage All →',
                       style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.goldAccent),
                     ),

@@ -320,7 +320,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                   padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(
                     children: [
-                      const Icon(Icons.star_rounded, size: 14, color: AppTheme.goldAccentLight),
+                      Icon(Icons.star_rounded, size: 14, color: AppTheme.goldAccentLight),
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
@@ -373,7 +373,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                     ),
                   )
                 else
-                  const Chip(
+                  Chip(
                     label: Text(
                       '✓ Cleared & Rewarded',
                       style: TextStyle(fontSize: 11, color: AppTheme.emeraldAccent, fontWeight: FontWeight.w700),

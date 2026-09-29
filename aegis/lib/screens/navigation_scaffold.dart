@@ -86,7 +86,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
                   children: screens,
                 ),
           bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppTheme.surface,
           border: Border(
             top: BorderSide(color: AppTheme.surfaceBorder, width: 1),
@@ -167,7 +167,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
             Icon(
               Icons.workspace_premium,
               size: 16,
-              color: isBlack || isGold ? AppTheme.goldAccent : Colors.white70,
+              color: isBlack || isGold ? AppTheme.goldAccent : AppTheme.textSecondary,
             ),
             const SizedBox(width: 4),
             Text(
@@ -175,7 +175,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: FontWeight.w900,
-                color: isBlack || isGold ? AppTheme.goldAccentLight : Colors.white,
+                color: isBlack || isGold ? AppTheme.goldAccentLight : AppTheme.textPrimary,
                 letterSpacing: 0.5,
               ),
             ),

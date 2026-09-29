@@ -68,23 +68,23 @@ class _RewardsScreenState extends State<RewardsScreen> {
       builder: (ctx) => AlertDialog(
         backgroundColor: AppTheme.surfaceCardElevated,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-        title: const Text('🎉 MYSTERY VAULT OPENED!', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: AppTheme.goldAccent)),
+        title: Text('🎉 MYSTERY VAULT OPENED!', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: AppTheme.goldAccent)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.stars_rounded, size: 48, color: AppTheme.goldAccent),
+            Icon(Icons.stars_rounded, size: 48, color: AppTheme.goldAccent),
             const SizedBox(height: 12),
             Text(
               'You unlocked +$randomBonus Bonus Aegis Coins for maintaining your on-time credit streak!',
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
+              style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('CLAIM COINS', style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.w800)),
+            child: Text('CLAIM COINS', style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -101,12 +101,12 @@ class _RewardsScreenState extends State<RewardsScreen> {
           title: const Text('BLACK EDITION EXCLUSIVE', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
           content: Text(
             '${perk.title} is reserved for Black Edition members.\n\nUpgrade your tier via RevenueCat to claim ultra-luxury rewards drops.',
-            style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
+            style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('Cancel', style: TextStyle(color: Colors.white60)),
+              child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -169,7 +169,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'AEGIS COINS BALANCE',
                             style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 1, color: AppTheme.textSecondary),
                           ),
@@ -178,13 +178,13 @@ class _RewardsScreenState extends State<RewardsScreen> {
                             children: [
                               Container(
                                 padding: const EdgeInsets.all(4),
-                                decoration: const BoxDecoration(shape: BoxShape.circle, gradient: AppTheme.goldGradient),
+                                decoration: BoxDecoration(shape: BoxShape.circle, gradient: AppTheme.goldGradient),
                                 child: const Icon(Icons.monetization_on, size: 20, color: Colors.black),
                               ),
                               const SizedBox(width: 8),
                               Text(
                                 formatter.format(appState.rewards.totalCoins),
-                                style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white),
+                                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: AppTheme.textPrimary),
                               ),
                             ],
                           ),
@@ -203,20 +203,20 @@ class _RewardsScreenState extends State<RewardsScreen> {
                             const SizedBox(width: 6),
                             Text(
                               '${appState.rewards.streakDays}x Streak',
-                              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white),
+                              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
                             ),
                           ],
                         ),
                       ),
                     ],
                   ),
-                  const Divider(color: AppTheme.surfaceBorder, height: 24),
+                  Divider(color: AppTheme.surfaceBorder, height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Total Cleared: ${currency.format(appState.rewards.totalDebtCleared)}',
-                        style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                        style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                       ),
                       ElevatedButton.icon(
                         onPressed: () => _openMysteryVault(context, appState),
@@ -237,7 +237,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
             const SizedBox(height: 24),
 
             // Perks Catalog Title
-            const Text(
+            Text(
               'CURATED PERKS & DROPS',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1.5, color: AppTheme.textSecondary),
             ),
@@ -265,7 +265,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                           ),
                           child: Icon(
                             perk.isExclusiveBlackTier ? Icons.workspace_premium : Icons.redeem,
-                            color: perk.isExclusiveBlackTier ? AppTheme.goldAccent : Colors.white70,
+                            color: perk.isExclusiveBlackTier ? AppTheme.goldAccent : AppTheme.textSecondary,
                           ),
                         ),
                         const SizedBox(width: 14),
@@ -278,7 +278,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                   Expanded(
                                     child: Text(
                                       perk.title,
-                                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white),
+                                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -290,7 +290,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                         color: AppTheme.goldAccent.withValues(alpha: 0.2),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         'BLACK',
                                         style: TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: AppTheme.goldAccentLight),
                                       ),
@@ -300,7 +300,7 @@ class _RewardsScreenState extends State<RewardsScreen> {
                               const SizedBox(height: 2),
                               Text(
                                 perk.partner,
-                                style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                                style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                               ),
                               const SizedBox(height: 6),
                               Row(
@@ -308,13 +308,13 @@ class _RewardsScreenState extends State<RewardsScreen> {
                                 children: [
                                   Text(
                                     '${formatter.format(perk.costInCoins)} Coins',
-                                    style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.goldAccent),
+                                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.goldAccent),
                                   ),
                                   ElevatedButton(
                                     onPressed: isClaimed ? null : () => _handleClaimPerk(context, perk, appState),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: isClaimed ? Colors.grey : Colors.white,
-                                      foregroundColor: Colors.black,
+                                      backgroundColor: isClaimed ? AppTheme.surfaceBorder : AppTheme.textPrimary,
+                                      foregroundColor: isClaimed ? AppTheme.textMuted : AppTheme.background,
                                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                       minimumSize: Size.zero,
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

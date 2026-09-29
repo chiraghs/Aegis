@@ -34,9 +34,9 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.88,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppTheme.background,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
       ),
       child: Column(
         children: [
@@ -64,7 +64,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                 ),
                 Row(
                   children: [
-                    Text(_maskValues ? 'Masked' : 'Public', style: const TextStyle(fontSize: 10, color: AppTheme.textMuted)),
+                    Text(_maskValues ? 'Masked' : 'Public', style: TextStyle(fontSize: 10, color: AppTheme.textMuted)),
                     Switch(
                       value: !_maskValues,
                       activeThumbColor: AppTheme.goldAccent,
@@ -114,7 +114,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                                 Container(
                                   width: 28,
                                   height: 28,
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     gradient: AppTheme.goldGradient,
                                   ),
@@ -134,7 +134,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                               ),
                               child: Text(
                                 appState.isBlackEdition ? 'BLACK EDITION' : 'CENTURION TIER',
-                                style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: AppTheme.goldAccent),
+                                style: TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: AppTheme.goldAccent),
                               ),
                             ),
                           ],
@@ -143,12 +143,12 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                         const Spacer(),
 
                         // Centerpiece: Shield Score & Status
-                        const Text(
+                        Text(
                           'FINANCIAL RADAR SHIELD',
                           style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AppTheme.textMuted, letterSpacing: 1.5),
                         ),
                         const SizedBox(height: 4),
-                        const Text(
+                        Text(
                           '840',
                           style: TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: AppTheme.emeraldAccent, letterSpacing: -1),
                         ),
@@ -175,7 +175,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                                 Icons.local_fire_department,
                                 const Color(0xFFFF9100),
                               ),
-                              const Divider(color: AppTheme.surfaceBorder, height: 16),
+                              Divider(color: AppTheme.surfaceBorder, height: 16),
                               _buildStoryRow(
                                 'Net Asset Radar',
                                 _maskValues ? '••••••••' : currency.format(appState.netWorth),
@@ -183,7 +183,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                                 AppTheme.emeraldAccent,
                               ),
                               if (topVehicle != null) ...[
-                                const Divider(color: AppTheme.surfaceBorder, height: 16),
+                                Divider(color: AppTheme.surfaceBorder, height: 16),
                                 _buildStoryRow(
                                   'Garage Anchor',
                                   '${topVehicle.year} ${topVehicle.model}',
@@ -192,7 +192,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                                 ),
                               ],
                               if (topCard != null) ...[
-                                const Divider(color: AppTheme.surfaceBorder, height: 16),
+                                Divider(color: AppTheme.surfaceBorder, height: 16),
                                 _buildStoryRow(
                                   'Primary Card',
                                   topCard.cardName,
@@ -210,7 +210,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('shipaton.aegis.finance', style: TextStyle(fontSize: 10, color: AppTheme.textMuted)),
+                            Text('shipaton.aegis.finance', style: TextStyle(fontSize: 10, color: AppTheme.textMuted)),
                             Text('#Shipaton2026', style: TextStyle(fontSize: 10, color: AppTheme.goldAccent.withValues(alpha: 0.8), fontWeight: FontWeight.w700)),
                           ],
                         ),
@@ -237,8 +237,8 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                   );
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('📱 Viral Story link & text copied! Ready to post to Instagram, X, or TikTok.'),
+                    SnackBar(
+                      content: const Text('📱 Viral Story link & text copied! Ready to post to Instagram, X, or TikTok.'),
                       backgroundColor: AppTheme.emeraldAccent,
                     ),
                   );
@@ -263,7 +263,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
       children: [
         Icon(icon, size: 16, color: color),
         const SizedBox(width: 8),
-        Text(label, style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+        Text(label, style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
         const Spacer(),
         Text(value, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: Colors.white)),
       ],

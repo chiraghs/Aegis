@@ -58,4 +58,44 @@ void main() {
     expect(state.netWorth, equals(state.totalAssetValue - state.totalLiabilityValue));
     expect(state.netWorthHistory.length, equals(6));
   });
+
+  testWidgets('Theme Toggle button switches between Light and Dark mode', (WidgetTester tester) async {
+    tester.view.physicalSize = const Size(440, 900);
+    tester.view.devicePixelRatio = 1.0;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    final appState = AppState();
+
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(value: appState),
+        ],
+        child: const AegisFintechApp(),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Verify initial dark mode and sun icon (to switch to light mode)
+    expect(appState.isDarkMode, isTrue);
+    final themeToggleFinder = find.byTooltip('Switch to Light Mode');
+    expect(themeToggleFinder, findsOneWidget);
+
+    // Tap theme toggle button
+    await tester.tap(themeToggleFinder);
+    await tester.pumpAndSettle();
+
+    // Verify it switched to light mode
+    expect(appState.isDarkMode, isFalse);
+    expect(find.byTooltip('Switch to Dark Mode'), findsOneWidget);
+
+    // Tap again to switch back to dark mode
+    await tester.tap(find.byTooltip('Switch to Dark Mode'));
+    await tester.pumpAndSettle();
+
+    expect(appState.isDarkMode, isTrue);
+    expect(find.byTooltip('Switch to Light Mode'), findsOneWidget);
+  });
 }

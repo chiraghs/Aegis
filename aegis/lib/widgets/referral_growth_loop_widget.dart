@@ -34,7 +34,7 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            Text(
               'Enter a friend’s Aegis VIP code to unlock an instant 500 Aegis Coins bonus.',
               style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
             ),
@@ -42,10 +42,10 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
             TextField(
               controller: _codeController,
               textCapitalization: TextCapitalization.characters,
-              style: const TextStyle(color: Colors.white, fontSize: 13, letterSpacing: 2),
+              style: TextStyle(color: AppTheme.textPrimary, fontSize: 13, letterSpacing: 2),
               decoration: InputDecoration(
                 hintText: 'e.g. AEGIS-VIP-771',
-                hintStyle: const TextStyle(color: AppTheme.textMuted, fontSize: 12),
+                hintStyle: TextStyle(color: AppTheme.textMuted, fontSize: 12),
                 filled: true,
                 fillColor: AppTheme.surface,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -56,7 +56,7 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('CANCEL', style: TextStyle(color: AppTheme.textMuted)),
+            child: Text('CANCEL', style: TextStyle(color: AppTheme.textMuted)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -69,15 +69,15 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
               if (success) {
                 widget.appState.addBonusCoins(500);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('🎉 VIP code applied! +500 Aegis Coins added to your vault!'),
+                  SnackBar(
+                    content: const Text('🎉 VIP code applied! +500 Aegis Coins added to your vault!'),
                     backgroundColor: AppTheme.emeraldAccent,
                   ),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Invalid or already claimed referral code.'),
+                  SnackBar(
+                    content: const Text('Invalid or already claimed referral code.'),
                     backgroundColor: AppTheme.crimsonAccent,
                   ),
                 );
@@ -140,7 +140,7 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Give 500 coins to fellow cardholders, earn 500 coins when they clear their first external statement.',
               style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.3),
             ),
@@ -159,7 +159,7 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Flexible(
-                          child: Text(code, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, color: Colors.white)),
+                          child: Text(code, overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 1, color: AppTheme.textPrimary)),
                         ),
                         const SizedBox(width: 4),
                         GestureDetector(
@@ -169,7 +169,7 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
                               const SnackBar(content: Text('VIP Referral Code copied to clipboard!')),
                             );
                           },
-                          child: const Icon(Icons.copy, size: 14, color: AppTheme.goldAccent),
+                          child: Icon(Icons.copy, size: 14, color: AppTheme.goldAccent),
                         ),
                       ],
                     ),
@@ -178,7 +178,7 @@ class _ReferralGrowthLoopWidgetState extends State<ReferralGrowthLoopWidget> {
                 const SizedBox(width: 8),
                 TextButton(
                   onPressed: _showEnterCodeDialog,
-                  child: const Text('Enter Code', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.goldAccent)),
+                  child: Text('Enter Code', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.goldAccent)),
                 ),
               ],
             ),

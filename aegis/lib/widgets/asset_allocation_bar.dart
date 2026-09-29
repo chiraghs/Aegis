@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../constants/theme.dart';
 import '../models/asset_model.dart';
 import '../providers/app_state.dart';
 
@@ -66,9 +67,9 @@ class AssetAllocationBar extends StatelessWidget {
                 const SizedBox(width: 5),
                 Text(
                   slice.category.label.split('&').first.trim(),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 11,
-                    color: Colors.white70,
+                    color: AppTheme.textSecondary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

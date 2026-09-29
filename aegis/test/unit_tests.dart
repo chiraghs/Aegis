@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:aegis/constants/theme.dart';
 import 'package:aegis/models/subscription_tier.dart';
 import 'package:aegis/models/asset_model.dart';
 import 'package:aegis/models/vehicle_model.dart';
@@ -244,6 +246,70 @@ void main() {
       // Blank or own code cannot be claimed
       final ownClaim = growth.applyReferralCode(growth.userReferralCode);
       expect(ownClaim, isFalse);
+    });
+  });
+
+  group('Aegis Centralized Theme Engine & Dynamic Modes', () {
+    test('Default mode is dark and uses matte stealth graphite palette', () {
+      final state = AppState();
+      expect(state.isDarkMode, isTrue);
+      expect(state.themeMode, equals(ThemeMode.dark));
+      
+      AppThemeConfig.setThemeMode(ThemeMode.dark);
+      expect(AppThemeConfig.isDark, isTrue);
+      expect(AppThemeConfig.palette.isDark, isTrue);
+      expect(AppTheme.background, equals(const Color(0xFF0C0D11)));
+      expect(AppTheme.surface, equals(const Color(0xFF14161E)));
+      expect(AppTheme.textPrimary, equals(const Color(0xFFF1F5F9)));
+    });
+
+    test('Switching to light mode shifts palette to warm paper canvas', () {
+      AppThemeConfig.setThemeMode(ThemeMode.light);
+      expect(AppThemeConfig.isDark, isFalse);
+      expect(AppThemeConfig.palette.isDark, isFalse);
+      expect(AppTheme.background, equals(const Color(0xFFF6F7F9)));
+      expect(AppTheme.surface, equals(const Color(0xFFFFFFFF)));
+      expect(AppTheme.textPrimary, equals(const Color(0xFF0F172A)));
+      expect(AppTheme.goldAccent, equals(const Color(0xFF9E742E)));
+    });
+
+    test('AppState.toggleThemeMode alternates smoothly between dark and light', () {
+      final state = AppState();
+      bool notified = false;
+      state.addListener(() => notified = true);
+
+      // Start dark -> toggle to light
+      state.setThemeMode(ThemeMode.dark);
+      notified = false;
+      state.toggleThemeMode();
+      expect(notified, isTrue);
+      expect(state.isDarkMode, isFalse);
+      expect(state.themeMode, equals(ThemeMode.light));
+      expect(AppThemeConfig.isDark, isFalse);
+
+      // Toggle back to dark
+      notified = false;
+      state.toggleThemeMode();
+      expect(notified, isTrue);
+      expect(state.isDarkMode, isTrue);
+      expect(state.themeMode, equals(ThemeMode.dark));
+      expect(AppThemeConfig.isDark, isTrue);
+    });
+
+    test('Updating custom palette in AppThemeConfig propagates immediately', () {
+      final customLight = ThemePalette.light.copyWith(
+        background: const Color(0xFFECEFF1),
+        textPrimary: const Color(0xFF263238),
+      );
+
+      AppThemeConfig.setCustomPalette(customLight);
+      expect(AppTheme.background, equals(const Color(0xFFECEFF1)));
+      expect(AppTheme.textPrimary, equals(const Color(0xFF263238)));
+
+      // Reset back to standard dark mode
+      AppThemeConfig.resetToDefaults();
+      AppThemeConfig.setThemeMode(ThemeMode.dark);
+      expect(AppTheme.background, equals(const Color(0xFF0C0D11)));
     });
   });
 }

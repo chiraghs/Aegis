@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import '../constants/theme.dart';
 import '../models/credit_card_model.dart';
 import '../models/vehicle_model.dart';
 import '../models/reward_model.dart';
@@ -23,9 +24,25 @@ class AppState extends ChangeNotifier {
   );
   SubscriptionTier _tier = SubscriptionTier.free;
   StreamSubscription<SubscriptionTier>? _tierSubscription;
+  ThemeMode _themeMode = ThemeMode.dark;
 
   AppState() {
     _init();
+  }
+
+  ThemeMode get themeMode => _themeMode;
+  bool get isDarkMode => _themeMode == ThemeMode.dark;
+
+  void setThemeMode(ThemeMode mode) {
+    if (_themeMode == mode) return;
+    _themeMode = mode;
+    AppThemeConfig.setThemeMode(mode);
+    notifyListeners();
+  }
+
+  void toggleThemeMode() {
+    final nextMode = isDarkMode ? ThemeMode.light : ThemeMode.dark;
+    setThemeMode(nextMode);
   }
 
   List<CreditCardModel> get cards => _cards;

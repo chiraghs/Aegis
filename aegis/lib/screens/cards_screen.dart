@@ -25,14 +25,14 @@ class _CardsScreenState extends State<CardsScreen> {
           backgroundColor: AppTheme.surfaceCardElevated,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: const Text('CARD LIMIT REACHED', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
-          content: const Text(
+          content: Text(
             'Aegis Member (Free) tier is limited to 2 credit cards.\n\nUpgrade to Gold Pass or Black Edition with RevenueCat to connect unlimited credit accounts.',
             style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('Cancel', style: TextStyle(color: Colors.white60)),
+              child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -99,7 +99,7 @@ class _CardsScreenState extends State<CardsScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_circle_outline, color: AppTheme.goldAccent),
+            icon: Icon(Icons.add_circle_outline, color: AppTheme.goldAccent),
             onPressed: () => _handleAddCard(context, appState),
           ),
           const SizedBox(width: 8),
@@ -124,7 +124,7 @@ class _CardsScreenState extends State<CardsScreen> {
           // Cards List
           Expanded(
             child: filteredCards.isEmpty
-                ? const Center(
+                ? Center(
                     child: Text(
                       'No cards in this category.',
                       style: TextStyle(color: AppTheme.textSecondary),

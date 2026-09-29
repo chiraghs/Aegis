@@ -49,7 +49,7 @@ class NetWorthDetailScreen extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(Icons.close, size: 20, color: AppTheme.textMuted),
+                    icon: Icon(Icons.close, size: 20, color: AppTheme.textMuted),
                     onPressed: () => Navigator.of(ctx).pop(),
                   ),
                 ],
@@ -85,40 +85,40 @@ class NetWorthDetailScreen extends StatelessWidget {
               const SizedBox(height: 16),
               TextField(
                 controller: nameCtrl,
-                style: const TextStyle(color: Colors.white, fontSize: 13),
+                style: TextStyle(color: AppTheme.textPrimary, fontSize: 13),
                 decoration: InputDecoration(
                   labelText: 'Asset Name (e.g. S&P 500 Index / HYSA)',
-                  labelStyle: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                  labelStyle: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                   filled: true,
                   fillColor: AppTheme.surface,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: instCtrl,
-                style: const TextStyle(color: Colors.white, fontSize: 13),
+                style: TextStyle(color: AppTheme.textPrimary, fontSize: 13),
                 decoration: InputDecoration(
                   labelText: 'Institution (e.g. Vanguard, Chase, Robinhood)',
-                  labelStyle: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                  labelStyle: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                   filled: true,
                   fillColor: AppTheme.surface,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
                 ),
               ),
               const SizedBox(height: 12),
               TextField(
                 controller: valueCtrl,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                style: const TextStyle(color: Colors.white, fontSize: 13),
+                style: TextStyle(color: AppTheme.textPrimary, fontSize: 13),
                 decoration: InputDecoration(
                   labelText: 'Current Valuation (\$ USD)',
-                  labelStyle: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                  labelStyle: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                   prefixText: '\$ ',
-                  prefixStyle: const TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.bold),
+                  prefixStyle: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.bold),
                   filled: true,
                   fillColor: AppTheme.surface,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
                 ),
               ),
               const SizedBox(height: 20),
@@ -179,7 +179,7 @@ class NetWorthDetailScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_circle_outline, color: AppTheme.emeraldAccent),
+            icon: Icon(Icons.add_circle_outline, color: AppTheme.emeraldAccent),
             tooltip: 'Add Asset',
             onPressed: () => _showAddAssetSheet(context, appState),
           ),
@@ -199,7 +199,7 @@ class NetWorthDetailScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Flexible(
+                      Flexible(
                         child: Text(
                           'TOTAL AGGREGATE NET WORTH',
                           overflow: TextOverflow.ellipsis,
@@ -221,7 +221,7 @@ class NetWorthDetailScreen extends StatelessWidget {
                         ),
                         child: Text(
                           '+${currency.format(appState.monthlyNetWorthChange)} (+${appState.monthlyNetWorthChangePercent.toStringAsFixed(1)}%)',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
                             color: AppTheme.emeraldAccent,
@@ -233,15 +233,15 @@ class NetWorthDetailScreen extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     currency.format(appState.netWorth),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w900,
-                      color: Colors.white,
+                      color: AppTheme.textPrimary,
                       letterSpacing: -0.5,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  const Divider(color: AppTheme.surfaceBorder, height: 1),
+                  Divider(color: AppTheme.surfaceBorder, height: 1),
                   const SizedBox(height: 14),
                   Row(
                     children: [
@@ -249,14 +249,14 @@ class NetWorthDetailScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'TOTAL ASSETS',
                               style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: AppTheme.textMuted),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               currency.format(appState.totalAssetValue),
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
                             ),
                           ],
                         ),
@@ -267,14 +267,14 @@ class NetWorthDetailScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'TOTAL LIABILITIES',
                               style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: AppTheme.textMuted),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               currency.format(appState.totalLiabilityValue),
-                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.crimsonAccent),
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.crimsonAccent),
                             ),
                           ],
                         ),
@@ -297,7 +297,7 @@ class NetWorthDetailScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'PORTFOLIO ASSET ALLOCATION',
                     style: TextStyle(
                       fontSize: 11,
@@ -323,13 +323,13 @@ class NetWorthDetailScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'VALUED ASSETS',
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.5, color: AppTheme.textSecondary),
                 ),
                 Text(
                   compact.format(appState.totalAssetValue),
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
                 ),
               ],
             ),
@@ -347,13 +347,13 @@ class NetWorthDetailScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
+                Text(
                   'ACTIVE LIABILITIES & DEBT',
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.5, color: AppTheme.textSecondary),
                 ),
                 Text(
                   compact.format(appState.totalLiabilityValue),
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.crimsonAccent),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.crimsonAccent),
                 ),
               ],
             ),
@@ -394,10 +394,10 @@ class NetWorthDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Row(
+            Row(
               children: [
                 Icon(Icons.workspace_premium, color: AppTheme.goldAccent, size: 20),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Text(
                   'AEGIS WEALTH INTELLIGENCE',
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: AppTheme.goldAccent, letterSpacing: 1),
@@ -405,7 +405,7 @@ class NetWorthDetailScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'Unlock Real-Time Zillow & KBB Sync, Liquidity Runway ratio, and Monte Carlo FI/RE projections with Gold Pass.',
               style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.4),
             ),
@@ -446,10 +446,10 @@ class NetWorthDetailScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Row(
+              Row(
                 children: [
                   Icon(Icons.shield_outlined, color: AppTheme.goldAccent, size: 18),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Text(
                     'WEALTH RUNWAY & HEALTH AUDIT',
                     style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, color: AppTheme.goldAccent, letterSpacing: 1),
@@ -464,7 +464,7 @@ class NetWorthDetailScreen extends StatelessWidget {
                 ),
                 child: Text(
                   appState.isBlackEdition ? 'BLACK EDITION' : 'GOLD PASS',
-                  style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: AppTheme.goldAccent),
+                  style: TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: AppTheme.goldAccent),
                 ),
               ),
             ],
@@ -507,11 +507,11 @@ class NetWorthDetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: AppTheme.textMuted)),
+          Text(label, style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: AppTheme.textMuted)),
           const SizedBox(height: 4),
           Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: accent)),
           const SizedBox(height: 2),
-          Text(subtext, style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
+          Text(subtext, style: TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
         ],
       ),
     );
@@ -543,10 +543,10 @@ class NetWorthDetailScreen extends StatelessWidget {
               children: [
                 Text(
                   '${vehicle.year} ${vehicle.make} ${vehicle.model}',
-                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
                 ),
                 const SizedBox(height: 2),
-                const Text(
+                Text(
                   'NHTSA Verified Garage Asset',
                   style: TextStyle(fontSize: 11, color: AppTheme.textMuted),
                 ),
@@ -555,7 +555,7 @@ class NetWorthDetailScreen extends StatelessWidget {
           ),
           Text(
             currency.format(vehicle.estimatedValue),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Colors.white),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
           ),
         ],
       ),
@@ -588,12 +588,12 @@ class NetWorthDetailScreen extends StatelessWidget {
               children: [
                 Text(
                   asset.name,
-                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white),
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   asset.institution,
-                  style: const TextStyle(fontSize: 11, color: AppTheme.textMuted),
+                  style: TextStyle(fontSize: 11, color: AppTheme.textMuted),
                 ),
               ],
             ),
@@ -603,12 +603,12 @@ class NetWorthDetailScreen extends StatelessWidget {
             children: [
               Text(
                 currency.format(asset.valuation),
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Colors.white),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
               ),
               const SizedBox(height: 2),
               Text(
                 '+${asset.monthlyChangePercent.toStringAsFixed(1)}%',
-                style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.emeraldAccent),
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.emeraldAccent),
               ),
             ],
           ),
@@ -647,9 +647,9 @@ class NetWorthDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white)),
+                Text(title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                 const SizedBox(height: 2),
-                Text(subtitle, style: const TextStyle(fontSize: 11, color: AppTheme.textMuted)),
+                Text(subtitle, style: TextStyle(fontSize: 11, color: AppTheme.textMuted)),
               ],
             ),
           ),
@@ -686,18 +686,18 @@ class NetWorthDetailScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(liability.name, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: Colors.white)),
+                Text(liability.name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                 const SizedBox(height: 2),
                 Text(
                   '${liability.lender} • ${liability.interestRateApr}% APR',
-                  style: const TextStyle(fontSize: 11, color: AppTheme.textMuted),
+                  style: TextStyle(fontSize: 11, color: AppTheme.textMuted),
                 ),
               ],
             ),
           ),
           Text(
             currency.format(liability.balance),
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.crimsonAccent),
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.crimsonAccent),
           ),
         ],
       ),

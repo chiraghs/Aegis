@@ -19,8 +19,8 @@ class _NotificationsInboxScreenState extends State<NotificationsInboxScreen> {
     );
     setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Simulated incoming OneSignal push notification!'),
+      SnackBar(
+        content: const Text('Simulated incoming OneSignal push notification!'),
         backgroundColor: AppTheme.emeraldAccent,
       ),
     );
@@ -44,7 +44,7 @@ class _NotificationsInboxScreenState extends State<NotificationsInboxScreen> {
                 OneSignalService.instance.markAllAsRead();
               });
             },
-            child: const Text('Mark Read', style: TextStyle(color: AppTheme.goldAccent, fontSize: 11, fontWeight: FontWeight.w800)),
+            child: Text('Mark Read', style: TextStyle(color: AppTheme.goldAccent, fontSize: 11, fontWeight: FontWeight.w800)),
           ),
         ],
       ),
@@ -86,7 +86,7 @@ class _NotificationsInboxScreenState extends State<NotificationsInboxScreen> {
                       const SizedBox(height: 2),
                       Text(
                         'App ID: ${OneSignalService.appId.substring(0, 8)}... • Automated 3-day radar push journeys enabled.',
-                        style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                        style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                       ),
                     ],
                   ),
@@ -170,21 +170,21 @@ class _NotificationsInboxScreenState extends State<NotificationsInboxScreen> {
                                     style: TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w900,
-                                      color: item.isRead ? Colors.white70 : Colors.white,
+                                      color: item.isRead ? AppTheme.textSecondary : AppTheme.textPrimary,
                                       letterSpacing: 0.8,
                                     ),
                                   ),
                                 ),
                                 Text(
                                   timeStr,
-                                  style: const TextStyle(fontSize: 10, color: AppTheme.textMuted),
+                                  style: TextStyle(fontSize: 10, color: AppTheme.textMuted),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 4),
                             Text(
                               item.body,
-                              style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.35),
+                              style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.35),
                             ),
                           ],
                         ),

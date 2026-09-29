@@ -57,7 +57,7 @@ class CoinCounter extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: AppTheme.goldGradient,
               ),
@@ -66,10 +66,10 @@ class CoinCounter extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               formatter.format(coins),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w800,
-                color: Colors.white,
+                color: AppTheme.textPrimary,
                 letterSpacing: 0.5,
               ),
             ),
@@ -82,7 +82,7 @@ class CoinCounter extends StatelessWidget {
               ),
               child: Text(
                 _getMultiplier(),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 10,
                   fontWeight: FontWeight.w900,
                   color: AppTheme.goldAccentLight,

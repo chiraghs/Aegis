@@ -26,14 +26,14 @@ class _GarageScreenState extends State<GarageScreen> {
           backgroundColor: AppTheme.surfaceCardElevated,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: const Text('GARAGE LIMIT REACHED', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
-          content: const Text(
+          content: Text(
             'Aegis Member (Free) tier includes 1 vehicle in the garage.\n\nUpgrade to Gold Pass or Black Edition with RevenueCat to unlock unlimited vehicle tracking, real-time telematics, and NHTSA safety recall alerts.',
             style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('Cancel', style: TextStyle(color: Colors.white60)),
+              child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -79,7 +79,7 @@ class _GarageScreenState extends State<GarageScreen> {
                 ],
               ),
               const SizedBox(height: 6),
-              const Text(
+              Text(
                 'Enter 17-digit VIN for instant NHTSA government specification lookup and valuation.',
                 style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
               ),
@@ -90,14 +90,14 @@ class _GarageScreenState extends State<GarageScreen> {
                 style: const TextStyle(fontSize: 14, letterSpacing: 2, fontWeight: FontWeight.w700),
                 decoration: InputDecoration(
                   hintText: 'e.g. 5YJ3E1EB8KF194821',
-                  hintStyle: const TextStyle(color: AppTheme.textMuted, letterSpacing: 1),
+                  hintStyle: TextStyle(color: AppTheme.textMuted, letterSpacing: 1),
                   filled: true,
                   fillColor: AppTheme.surfaceCardElevated,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: const BorderSide(color: AppTheme.surfaceBorder),
+                    borderSide: BorderSide(color: AppTheme.surfaceBorder),
                   ),
-                  prefixIcon: const Icon(Icons.directions_car, color: AppTheme.cyanAccent),
+                  prefixIcon: Icon(Icons.directions_car, color: AppTheme.cyanAccent),
                 ),
               ),
               const SizedBox(height: 12),
@@ -175,7 +175,7 @@ class _GarageScreenState extends State<GarageScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add, color: AppTheme.cyanAccent),
+            icon: Icon(Icons.add, color: AppTheme.cyanAccent),
             onPressed: () => _showAddVehicleModal(context, appState),
           ),
           const SizedBox(width: 8),
@@ -206,10 +206,10 @@ class _GarageScreenState extends State<GarageScreen> {
                       color: Colors.black38,
                       borderRadius: BorderRadius.circular(16),
                     ),
-                    child: const Icon(Icons.electric_car, size: 28, color: AppTheme.cyanAccent),
+                    child: Icon(Icons.electric_car, size: 28, color: AppTheme.cyanAccent),
                   ),
                   const SizedBox(width: 14),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -217,10 +217,10 @@ class _GarageScreenState extends State<GarageScreen> {
                           'AUTOMOTIVE TELEMATICS & EQUITY',
                           style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1, color: AppTheme.cyanAccent),
                         ),
-                        SizedBox(height: 2),
+                        const SizedBox(height: 2),
                         Text(
                           'NHTSA Recalls, Loan Equity & Service Tracker',
-                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Colors.white),
+                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
                         ),
                       ],
                     ),
@@ -258,12 +258,12 @@ class _GarageScreenState extends State<GarageScreen> {
                   children: [
                     Text(
                       '${car.year} ${car.make} ${car.model}'.toUpperCase(),
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.white),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       car.trim,
-                      style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                      style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                     ),
                   ],
                 ),
@@ -287,7 +287,7 @@ class _GarageScreenState extends State<GarageScreen> {
                 ),
               ],
             ),
-            const Divider(color: AppTheme.surfaceBorder, height: 24),
+            Divider(color: AppTheme.surfaceBorder, height: 24),
 
             // Metrics Grid
             Row(
@@ -296,9 +296,9 @@ class _GarageScreenState extends State<GarageScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('MARKET VALUE', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
+                      Text('MARKET VALUE', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
                       const SizedBox(height: 2),
-                      Text(currency.format(car.estimatedMarketValue), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.white)),
+                      Text(currency.format(car.estimatedMarketValue), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                     ],
                   ),
                 ),
@@ -306,11 +306,11 @@ class _GarageScreenState extends State<GarageScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('NET EQUITY', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
+                      Text('NET EQUITY', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
                       const SizedBox(height: 2),
                       Text(
                         currency.format(car.positiveEquity),
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
                       ),
                     ],
                   ),
@@ -319,11 +319,11 @@ class _GarageScreenState extends State<GarageScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(car.isElectric ? 'BATTERY' : 'FUEL', style: const TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
+                      Text(car.isElectric ? 'BATTERY' : 'FUEL', style: TextStyle(fontSize: 9, color: AppTheme.textSecondary, letterSpacing: 1)),
                       const SizedBox(height: 2),
                       Text(
                         '${(car.fuelOrBatteryLevel * 100).toInt()}%',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.cyanAccent),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.cyanAccent),
                       ),
                     ],
                   ),
@@ -338,11 +338,11 @@ class _GarageScreenState extends State<GarageScreen> {
               children: [
                 Text(
                   'VIN: ${car.vin.substring(0, 11)}••••••',
-                  style: const TextStyle(fontSize: 11, color: AppTheme.textMuted, letterSpacing: 1),
+                  style: TextStyle(fontSize: 11, color: AppTheme.textMuted, letterSpacing: 1),
                 ),
                 Text(
                   'Service Due: ${DateFormat('MMM yyyy').format(car.nextServiceDate)}',
-                  style: const TextStyle(fontSize: 11, color: AppTheme.goldAccentLight),
+                  style: TextStyle(fontSize: 11, color: AppTheme.goldAccentLight),
                 ),
               ],
             ),

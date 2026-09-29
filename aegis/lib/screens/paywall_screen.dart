@@ -42,7 +42,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 const SnackBar(content: Text('Purchases restored from RevenueCat store.')),
               );
             },
-            child: const Text(
+            child: Text(
               'Restore',
               style: TextStyle(color: AppTheme.textSecondary, fontSize: 12),
             ),
@@ -84,11 +84,11 @@ class _PaywallScreenState extends State<PaywallScreen> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.science_outlined, size: 14, color: AppTheme.goldAccent),
+                  Icon(Icons.science_outlined, size: 14, color: AppTheme.goldAccent),
                   const SizedBox(width: 6),
                   Text(
                     'LAYERS A/B ENGINE: ${LayersGrowthService.instance.activeVariant == PaywallExperimentVariant.variantA ? "VARIANT A" : "VARIANT B"}',
-                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AppTheme.goldAccentLight),
+                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AppTheme.goldAccentLight),
                   ),
                   const SizedBox(width: 8),
                   GestureDetector(
@@ -116,10 +116,10 @@ class _PaywallScreenState extends State<PaywallScreen> {
 
             Text(
               LayersGrowthService.instance.activeVariant.title,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
-                color: Colors.white,
+                color: AppTheme.textPrimary,
                 letterSpacing: -0.5,
               ),
               textAlign: TextAlign.center,
@@ -127,7 +127,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
             const SizedBox(height: 8),
             Text(
               LayersGrowthService.instance.activeVariant.subtitle,
-              style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
+              style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -157,7 +157,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: !_isAnnual ? Colors.white : AppTheme.textMuted,
+                            color: !_isAnnual ? AppTheme.textPrimary : AppTheme.textMuted,
                           ),
                         ),
                       ),
@@ -229,7 +229,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                               backgroundColor: AppTheme.surfaceCardElevated,
                               content: Text(
                                 '🎉 Welcome to ${_selectedTier == SubscriptionTier.black ? "Black Edition" : "Gold Pass"}! RevenueCat entitlement activated.',
-                                style: const TextStyle(color: AppTheme.goldAccentLight),
+                                style: TextStyle(color: AppTheme.goldAccentLight),
                               ),
                             ),
                           );
@@ -288,7 +288,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                     ],
                   ),
                   const SizedBox(height: 6),
-                  const Text(
+                  Text(
                     'Direct web billing powered by Stripe. Avoid app store markups and receive instant RevenueCat web entitlement sync.',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 11, color: AppTheme.textSecondary, height: 1.3),
@@ -326,7 +326,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
               ),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     '⚡ HACKATHON EVALUATION CONTROLS',
                     style: TextStyle(
                       fontSize: 10,
@@ -421,10 +421,10 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   children: [
                     Text(
                       details.title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
-                        color: Colors.white,
+                        color: AppTheme.textPrimary,
                       ),
                     ),
                     if (isBestValue) ...[
@@ -436,7 +436,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: AppTheme.goldAccent),
                         ),
-                        child: const Text(
+                        child: Text(
                           'MOST POPULAR',
                           style: TextStyle(
                             fontSize: 9,
@@ -453,7 +453,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
-                    color: isSelected ? AppTheme.goldAccent : Colors.white,
+                    color: isSelected ? AppTheme.goldAccent : AppTheme.textPrimary,
                   ),
                 ),
               ],
@@ -461,9 +461,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
             const SizedBox(height: 4),
             Text(
               details.subtitle,
-              style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+              style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
             ),
-            const Divider(color: AppTheme.surfaceBorder, height: 20),
+            Divider(color: AppTheme.surfaceBorder, height: 20),
             Column(
               children: details.perks.map((perk) {
                 return Padding(
@@ -479,7 +479,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       Expanded(
                         child: Text(
                           perk,
-                          style: const TextStyle(fontSize: 12, color: Colors.white70),
+                          style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                         ),
                       ),
                     ],

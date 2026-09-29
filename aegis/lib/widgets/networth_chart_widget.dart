@@ -40,7 +40,7 @@ class _NetWorthChartWidgetState extends State<NetWorthChartWidget> {
                 children: [
                   Text(
                     '${selected.monthLabel.toUpperCase()} TRAJECTORY',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 10,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 1.2,
@@ -50,7 +50,7 @@ class _NetWorthChartWidgetState extends State<NetWorthChartWidget> {
                   const SizedBox(height: 2),
                   Text(
                     currency.format(selected.netWorth),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
                       color: AppTheme.emeraldAccent,
@@ -65,10 +65,10 @@ class _NetWorthChartWidgetState extends State<NetWorthChartWidget> {
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: AppTheme.emeraldAccent.withValues(alpha: 0.3)),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(Icons.trending_up, size: 14, color: AppTheme.emeraldAccent),
-                    SizedBox(width: 4),
+                    const SizedBox(width: 4),
                     Text(
                       '6-MO TREND',
                       style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
@@ -213,7 +213,7 @@ class _NetWorthChartPainter extends CustomPainter {
         canvas.drawCircle(p, 9, haloPaint);
 
         final dotPaint = Paint()
-          ..color = Colors.white
+          ..color = AppTheme.surface
           ..style = PaintingStyle.fill;
         canvas.drawCircle(p, 5, dotPaint);
 

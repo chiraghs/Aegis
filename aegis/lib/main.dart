@@ -12,7 +12,7 @@ void main() async {
 
   // Dark navigation bar and status bar
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
+    SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarColor: AppTheme.background,
@@ -41,16 +41,23 @@ class AegisFintechApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context);
+
     return MaterialApp(
       navigatorKey: OneSignalService.navigatorKey,
       title: 'Aegis - US Asset & Liabilities Radar',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
+      themeMode: appState.themeMode,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
       builder: (context, child) {
         final screenWidth = MediaQuery.of(context).size.width;
         final maxWidth = screenWidth >= 720 ? 880.0 : 440.0;
+        final isDark = appState.isDarkMode;
+        final outerBg = isDark ? const Color(0xFF040406) : const Color(0xFFE9ECF0);
+
         return Scaffold(
-          backgroundColor: const Color(0xFF040406),
+          backgroundColor: outerBg,
           body: Center(
             child: Container(
               constraints: BoxConstraints(maxWidth: maxWidth),
@@ -62,9 +69,9 @@ class AegisFintechApp extends StatelessWidget {
                     width: 1,
                   ),
                 ),
-                boxShadow: const [
+                boxShadow: [
                   BoxShadow(
-                    color: Colors.black87,
+                    color: isDark ? Colors.black87 : const Color(0x18000000),
                     blurRadius: 40,
                     spreadRadius: 10,
                   ),

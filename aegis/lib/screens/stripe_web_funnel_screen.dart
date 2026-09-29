@@ -54,16 +54,16 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
         builder: (ctx) => AlertDialog(
           backgroundColor: AppTheme.surfaceCardElevated,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: const Row(
+          title: Row(
             children: [
               Icon(Icons.check_circle, color: AppTheme.emeraldAccent),
-              SizedBox(width: 8),
-              Text('STRIPE WEB FUNNEL COMPLETE', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900)),
+              const SizedBox(width: 8),
+              const Text('STRIPE WEB FUNNEL COMPLETE', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900)),
             ],
           ),
           content: Text(
             'Your direct web subscription via Stripe succeeded with a 20% discount. RevenueCat Web Entitlements are now live on your account!',
-            style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.4),
+            style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.4),
           ),
           actions: [
             TextButton(
@@ -71,7 +71,7 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                 Navigator.of(ctx).pop();
                 Navigator.of(context).pop();
               },
-              child: const Text('EXPLORE PERKS', style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.w800)),
+              child: Text('EXPLORE PERKS', style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.w800)),
             ),
           ],
         ),
@@ -168,11 +168,11 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('GOLD PASS', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.goldAccent)),
+                          Text('GOLD PASS', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.goldAccent)),
                           const SizedBox(height: 4),
-                          Text('\$3.99/mo', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white)),
+                          Text('\$3.99/mo', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
                           const SizedBox(height: 2),
-                          const Text('Save \$12/yr', style: TextStyle(fontSize: 10, color: AppTheme.emeraldAccent)),
+                          Text('Save \$12/yr', style: TextStyle(fontSize: 10, color: AppTheme.emeraldAccent)),
                         ],
                       ),
                     ),
@@ -195,11 +195,11 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('BLACK EDITION', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.goldAccent)),
+                          Text('BLACK EDITION', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.goldAccent)),
                           const SizedBox(height: 4),
-                          Text('\$7.99/mo', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.white)),
+                          Text('\$7.99/mo', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
                           const SizedBox(height: 2),
-                          const Text('Save \$24/yr', style: TextStyle(fontSize: 10, color: AppTheme.emeraldAccent)),
+                          Text('Save \$24/yr', style: TextStyle(fontSize: 10, color: AppTheme.emeraldAccent)),
                         ],
                       ),
                     ),
@@ -215,7 +215,7 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
@@ -225,7 +225,7 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                       Row(
                         children: [
                           Icon(Icons.lock, size: 12, color: AppTheme.emeraldAccent),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Text('End-to-End Encrypted', style: TextStyle(fontSize: 10, color: AppTheme.emeraldAccent)),
                         ],
                       ),
@@ -234,10 +234,10 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                   const SizedBox(height: 16),
                   TextField(
                     controller: _cardCtrl,
-                    style: const TextStyle(color: Colors.white, fontSize: 13),
+                    style: TextStyle(color: AppTheme.textPrimary, fontSize: 13),
                     decoration: InputDecoration(
                       labelText: 'Card Number',
-                      labelStyle: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                      labelStyle: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                       prefixIcon: const Icon(Icons.credit_card, size: 18, color: Color(0xFF635BFF)),
                       filled: true,
                       fillColor: AppTheme.surface,
@@ -250,10 +250,10 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                       Expanded(
                         child: TextField(
                           controller: _expCtrl,
-                          style: const TextStyle(color: Colors.white, fontSize: 13),
+                          style: TextStyle(color: AppTheme.textPrimary, fontSize: 13),
                           decoration: InputDecoration(
                             labelText: 'Expires (MM/YY)',
-                            labelStyle: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                            labelStyle: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                             filled: true,
                             fillColor: AppTheme.surface,
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -264,10 +264,10 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                       Expanded(
                         child: TextField(
                           controller: _cvcCtrl,
-                          style: const TextStyle(color: Colors.white, fontSize: 13),
+                          style: TextStyle(color: AppTheme.textPrimary, fontSize: 13),
                           decoration: InputDecoration(
                             labelText: 'CVC',
-                            labelStyle: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                            labelStyle: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                             filled: true,
                             fillColor: AppTheme.surface,
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -280,12 +280,12 @@ class _StripeWebFunnelScreenState extends State<StripeWebFunnelScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Web Funnel Rate:', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                      Text('Web Funnel Rate:', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
                       Row(
                         children: [
-                          Text('\$$appStorePrice', style: const TextStyle(fontSize: 12, color: AppTheme.textMuted, decoration: TextDecoration.lineThrough)),
+                          Text('\$$appStorePrice', style: TextStyle(fontSize: 12, color: AppTheme.textMuted, decoration: TextDecoration.lineThrough)),
                           const SizedBox(width: 6),
-                          Text('\$$webPrice/mo', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: AppTheme.emeraldAccent)),
+                          Text('\$$webPrice/mo', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: AppTheme.emeraldAccent)),
                         ],
                       ),
                     ],
