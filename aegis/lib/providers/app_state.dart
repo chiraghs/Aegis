@@ -147,115 +147,131 @@ class AppState extends ChangeNotifier {
     _fixedLiabilities = NetWorthService.getInitialLiabilities();
     _tier = RevenueCatService.instance.currentTier;
 
-    // CRED Garage Initial Data (Exact match with reference screenshots)
+    // Aegis US Garage Initial Seed Data
     _insurancePolicies = [
       InsurancePolicyModel(
         id: 'pol_1',
-        provider: 'Royal Sundaram',
+        provider: 'GEICO',
         providerLogo: 'shield',
-        policyNumber: 'RS-8829103-M',
-        coverageType: 'third party',
-        annualPremium: 1420.0,
+        policyNumber: 'GEICO-CA-882910',
+        coverageType: 'Comprehensive & Collision',
+        annualPremium: 1380.0,
         expiryDate: DateTime.now().add(const Duration(days: 210)),
         isActive: true,
-        vehicleId: 'car_honda_activa',
-        idv: 78000.0,
+        vehicleId: 'car_tesla_3',
+        idv: 42500.0,
       ),
       InsurancePolicyModel(
         id: 'pol_2',
-        provider: 'Digit Insurance',
-        providerLogo: 'digit',
-        policyNumber: 'DGT-449102-TP',
-        coverageType: 'comprehensive',
-        annualPremium: 2150.0,
+        provider: 'Progressive',
+        providerLogo: 'pgr',
+        policyNumber: 'PGR-992140-US',
+        coverageType: 'Full Coverage + Roadside',
+        annualPremium: 1540.0,
         expiryDate: DateTime.now().add(const Duration(days: 140)),
         isActive: true,
-        vehicleId: 'car_honda_activa',
-        idv: 82000.0,
+        vehicleId: 'car_tesla_3',
+        idv: 45000.0,
       ),
     ];
 
     _challans = [
       ChallanModel(
         id: 'chl_1',
-        violationType: 'Speed Camera Limit Exceeded (58 km/h in 40 zone)',
-        location: 'MG Road Junction, Bangalore',
+        violationType: 'SFMTA Red Light Camera (Market & 4th St, San Francisco, CA)',
+        location: 'Market & 4th St, San Francisco, CA',
         date: DateTime.now().subtract(const Duration(days: 3)),
-        amount: 1000.0,
+        amount: 150.0,
         isPaid: false,
-        citationNumber: 'KA-BLR-2026-9921',
+        citationNumber: 'SF-MTA-2026-9921',
         cameraImageUrl: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400',
       ),
       ChallanModel(
         id: 'chl_2',
-        violationType: 'Signal Stop Line Violation',
-        location: 'Indiranagar 100ft Rd',
-        date: DateTime.now().subtract(const Duration(days: 45)),
-        amount: 500.0,
+        violationType: 'NYC Dept of Finance Expired Parking Meter',
+        location: 'Broadway & 5th Ave, New York, NY',
+        date: DateTime.now().subtract(const Duration(days: 35)),
+        amount: 65.0,
         isPaid: true,
-        citationNumber: 'KA-BLR-2026-3810',
+        citationNumber: 'NYC-DOF-2026-3810',
       ),
     ];
 
     _vehicleSpends = [
       VehicleSpendItem(
         id: 'sp_1',
-        category: 'OTHERS',
-        merchant: 'vfm motors',
-        amount: 2201.0,
+        category: 'SERVICE',
+        merchant: 'Costco Wholesale Tire Center',
+        amount: 162.0,
         date: DateTime.now().subtract(const Duration(days: 2)),
-        icon: Icons.more_horiz,
+        icon: Icons.tire_repair,
       ),
       VehicleSpendItem(
         id: 'sp_2',
+        category: 'SERVICE',
+        merchant: 'Valvoline Instant Oil Change',
+        amount: 98.0,
+        date: DateTime.now().subtract(const Duration(days: 5)),
+        icon: Icons.build,
+      ),
+      VehicleSpendItem(
+        id: 'sp_3',
         category: 'FUEL',
-        merchant: 'cocokr puram; upi: 07401977001...',
-        amount: 200.0,
+        merchant: 'Chevron Station #4021 - SFO',
+        amount: 65.0,
         date: DateTime.now().subtract(const Duration(days: 9)),
         icon: Icons.local_gas_station,
       ),
       VehicleSpendItem(
-        id: 'sp_3',
-        category: 'OTHERS',
-        merchant: 'rao bike zon; upi: 83105261442...',
-        amount: 100.0,
-        date: DateTime.now().subtract(const Duration(days: 23)),
-        icon: Icons.more_horiz,
+        id: 'sp_4',
+        category: 'TOLLS',
+        merchant: 'FasTrak Bay Area Bridges & Express',
+        amount: 36.0,
+        date: DateTime.now().subtract(const Duration(days: 14)),
+        icon: Icons.toll,
+      ),
+      VehicleSpendItem(
+        id: 'sp_5',
+        category: 'EV CHARGING',
+        merchant: 'Tesla Supercharger - Baker, CA',
+        amount: 24.5,
+        date: DateTime.now().subtract(const Duration(days: 21)),
+        icon: Icons.ev_station,
       ),
     ];
 
     _gloveboxDocs = [
       GloveboxDocModel(
         id: 'doc_rc',
-        title: 'Registration Certificate (RC)',
-        docType: 'RC',
-        docNumber: 'KA13EW7454',
-        issuingAuthority: 'RTO Bangalore Central',
-        validUntil: DateTime(2035, 12, 31),
+        title: 'California DMV Electronic Vehicle Registration',
+        docType: 'Registration',
+        docNumber: 'CA-REG-2026-8812',
+        issuingAuthority: 'State of California DMV',
+        validUntil: DateTime(2027, 03, 15),
       ),
       GloveboxDocModel(
         id: 'doc_dl',
-        title: 'Driver\'s License',
-        docType: 'DL',
-        docNumber: 'DL-0420190019284',
-        issuingAuthority: 'Transport Dept. Gov of India',
-        validUntil: DateTime(2042, 06, 15),
+        title: 'State Driver License / Apple Wallet mDL',
+        docType: 'Driver License',
+        docNumber: 'CA-DL-D0829124',
+        issuingAuthority: 'Department of Motor Vehicles',
+        validUntil: DateTime(2031, 08, 22),
       ),
       GloveboxDocModel(
         id: 'doc_ins',
-        title: 'Motor Insurance Certificate',
+        title: 'GEICO Proof of Auto Insurance Card',
         docType: 'Insurance',
-        docNumber: 'RS-8829103-M',
-        issuingAuthority: 'Royal Sundaram General Insurance',
+        docNumber: 'GEICO-CA-882910',
+        issuingAuthority: 'GEICO Casualty Company',
         validUntil: DateTime.now().add(const Duration(days: 210)),
       ),
       GloveboxDocModel(
         id: 'doc_puc',
-        title: 'Pollution Under Control (PUCC)',
-        docType: 'PUCC',
-        docNumber: 'KA-PUC-2026-881',
-        issuingAuthority: 'National Green Tribunal Verified',
-        validUntil: DateTime(2026, 12, 31),
+        title: 'BAR Certified Smog & Safety Inspection',
+        docType: 'Smog / Inspection',
+        docNumber: 'BAR-SMOG-2026-PASS',
+        issuingAuthority: 'Bureau of Automotive Repair',
+        validUntil: DateTime(2027, 09, 30),
       ),
     ];
 
@@ -263,25 +279,25 @@ class AppState extends ChangeNotifier {
       RushHourRewardModel(
         id: 'rh_1',
         categoryTag: 'MEGA JACKPOT',
-        title: 'win Apple watch worth ₹89,900',
+        title: 'win Apple Watch Ultra 2 worth \$799',
         subtitle: 'Peak traffic rush hour unlocked',
-        valueText: '₹89,900',
+        valueText: '\$799',
         icon: Icons.watch,
       ),
       RushHourRewardModel(
         id: 'rh_2',
-        categoryTag: 'RECHARGE FASTAG',
-        title: 'win fastag payments worth ₹10,000',
-        subtitle: 'Instant toll gateway clearance',
-        valueText: '₹10,000',
+        categoryTag: 'RECHARGE TOLL PASS',
+        title: 'win FasTrak / E-ZPass toll credit worth \$250',
+        subtitle: 'Instant express toll gateway clearance',
+        valueText: '\$250',
         icon: Icons.toll,
       ),
       RushHourRewardModel(
         id: 'rh_3',
-        categoryTag: 'SHELL EV DROP',
-        title: 'Shell EV Turbo charging credit worth ₹2,500',
-        subtitle: '100% discount on DC fast chargers',
-        valueText: '₹2,500',
+        categoryTag: 'SUPERCHARGER DROP',
+        title: 'Tesla Supercharging / Electrify America credit worth \$100',
+        subtitle: '100% discount on DC fast chargers across US',
+        valueText: '\$100',
         icon: Icons.ev_station,
       ),
     ];
@@ -454,8 +470,8 @@ class AppState extends ChangeNotifier {
 
   void purchaseOrSellInsurancePolicy(InsurancePolicyModel policy, {bool isSelling = false}) {
     _insurancePolicies.insert(0, policy);
-    // Commission / Cashback reward
-    final bonus = isSelling ? 1500 : 750;
+    // Commission / Cashback reward in Aegis Coins ($200 selling commission / $100 buyer cashback)
+    final bonus = isSelling ? 2000 : 1000;
     _rewards = _rewards.copyWith(totalCoins: _rewards.totalCoins + bonus);
     notifyListeners();
   }

@@ -52,7 +52,7 @@ class GarageGloveboxCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Encrypted cloud synchronization with DigiLocker & National Transport Registry.',
+              'Encrypted cloud synchronization with State DMV, Apple Wallet mDL & Insurance Carriers.',
               style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
             ),
             const SizedBox(height: 16),
@@ -88,7 +88,7 @@ class GarageGloveboxCard extends StatelessWidget {
                                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary),
                               ),
                               const SizedBox(width: 6),
-                              if (doc.isDigiLockerVerified)
+                              if (doc.isStateVerified)
                                 const Icon(Icons.verified, size: 14, color: Color(0xFF10B981)),
                             ],
                           ),
@@ -112,7 +112,27 @@ class GarageGloveboxCard extends StatelessWidget {
                 ),
               );
             }),
-            const SizedBox(height: 12),
+
+            const SizedBox(height: 14),
+            SizedBox(
+              width: double.infinity,
+              height: 46,
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Connecting to State DMV / Apple Wallet API...')),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.goldAccent,
+                  foregroundColor: Colors.black,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                icon: const Icon(Icons.add_to_photos, size: 16),
+                label: const Text('Add Document / Connect State DMV', style: TextStyle(fontWeight: FontWeight.w900)),
+              ),
+            ),
           ],
         ),
       ),
@@ -120,18 +140,11 @@ class GarageGloveboxCard extends StatelessWidget {
   }
 
   IconData _getDocIcon(String docType) {
-    switch (docType) {
-      case 'RC':
-        return Icons.directions_car;
-      case 'DL':
-        return Icons.badge;
-      case 'Insurance':
-        return Icons.security;
-      case 'PUCC':
-        return Icons.eco;
-      default:
-        return Icons.description;
-    }
+    final t = docType.toLowerCase();
+    if (t.contains('registration') || t.contains('rc')) return Icons.directions_car;
+    if (t.contains('license') || t.contains('dl')) return Icons.badge_outlined;
+    if (t.contains('insurance')) return Icons.shield_outlined;
+    return Icons.eco;
   }
 
   @override
@@ -139,13 +152,13 @@ class GarageGloveboxCard extends StatelessWidget {
     final isDark = appState.isDarkMode;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section Header: "YOUR GLOVEBOX"
+          // Section header
           Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
             child: Text(
               'YOUR GLOVEBOX',
               style: TextStyle(
@@ -157,7 +170,7 @@ class GarageGloveboxCard extends StatelessWidget {
             ),
           ),
 
-          // Glovebox Card (Exact match with reference image Link Docs.jpeg)
+          // Glovebox Card
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -173,7 +186,6 @@ class GarageGloveboxCard extends StatelessWidget {
               ],
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,11 +196,11 @@ class GarageGloveboxCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'RC, DL, policy docs:\nstore them all in a\ndigital glovebox',
+                            'registration, license, insurance:\nstore them all in a\ndigital glovebox',
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.w800,
-                              height: 1.3,
+                              height: 1.35,
                               color: AppTheme.textPrimary,
                             ),
                           ),
@@ -208,10 +220,10 @@ class GarageGloveboxCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 14),
 
-                    // Document stack graphic with DigiLocker badge
+                    // Document stack graphic
                     Container(
-                      width: 90,
-                      height: 80,
+                      width: 86,
+                      height: 76,
                       decoration: BoxDecoration(
                         color: isDark ? AppTheme.surfaceCardElevated : const Color(0xFFF1F5F9),
                         borderRadius: BorderRadius.circular(16),
@@ -219,17 +231,17 @@ class GarageGloveboxCard extends StatelessWidget {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          Icon(Icons.folder_copy, size: 48, color: AppTheme.textSecondary.withValues(alpha: 0.7)),
+                          Icon(Icons.folder_copy, size: 44, color: AppTheme.textSecondary.withValues(alpha: 0.7)),
                           Positioned(
                             bottom: 8,
-                            right: 12,
+                            right: 10,
                             child: Container(
                               padding: const EdgeInsets.all(3),
                               decoration: const BoxDecoration(
                                 color: Color(0xFF7C3AED),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.priority_high, color: Colors.white, size: 12),
+                              child: const Icon(Icons.priority_high, color: Colors.white, size: 11),
                             ),
                           ),
                         ],
@@ -239,7 +251,7 @@ class GarageGloveboxCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
 
-                // Link to DigiLocker Button
+                // Sync with DMV & Apple Wallet Button
                 SizedBox(
                   width: double.infinity,
                   height: 46,
@@ -256,7 +268,7 @@ class GarageGloveboxCard extends StatelessWidget {
                         Icon(Icons.cloud_done_outlined, size: 16, color: Colors.white),
                         SizedBox(width: 8),
                         Text(
-                          'Link to digilocker  →',
+                          'Sync with DMV & Apple Wallet  →',
                           style: TextStyle(fontWeight: FontWeight.w800, fontSize: 13, letterSpacing: 0.5),
                         ),
                       ],

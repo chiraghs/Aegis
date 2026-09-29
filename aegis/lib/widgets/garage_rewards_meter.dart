@@ -56,7 +56,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Shell EV Free 22kW Turbo Charging Session',
+                'Tesla Supercharger / Electrify America Free 50kWh Session',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
@@ -65,7 +65,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
               ),
               const SizedBox(height: 8),
               Text(
-                'Congratulations on crossing ₹2,500 spends in September! Your voucher code has been added to your vault.',
+                'Congratulations on crossing \$250 spends in September! Your voucher code has been added to your vault.',
                 style: TextStyle(
                   fontSize: 13,
                   color: AppTheme.textSecondary,
@@ -88,7 +88,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      'SHELL-SEP-FREE-26',
+                      'TESLA-USA-SEP-FREE',
                       style: TextStyle(
                         fontFamily: 'Courier',
                         fontSize: 16,
@@ -160,7 +160,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Earn 5% instant cashback in Aegis Coins on verified fuel, service, and toll receipts.',
+                  'Earn 5% instant cashback in Aegis Coins on verified fuel, EV charging, service, and toll receipts.',
                   style: TextStyle(fontSize: 13, color: AppTheme.textSecondary),
                 ),
                 const SizedBox(height: 20),
@@ -168,7 +168,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                 // Category chips
                 Wrap(
                   spacing: 8,
-                  children: ['FUEL', 'SERVICE', 'TOLLS', 'OTHERS'].map((cat) {
+                  children: ['FUEL', 'EV CHARGE', 'SERVICE', 'TOLLS', 'OTHERS'].map((cat) {
                     final isSel = category == cat;
                     return ChoiceChip(
                       label: Text(
@@ -195,7 +195,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                   controller: merchantCtrl,
                   decoration: InputDecoration(
                     labelText: 'Merchant / Station Name',
-                    hintText: 'e.g. Shell EV / HPCL / VFM Honda',
+                    hintText: 'e.g. Chevron / Tesla Supercharger / Valvoline',
                     filled: true,
                     fillColor: isDark ? const Color(0xFF222634) : const Color(0xFFF4F6FA),
                     border: OutlineInputBorder(
@@ -209,11 +209,11 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                 // Amount
                 TextField(
                   controller: amountCtrl,
-                  keyboardType: TextInputType.number,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
                   decoration: InputDecoration(
-                    labelText: 'Amount (₹)',
-                    hintText: 'e.g. 500',
-                    prefixText: '₹ ',
+                    labelText: 'Amount (\$)',
+                    hintText: 'e.g. 45.00',
+                    prefixText: '\$ ',
                     filled: true,
                     fillColor: isDark ? const Color(0xFF222634) : const Color(0xFFF4F6FA),
                     border: OutlineInputBorder(
@@ -241,9 +241,13 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                         date: DateTime.now(),
                         icon: category == 'FUEL'
                             ? Icons.local_gas_station
-                            : category == 'SERVICE'
-                                ? Icons.build
-                                : Icons.more_horiz,
+                            : category == 'EV CHARGE'
+                                ? Icons.ev_station
+                                : category == 'SERVICE'
+                                    ? Icons.build
+                                    : category == 'TOLLS'
+                                        ? Icons.toll
+                                        : Icons.more_horiz,
                       );
 
                       widget.appState.vehicleSpends.insert(0, newSpend);
@@ -252,7 +256,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Logged ₹$amt spend! Earned ${(amt * 0.05).toInt()} Aegis Coins.'),
+                          content: Text('Logged \$${amt.toStringAsFixed(2)} spend! Earned ${(amt * 5).toInt()} Aegis Coins.'),
                           backgroundColor: AppTheme.accentEmerald,
                         ),
                       );
@@ -283,10 +287,10 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
     final isDark = widget.appState.isDarkMode;
     final totalSpend = widget.appState.totalSeptemberSpend;
     final spends = widget.appState.vehicleSpends;
-    final currencyFormatter = NumberFormat.currency(symbol: '₹', decimalDigits: 0);
+    final currencyFormatter = NumberFormat.simpleCurrency(decimalDigits: 2);
 
-    // Milestones for the September Rewards Meter
-    const double targetSpend = 5000.0;
+    // Milestones for the September Rewards Meter in USD
+    const double targetSpend = 500.0;
     final progress = (totalSpend / targetSpend).clamp(0.0, 1.0);
 
     return Padding(
@@ -353,7 +357,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                       ),
                     ),
                     Text(
-                      'GOAL: ₹5,000',
+                      'GOAL: \$500',
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w800,
@@ -436,10 +440,10 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildMilestonePill('₹500', isReached: totalSpend >= 500, isDark: isDark),
-                    _buildMilestonePill('₹1,500', isReached: totalSpend >= 1500, isDark: isDark),
-                    _buildMilestonePill('₹2,500', isReached: totalSpend >= 2500, isDark: isDark),
-                    _buildMilestonePill('₹5,000', isReached: totalSpend >= 5000, isDark: isDark),
+                    _buildMilestonePill('\$50', isReached: totalSpend >= 50, isDark: isDark),
+                    _buildMilestonePill('\$150', isReached: totalSpend >= 150, isDark: isDark),
+                    _buildMilestonePill('\$250', isReached: totalSpend >= 250, isDark: isDark),
+                    _buildMilestonePill('\$500', isReached: totalSpend >= 500, isDark: isDark),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -483,7 +487,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                             ),
                           ),
                           Text(
-                            'UNLOCKED AT ₹2,500',
+                            'UNLOCKED AT \$250',
                             style: TextStyle(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
@@ -494,7 +498,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Shell EV Free 22kW Turbo Charging Session',
+                        'Tesla Supercharger / Electrify America Free 50kWh Session',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
@@ -503,7 +507,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Valid at all 450+ Shell EV fast chargers across India.',
+                        'Valid at all 2,000+ Tesla Superchargers and Electrify America fast stations across the US.',
                         style: TextStyle(
                           fontSize: 12,
                           color: AppTheme.textSecondary,
@@ -548,7 +552,7 @@ class _GarageRewardsMeterState extends State<GarageRewardsMeter> {
                           const SizedBox(width: 6),
                           Expanded(
                             child: Text(
-                              'NEXT REWARD: ₹1,000 Fuel voucher at ₹5,000 spend',
+                              'NEXT REWARD: \$50 Chevron fuel voucher at \$500 spend',
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w700,

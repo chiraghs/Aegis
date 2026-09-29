@@ -64,11 +64,11 @@ class GarageInsuranceHub extends StatelessWidget {
                 children: [
                   _buildDetailRow('Policy Number', policy.policyNumber),
                   const Divider(height: 16),
-                  _buildDetailRow('Insured Declared Value (IDV)', '₹${policy.idv.toInt()}'),
+                  _buildDetailRow('Stated Insured Value', '\$${policy.idv.toInt()}'),
                   const Divider(height: 16),
-                  _buildDetailRow('Annual Premium', '₹${policy.annualPremium.toInt()}'),
+                  _buildDetailRow('Annual Premium', '\$${policy.annualPremium.toInt()} (\$${(policy.annualPremium / 12).toStringAsFixed(0)}/mo)'),
                   const Divider(height: 16),
-                  _buildDetailRow('Valid Until', '${policy.expiryDate.day}/${policy.expiryDate.month}/${policy.expiryDate.year}'),
+                  _buildDetailRow('Valid Until', '${policy.expiryDate.month}/${policy.expiryDate.day}/${policy.expiryDate.year}'),
                 ],
               ),
             ),
@@ -79,7 +79,7 @@ class GarageInsuranceHub extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(ctx).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Downloading digital insurance certificate PDF...')),
+                    const SnackBar(content: Text('Downloading digital proof of insurance card (PDF)...')),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -89,7 +89,7 @@ class GarageInsuranceHub extends StatelessWidget {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
                 icon: const Icon(Icons.download, size: 16),
-                label: const Text('Download Policy PDF', style: TextStyle(fontWeight: FontWeight.w800)),
+                label: const Text('Download Insurance ID Card (PDF)', style: TextStyle(fontWeight: FontWeight.w800)),
               ),
             ),
           ],
@@ -99,9 +99,9 @@ class GarageInsuranceHub extends StatelessWidget {
   }
 
   void _showSellOrBuyInsuranceMarketplace(BuildContext context) {
-    String selectedCoverage = 'Comprehensive';
-    String selectedProvider = 'Royal Sundaram';
-    double selectedPrice = 1850.0;
+    String selectedCoverage = 'Comprehensive & Collision';
+    String selectedProvider = 'GEICO Auto';
+    double selectedPrice = 1380.0;
     bool isAgentSellingMode = true;
 
     showModalBottomSheet(
@@ -133,7 +133,7 @@ class GarageInsuranceHub extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       const Text(
-                        'INSURANCE MARKETPLACE',
+                        'US AUTO INSURANCE HUB',
                         style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.2),
                       ),
                     ],
@@ -146,7 +146,7 @@ class GarageInsuranceHub extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Compare certified insurance quotes for ${appState.activeVehicle.year} ${appState.activeVehicle.make} ${appState.activeVehicle.model}.',
+                'Compare certified US carrier quotes for ${appState.activeVehicle.year} ${appState.activeVehicle.make} ${appState.activeVehicle.model}.',
                 style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
               ),
               const SizedBox(height: 16),
@@ -171,7 +171,7 @@ class GarageInsuranceHub extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              'Sell Insurance (Earn ₹1,500)',
+                              'Sell Insurance (Earn \$200)',
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w800,
@@ -193,7 +193,7 @@ class GarageInsuranceHub extends StatelessWidget {
                           ),
                           child: Center(
                             child: Text(
-                              'Buy for Myself',
+                              'Buy for Myself (\$100 Back)',
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w800,
@@ -215,53 +215,59 @@ class GarageInsuranceHub extends StatelessWidget {
                 style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, letterSpacing: 1),
               ),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  _buildCoverageChip('Comprehensive', selectedCoverage, (val) {
-                    setModalState(() {
-                      selectedCoverage = val;
-                      selectedPrice = 1850.0;
-                    });
-                  }),
-                  const SizedBox(width: 8),
-                  _buildCoverageChip('Zero Dep', selectedCoverage, (val) {
-                    setModalState(() {
-                      selectedCoverage = val;
-                      selectedPrice = 2450.0;
-                    });
-                  }),
-                  const SizedBox(width: 8),
-                  _buildCoverageChip('Third Party', selectedCoverage, (val) {
-                    setModalState(() {
-                      selectedCoverage = val;
-                      selectedPrice = 850.0;
-                    });
-                  }),
-                ],
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildCoverageChip('Comprehensive & Collision', selectedCoverage, (val) {
+                      setModalState(() {
+                        selectedCoverage = val;
+                        selectedPrice = 1380.0;
+                      });
+                    }),
+                    const SizedBox(width: 8),
+                    _buildCoverageChip('Full Coverage + Roadside', selectedCoverage, (val) {
+                      setModalState(() {
+                        selectedCoverage = val;
+                        selectedPrice = 1680.0;
+                      });
+                    }),
+                    const SizedBox(width: 8),
+                    _buildCoverageChip('State Liability (100k/300k)', selectedCoverage, (val) {
+                      setModalState(() {
+                        selectedCoverage = val;
+                        selectedPrice = 720.0;
+                      });
+                    }),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
 
               // Insurance Provider Quote Cards
               _buildQuoteOption(
-                'Royal Sundaram General',
-                'Zero-paperwork cashless repair at 4,800+ authorized workshops',
-                '₹${selectedPrice.toInt()}',
-                selectedProvider == 'Royal Sundaram',
-                () => setModalState(() => selectedProvider = 'Royal Sundaram'),
+                'GEICO Auto',
+                '15 minutes could save you 15% or more. Cashless repair at 3,200+ Auto Repair Xpress shops.',
+                '\$${selectedPrice.toInt()}/yr',
+                '\$${(selectedPrice / 12).toStringAsFixed(0)}/mo',
+                selectedProvider == 'GEICO Auto',
+                () => setModalState(() => selectedProvider = 'GEICO Auto'),
               ),
               _buildQuoteOption(
-                'Digit Insurance',
-                'Instant self-inspection via smartphone with 98.7% claim settlement',
-                '₹${(selectedPrice * 0.95).toInt()}',
-                selectedProvider == 'Digit Insurance',
-                () => setModalState(() => selectedProvider = 'Digit Insurance'),
+                'Progressive Premier',
+                'Snapshot telematics discount with OEM replacement parts guarantee and 24/7 roadside assist.',
+                '\$${(selectedPrice * 1.08).toInt()}/yr',
+                '\$${((selectedPrice * 1.08) / 12).toStringAsFixed(0)}/mo',
+                selectedProvider == 'Progressive Premier',
+                () => setModalState(() => selectedProvider = 'Progressive Premier'),
               ),
               _buildQuoteOption(
-                'Acko Drive',
-                'Direct-to-consumer digital policy with zero broker commission',
-                '₹${(selectedPrice * 0.90).toInt()}',
-                selectedProvider == 'Acko Drive',
-                () => setModalState(() => selectedProvider = 'Acko Drive'),
+                'State Farm Drive Safe',
+                'Ranked #1 for claims satisfaction by J.D. Power with safe-driving beacon discount.',
+                '\$${(selectedPrice * 0.92).toInt()}/yr',
+                '\$${((selectedPrice * 0.92) / 12).toStringAsFixed(0)}/mo',
+                selectedProvider == 'State Farm Drive Safe',
+                () => setModalState(() => selectedProvider = 'State Farm Drive Safe'),
               ),
               const SizedBox(height: 16),
 
@@ -275,8 +281,8 @@ class GarageInsuranceHub extends StatelessWidget {
                       id: 'pol_${DateTime.now().millisecondsSinceEpoch}',
                       provider: selectedProvider,
                       providerLogo: 'shield',
-                      policyNumber: 'POL-${DateTime.now().millisecondsSinceEpoch.toString().substring(6)}',
-                      coverageType: selectedCoverage.toLowerCase(),
+                      policyNumber: 'US-${DateTime.now().millisecondsSinceEpoch.toString().substring(6)}',
+                      coverageType: selectedCoverage,
                       annualPremium: selectedPrice,
                       expiryDate: DateTime.now().add(const Duration(days: 365)),
                       isActive: true,
@@ -288,8 +294,8 @@ class GarageInsuranceHub extends StatelessWidget {
                     Navigator.of(ctx).pop();
 
                     final rewardMsg = isAgentSellingMode
-                        ? 'Policy sold! ₹1,500 commission + 1,500 Aegis Coins credited to your Vault!'
-                        : 'New policy issued! ₹750 cashback + 750 Aegis Coins minted!';
+                        ? 'Policy sold! \$200 commission + 2,000 Aegis Coins credited to your Vault!'
+                        : 'New policy issued! \$100 cashback + 1,000 Aegis Coins minted!';
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(rewardMsg)),
@@ -301,7 +307,7 @@ class GarageInsuranceHub extends StatelessWidget {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                   child: Text(
-                    isAgentSellingMode ? 'SELL POLICY & EARN ₹1,500 COMMISSION' : 'ISSUE POLICY NOW',
+                    isAgentSellingMode ? 'SELL POLICY & EARN \$200 COMMISSION' : 'BIND POLICY & GET \$100 BACK',
                     style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 12),
                   ),
                 ),
@@ -338,7 +344,7 @@ class GarageInsuranceHub extends StatelessWidget {
     );
   }
 
-  Widget _buildQuoteOption(String name, String perk, String price, bool isSelected, VoidCallback onTap) {
+  Widget _buildQuoteOption(String name, String perk, String priceYear, String priceMo, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -353,22 +359,44 @@ class GarageInsuranceHub extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            _buildProviderLogo(name),
+            const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(name, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                  Text(
+                    name,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w800,
+                      color: AppTheme.textPrimary,
+                    ),
+                  ),
                   const SizedBox(height: 2),
-                  Text(perk, style: TextStyle(fontSize: 10, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(
+                    perk,
+                    style: TextStyle(fontSize: 10, color: AppTheme.textSecondary),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
             ),
             const SizedBox(width: 8),
-            Text(
-              price,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: AppTheme.textPrimary),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  priceMo,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, color: AppTheme.goldAccent),
+                ),
+                Text(
+                  priceYear,
+                  style: TextStyle(fontSize: 10, color: AppTheme.textMuted),
+                ),
+              ],
             ),
           ],
         ),
@@ -381,35 +409,50 @@ class GarageInsuranceHub extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
-        Text(value, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+        Text(
+          value,
+          style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+        ),
       ],
     );
   }
 
   Widget _buildProviderLogo(String provider) {
-    final lower = provider.toLowerCase();
-    if (lower.contains('royal')) {
-      return Container(
-        width: 38,
-        height: 38,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: const Color(0xFF003366),
-          border: Border.all(color: Colors.amberAccent),
-        ),
-        child: const Icon(Icons.shield, color: Colors.amberAccent, size: 20),
-      );
+    final p = provider.toLowerCase();
+    Color bgColor = const Color(0xFF1E3A8A);
+    String initials = 'US';
+
+    if (p.contains('geico')) {
+      bgColor = const Color(0xFF15803D);
+      initials = 'G';
+    } else if (p.contains('progressive')) {
+      bgColor = const Color(0xFF0284C7);
+      initials = 'PGR';
+    } else if (p.contains('state farm')) {
+      bgColor = const Color(0xFFDC2626);
+      initials = 'SF';
+    } else if (p.contains('allstate')) {
+      bgColor = const Color(0xFF1D4ED8);
+      initials = 'ALL';
     }
+
     return Container(
-      width: 38,
-      height: 38,
+      width: 36,
+      height: 36,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.black,
-        border: Border.all(color: Colors.white24),
+        color: bgColor,
+        borderRadius: BorderRadius.circular(10),
       ),
-      child: const Center(
-        child: Text('digit', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900)),
+      child: Center(
+        child: Text(
+          initials,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 11,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
     );
   }
@@ -500,10 +543,12 @@ class GarageInsuranceHub extends StatelessWidget {
                             Text(
                               '${policy.coverageType} • active',
                               style: TextStyle(
-                                fontSize: 11,
+                                fontSize: 10,
                                 color: AppTheme.emeraldAccent,
                                 fontWeight: FontWeight.w600,
                               ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ],
                         ),
@@ -527,7 +572,7 @@ class GarageInsuranceHub extends StatelessWidget {
               return GestureDetector(
                 onTap: () => _showSellOrBuyInsuranceMarketplace(context),
                 child: Container(
-                  width: 180,
+                  width: 190,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: AppTheme.goldAccent.withValues(alpha: 0.1),
@@ -540,7 +585,7 @@ class GarageInsuranceHub extends StatelessWidget {
                       Icon(Icons.add_shopping_cart, color: AppTheme.goldAccent, size: 18),
                       const SizedBox(width: 8),
                       Text(
-                        'Sell & Earn ₹1,500',
+                        'Sell & Earn \$200',
                         style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.goldAccent),
                       ),
                     ],

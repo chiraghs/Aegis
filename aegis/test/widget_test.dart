@@ -99,36 +99,36 @@ void main() {
     expect(find.byTooltip('Switch to Light Mode'), findsOneWidget);
   });
 
-  test('Garage AppState supports vehicle selection, challan clearing with 2X coins, and insurance selling', () {
+  test('Garage AppState supports vehicle selection, citation clearing with 2X coins, and US insurance selling', () {
     final state = AppState();
 
-    // Verify initial vehicles
+    // Verify initial US vehicles
     expect(state.vehicles.length, greaterThanOrEqualTo(3));
-    expect(state.activeVehicle.model, equals('Activa 6G'));
-    expect(state.activeVehicle.licensePlate, equals('KA13EW7454'));
+    expect(state.activeVehicle.model, equals('Model 3'));
+    expect(state.activeVehicle.licensePlate, equals('CA • 8TSL921'));
 
     // Switch vehicle
     state.selectGarageVehicle(1);
-    expect(state.activeVehicle.model, equals('Model 3'));
-    expect(state.activeVehicle.licensePlate, equals('CA 8TSL921'));
+    expect(state.activeVehicle.model, equals('Taycan 4S'));
+    expect(state.activeVehicle.licensePlate, equals('NY • TAY-442'));
 
-    // Check unpaid challans
+    // Check unpaid citations
     expect(state.unpaidChallansCount, equals(1));
     final initialCoins = state.rewards.totalCoins;
 
-    // Settle challan
+    // Settle citation ($150 SFMTA red light ticket)
     final paid = state.payChallan('chl_1');
     expect(paid, isTrue);
     expect(state.unpaidChallansCount, equals(0));
-    // 1000 challan * 2 = 2000 coins awarded
-    expect(state.rewards.totalCoins, equals(initialCoins + 2000));
+    // $150 * 2 = 300 coins awarded
+    expect(state.rewards.totalCoins, equals(initialCoins + 300));
 
-    // Selling insurance policy awards ₹1,500 commission in coins
+    // Selling insurance policy awards $200 commission (2,000 Aegis Coins)
     final preInsCoins = state.rewards.totalCoins;
     state.purchaseOrSellInsurancePolicy(state.insurancePolicies.first, isSelling: true);
-    expect(state.rewards.totalCoins, equals(preInsCoins + 1500));
+    expect(state.rewards.totalCoins, equals(preInsCoins + 2000));
 
-    // Claim rush hour reward
+    // Claim rush hour reward (Apple Watch Ultra 2)
     final claimed = state.claimRushHourReward('rh_1');
     expect(claimed, isTrue);
     expect(state.rushHourRewards.first.isClaimed, isTrue);

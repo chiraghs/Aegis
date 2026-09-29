@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-/// Represents an active or quotable automotive insurance policy
+/// Represents an active or quotable US automotive insurance policy
 class InsurancePolicyModel {
   final String id;
-  final String provider;
+  final String provider; // 'GEICO', 'Progressive', 'State Farm', 'Allstate'
   final String providerLogo;
   final String policyNumber;
-  final String coverageType; // 'Comprehensive', 'Zero Depreciation', 'Third Party'
+  final String coverageType; // 'Comprehensive & Collision', 'Full Coverage', 'Liability (100k/300k/100k)'
   final double annualPremium;
   final DateTime expiryDate;
   final bool isActive;
   final String vehicleId;
-  final double idv; // Insured Declared Value
+  final double idv; // Insured Value / Replacement Value
 
   const InsurancePolicyModel({
     required this.id,
@@ -53,7 +53,7 @@ class InsurancePolicyModel {
   }
 }
 
-/// Represents an automotive traffic violation / citation
+/// Represents a US traffic violation / municipal or police citation
 class ChallanModel {
   final String id;
   final String violationType;
@@ -98,10 +98,12 @@ class ChallanModel {
   }
 }
 
-/// Categorized automotive expenditure item
+typedef TrafficCitationModel = ChallanModel;
+
+/// Categorized automotive expenditure item in USD
 class VehicleSpendItem {
   final String id;
-  final String category; // 'Fuel', 'Service', 'Tolls', 'Others'
+  final String category; // 'Fuel', 'EV Charging', 'Service', 'Tolls', 'Others'
   final String merchant;
   final double amount;
   final DateTime date;
@@ -117,15 +119,15 @@ class VehicleSpendItem {
   });
 }
 
-/// Verified document in the digital glovebox
+/// Verified document in the US digital glovebox (DMV, Apple Wallet, Carrier)
 class GloveboxDocModel {
   final String id;
   final String title;
-  final String docType; // 'RC', 'DL', 'Insurance', 'PUCC'
+  final String docType; // 'Registration', 'Driver License', 'Insurance', 'Smog / Inspection'
   final String docNumber;
   final String issuingAuthority;
   final DateTime validUntil;
-  final bool isDigiLockerVerified;
+  final bool isStateVerified;
 
   const GloveboxDocModel({
     required this.id,
@@ -134,14 +136,16 @@ class GloveboxDocModel {
     required this.docNumber,
     required this.issuingAuthority,
     required this.validUntil,
-    this.isDigiLockerVerified = true,
+    this.isStateVerified = true,
   });
+
+  bool get isDigiLockerVerified => isStateVerified;
 }
 
 /// Peak traffic hour drop / reward
 class RushHourRewardModel {
   final String id;
-  final String categoryTag; // 'MEGA JACKPOT', 'RECHARGE FASTAG', 'SHELL DROP'
+  final String categoryTag; // 'MEGA JACKPOT', 'TOLL PASS', 'SUPERCHARGER DROP'
   final String title;
   final String subtitle;
   final String valueText;

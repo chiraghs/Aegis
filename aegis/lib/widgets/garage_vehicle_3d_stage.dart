@@ -278,58 +278,62 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
   }
 
   Widget _buildLicensePlateBadge(String plateNumber, bool isDark) {
+    // Parse US state prefix if present, e.g. "CA • 8TSL921" or "NY • TAY-442"
+    String stateName = 'CALIFORNIA';
+    String displayNumber = plateNumber;
+
+    if (plateNumber.contains('•')) {
+      final parts = plateNumber.split('•');
+      final code = parts[0].trim().toUpperCase();
+      displayNumber = parts[1].trim();
+      stateName = switch (code) {
+        'CA' => 'CALIFORNIA',
+        'NY' => 'NEW YORK',
+        'TX' => 'TEXAS',
+        'WA' => 'WASHINGTON',
+        'FL' => 'FLORIDA',
+        _ => code,
+      };
+    }
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(color: Colors.black, width: 1.5),
+        color: const Color(0xFFFBFBFD),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(color: const Color(0xFF1E293B), width: 1.5),
         boxShadow: const [
           BoxShadow(
             color: Colors.black12,
-            blurRadius: 4,
+            blurRadius: 6,
             offset: Offset(0, 2),
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Blue IND flag strip
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-            decoration: BoxDecoration(
-              color: const Color(0xFF003399),
-              borderRadius: BorderRadius.circular(3),
-            ),
-            child: const Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.circle, color: Color(0xFFFF9933), size: 4),
-                Text(
-                  'IND',
-                  style: TextStyle(
-                    fontSize: 8,
-                    fontWeight: FontWeight.w900,
-                    color: Colors.white,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          // Embossed Plate text
+          // US State Header
           Text(
-            plateNumber.toUpperCase(),
+            stateName,
             style: const TextStyle(
-              fontSize: 14,
+              fontSize: 8,
               fontWeight: FontWeight.w900,
               letterSpacing: 2.0,
-              color: Colors.black,
+              color: Color(0xFFB91C1C), // Classic US state red header
             ),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(height: 2),
+          // Embossed Plate Digits
+          Text(
+            displayNumber.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 2.2,
+              color: Color(0xFF0F172A),
+            ),
+          ),
         ],
       ),
     );
@@ -492,7 +496,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${(vehicle.fuelOrBatteryLevel * 100).toInt()}% • ${vehicle.mileage} KM',
+                            '${(vehicle.fuelOrBatteryLevel * 100).toInt()}% • ${vehicle.mileage} MI',
                             style: const TextStyle(
                               fontSize: 9,
                               fontWeight: FontWeight.w800,

@@ -102,27 +102,11 @@ class NhtsaVehicleService {
     );
   }
 
-  /// Default demo garage vehicles
+  /// Default demo garage vehicles (US models)
   static List<VehicleModel> getDemoGarage() {
     return [
       VehicleModel(
-        id: 'car_honda_activa',
-        vin: 'ME4JF508XKW000000',
-        make: 'Honda',
-        model: 'Activa 6G',
-        year: 2024,
-        trim: 'Premium Edition',
-        mileage: 4820,
-        fuelOrBatteryLevel: 0.75,
-        isElectric: false,
-        estimatedMarketValue: 1250.0,
-        loanBalance: 0.0,
-        nextServiceDate: DateTime.now().add(const Duration(days: 42)),
-        activeRecalls: 0,
-        licensePlate: 'KA13EW7454',
-      ),
-      VehicleModel(
-        id: 'car_1',
+        id: 'car_tesla_3',
         vin: '5YJ3E1EB8KF194821',
         make: 'Tesla',
         model: 'Model 3',
@@ -135,10 +119,10 @@ class NhtsaVehicleService {
         loanBalance: 24000.0,
         nextServiceDate: DateTime.now().add(const Duration(days: 54)),
         activeRecalls: 0,
-        licensePlate: 'CA 8TSL921',
+        licensePlate: 'CA • 8TSL921',
       ),
       VehicleModel(
-        id: 'car_2',
+        id: 'car_porsche_taycan',
         vin: 'WP0AB2Y14MSA83921',
         make: 'Porsche',
         model: 'Taycan 4S',
@@ -151,7 +135,39 @@ class NhtsaVehicleService {
         loanBalance: 41500.0,
         nextServiceDate: DateTime.now().add(const Duration(days: 31)),
         activeRecalls: 0,
-        licensePlate: 'DL 01AB 9911',
+        licensePlate: 'NY • TAY-442',
+      ),
+      VehicleModel(
+        id: 'car_mustang_gt',
+        vin: '1FA6P8CF5L5100000',
+        make: 'Ford',
+        model: 'Mustang GT',
+        year: 2023,
+        trim: '5.0L V8 Fastback',
+        mileage: 15200,
+        fuelOrBatteryLevel: 0.62,
+        isElectric: false,
+        estimatedMarketValue: 38500.0,
+        loanBalance: 18200.0,
+        nextServiceDate: DateTime.now().add(const Duration(days: 60)),
+        activeRecalls: 0,
+        licensePlate: 'TX • FST-500',
+      ),
+      VehicleModel(
+        id: 'car_rivian_r1t',
+        vin: '7FCTGAAA3NN000000',
+        make: 'Rivian',
+        model: 'R1T',
+        year: 2024,
+        trim: 'Adventure Quad-Motor',
+        mileage: 8100,
+        fuelOrBatteryLevel: 0.88,
+        isElectric: true,
+        estimatedMarketValue: 79000.0,
+        loanBalance: 46000.0,
+        nextServiceDate: DateTime.now().add(const Duration(days: 85)),
+        activeRecalls: 0,
+        licensePlate: 'WA • RVN-881',
       ),
     ];
   }

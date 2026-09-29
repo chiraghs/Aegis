@@ -10,9 +10,7 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
     required this.appState,
   });
 
-  void _showChallansModal(BuildContext context) {
-    final currency = appState.isDarkMode ? '₹' : '₹';
-
+  void _showCitationsModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -45,7 +43,7 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 10),
                         const Text(
-                          'TRAFFIC CHALLANS & CITATIONS',
+                          'TRAFFIC & PARKING CITATIONS',
                           style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.2),
                         ),
                       ],
@@ -58,7 +56,7 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  'Connected to State Transport Automated Camera Network for ${appState.activeVehicle.licensePlate}.',
+                  'Connected to Municipal Automated Camera & Parking Network for ${appState.activeVehicle.licensePlate}.',
                   style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                 ),
                 const SizedBox(height: 16),
@@ -80,12 +78,12 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'CLEAN TRAFFIC RECORD',
+                                'CLEAN DRIVING RECORD',
                                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                'Zero pending violations or traffic fines recorded.',
+                                'Zero pending municipal citations or camera tickets.',
                                 style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                               ),
                             ],
@@ -95,14 +93,14 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                     ),
                   )
                 else
-                  ...unpaid.map((challan) {
+                  ...unpaid.map((citation) {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: AppTheme.surfaceCardElevated,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: AppTheme.crimsonAccent.withValues(alpha: 0.3)),
+                        border: Border.all(color: AppTheme.crimsonAccent.withValues(alpha: 0.4)),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,66 +108,66 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.crimsonAccent.withValues(alpha: 0.15),
-                                  borderRadius: BorderRadius.circular(6),
-                                ),
+                              Expanded(
                                 child: Text(
-                                  challan.citationNumber,
-                                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AppTheme.crimsonAccent),
+                                  citation.violationType,
+                                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800),
                                 ),
                               ),
                               Text(
-                                '$currency${challan.amount.toInt()}',
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppTheme.crimsonAccent),
+                                '\$${citation.amount.toStringAsFixed(0)}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  color: AppTheme.crimsonAccent,
+                                ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            challan.violationType,
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              Icon(Icons.location_on_outlined, size: 14, color: AppTheme.textMuted),
+                              const SizedBox(width: 4),
+                              Text(citation.location, style: TextStyle(fontSize: 11, color: AppTheme.textMuted)),
+                            ],
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '📍 ${challan.location}',
-                            style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                            'Citation #: ${citation.citationNumber}',
+                            style: TextStyle(fontSize: 10, color: AppTheme.textMuted, fontFamily: 'monospace'),
                           ),
                           const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Mints 2X (+${(challan.amount * 2).toInt()}) Aegis Coins',
-                                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.goldAccent),
+
+                          SizedBox(
+                            width: double.infinity,
+                            height: 42,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                appState.payChallan(citation.id);
+                                setModalState(() {});
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Citation paid! Earned ${(citation.amount * 2).toInt()} Aegis Coins.'),
+                                    backgroundColor: AppTheme.emeraldAccent,
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.goldAccent,
+                                foregroundColor: Colors.black,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  appState.payChallan(challan.id);
-                                  setModalState(() {});
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Fine settled! +${(challan.amount * 2).toInt()} Aegis Coins minted!'),
-                                    ),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: AppTheme.goldAccent,
-                                  foregroundColor: Colors.black,
-                                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                                ),
-                                child: const Text('Settle Fine', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800)),
+                              child: Text(
+                                'PAY NOW • EARN ${(citation.amount * 2).toInt()} COINS',
+                                style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w900, letterSpacing: 1),
                               ),
-                            ],
+                            ),
                           ),
                         ],
                       ),
                     );
                   }),
-                const SizedBox(height: 16),
               ],
             ),
           );
@@ -178,9 +176,10 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
     );
   }
 
-  void _showPuccAndRecallsModal(BuildContext context) {
+  void _showDmvAndRecallsModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       backgroundColor: AppTheme.surfaceCard,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
@@ -202,12 +201,12 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                         color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(Icons.verified_user, color: AppTheme.emeraldAccent, size: 20),
+                      child: Icon(Icons.verified, color: AppTheme.emeraldAccent, size: 20),
                     ),
                     const SizedBox(width: 10),
                     const Text(
-                      'SAFETY & EMISSIONS COMPLIANCE',
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1),
+                      'DMV REGISTRATION & SMOG',
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.2),
                     ),
                   ],
                 ),
@@ -217,7 +216,9 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
+
+            // Registration Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -225,38 +226,40 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppTheme.surfaceBorder),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'PUCC EMISSIONS CERTIFICATE',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(6),
+                  Icon(Icons.directions_car, color: AppTheme.cyanAccent, size: 28),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('State DMV Registration', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Valid thru March 2027 • Plate ${appState.activeVehicle.licensePlate}',
+                          style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                         ),
-                        child: Text(
-                          'VALID',
-                          style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'National Green Tribunal BS-VI compliant. Valid till 31 Dec 2026.',
-                    style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'ACTIVE',
+                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: AppTheme.emeraldAccent),
+                    ),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 12),
+
+            // Smog / Safety Inspection Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -264,38 +267,78 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppTheme.surfaceBorder),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'US NHTSA SAFETY RECALL AUDIT',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 1),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
-                          borderRadius: BorderRadius.circular(6),
+                  Icon(Icons.eco, color: AppTheme.emeraldAccent, size: 28),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Smog & Safety Inspection', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
+                        const SizedBox(height: 4),
+                        Text(
+                          'BAR Certified • Valid thru Sep 2027',
+                          style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                         ),
-                        child: Text(
-                          '0 RECALLS',
-                          style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800, color: AppTheme.emeraldAccent),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'VIN: ${appState.activeVehicle.vin}\nVerified against NHTSA safety defect database. Zero outstanding open safety recalls.',
-                    style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.3),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'PASSED',
+                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: AppTheme.emeraldAccent),
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
+
+            // NHTSA Safety Recalls Card
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceCardElevated,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.surfaceBorder),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.shield_outlined, color: AppTheme.goldAccent, size: 28),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('US NHTSA Safety Recalls', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
+                        const SizedBox(height: 4),
+                        Text(
+                          '0 Open Safety Recalls on VIN ${appState.activeVehicle.vin}',
+                          style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'CLEAR',
+                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: AppTheme.emeraldAccent),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -310,10 +353,10 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          // Challans Dual Card
+          // Citations Dual Card
           Expanded(
             child: GestureDetector(
-              onTap: () => _showChallansModal(context),
+              onTap: () => _showCitationsModal(context),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 decoration: BoxDecoration(
@@ -346,7 +389,7 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'challans',
+                      'citations',
                       style: TextStyle(
                         fontFamily: 'serif',
                         fontSize: 17,
@@ -371,10 +414,10 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
           ),
           const SizedBox(width: 14),
 
-          // PUCC / Compliance Dual Card
+          // DMV & Smog Dual Card
           Expanded(
             child: GestureDetector(
-              onTap: () => _showPuccAndRecallsModal(context),
+              onTap: () => _showDmvAndRecallsModal(context),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
                 decoration: BoxDecoration(
@@ -398,14 +441,14 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        Icons.donut_large,
+                        Icons.verified_outlined,
                         size: 24,
-                        color: AppTheme.textSecondary,
+                        color: AppTheme.emeraldAccent,
                       ),
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'PUCC',
+                      'DMV & smog',
                       style: TextStyle(
                         fontFamily: 'serif',
                         fontSize: 17,
@@ -415,7 +458,7 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'VALID TILL DEC',
+                      'VALID THRU 2027',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w800,
