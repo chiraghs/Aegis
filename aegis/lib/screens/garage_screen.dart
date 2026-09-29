@@ -103,14 +103,27 @@ class _GarageScreenState extends State<GarageScreen> {
               const SizedBox(height: 12),
               Wrap(
                 spacing: 8,
+                runSpacing: 6,
                 children: [
                   ActionChip(
-                    label: const Text('Tesla Model 3 VIN', style: TextStyle(fontSize: 10)),
+                    label: const Text('Tesla Model 3', style: TextStyle(fontSize: 10)),
                     onPressed: () => _vinController.text = '5YJ3E1EB8KF194821',
                   ),
                   ActionChip(
-                    label: const Text('Porsche 911 VIN', style: TextStyle(fontSize: 10)),
+                    label: const Text('Porsche Taycan 4S', style: TextStyle(fontSize: 10)),
                     onPressed: () => _vinController.text = 'WP0AB2Y14MSA83921',
+                  ),
+                  ActionChip(
+                    label: const Text('Ford Mustang GT', style: TextStyle(fontSize: 10)),
+                    onPressed: () => _vinController.text = '1FA6P8CF5L5100000',
+                  ),
+                  ActionChip(
+                    label: const Text('BMW 330e EV', style: TextStyle(fontSize: 10)),
+                    onPressed: () => _vinController.text = 'WBA8E1C55JKA00000',
+                  ),
+                  ActionChip(
+                    label: const Text('Rivian R1T Truck', style: TextStyle(fontSize: 10)),
+                    onPressed: () => _vinController.text = '7FCTGAAA3NN000000',
                   ),
                 ],
               ),

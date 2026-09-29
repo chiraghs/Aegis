@@ -58,7 +58,7 @@ class AppState extends ChangeNotifier {
   bool get isBlackEdition => _tier == SubscriptionTier.black;
 
   bool get canAddMoreCards => isGoldOrHigher || _cards.length < 2;
-  bool get canAddMoreVehicles => isGoldOrHigher || _vehicles.isEmpty;
+  bool get canAddMoreVehicles => isGoldOrHigher || _vehicles.length < 5;
   bool get hasAiCardOptimizer => isBlackEdition;
   bool get hasDeepNetWorthAnalytics => isGoldOrHigher;
   bool get hasFireProjectionSimulator => isBlackEdition;
