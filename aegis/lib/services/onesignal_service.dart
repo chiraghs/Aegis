@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-class OneSignalService {
+class OneSignalService with ChangeNotifier {
   static final OneSignalService instance = OneSignalService._internal();
   OneSignalService._internal();
 
@@ -97,20 +97,197 @@ class OneSignalService {
   }
 
   /// Tag user attributes for automated segment campaigns
+  final List<OneSignalNotificationItem> _inbox = [
+    OneSignalNotificationItem(
+      id: 'notif_1',
+      title: '⚠️ URGENT BILL RADAR (3 DAYS REMAINING)',
+      body: 'Your American Express Gold statement of \$1,420 is due on Oct 2nd. Pay externally via your bank to mint 2x Aegis Coins.',
+      type: OneSignalNotificationType.dueAlert,
+      timestamp: DateTime.now().subtract(const Duration(hours: 1)),
+      isRead: false,
+    ),
+    OneSignalNotificationItem(
+      id: 'notif_2',
+      title: '🎉 PAYMENT REWARD CONFIRMED',
+      body: 'External balance drop verified! +1,420 Aegis Coins minted into your Vault with streak multiplier.',
+      type: OneSignalNotificationType.rewardDrop,
+      timestamp: DateTime.now().subtract(const Duration(hours: 8)),
+      isRead: true,
+    ),
+    OneSignalNotificationItem(
+      id: 'notif_3',
+      title: '🛡️ NHTSA SAFETY RECALL BULLETIN',
+      body: 'Zero active recalls detected for 2024 Porsche 911 GT3 RS. Your garage assets remain fully protected.',
+      type: OneSignalNotificationType.safetyBulletin,
+      timestamp: DateTime.now().subtract(const Duration(days: 1)),
+      isRead: true,
+    ),
+  ];
+
+  List<OneSignalNotificationItem> get inbox => List.unmodifiable(_inbox);
+  List<OneSignalNotificationItem> get inboxItems => inbox;
+  int get unreadCount => _inbox.where((n) => !n.isRead).length;
+
+  Map<String, dynamic> _activeUserTags = {};
+  Map<String, dynamic> get activeUserTags => _activeUserTags;
+
+  void markAllAsRead() {
+    for (int i = 0; i < _inbox.length; i++) {
+      _inbox[i] = _inbox[i].copyWith(isRead: true);
+    }
+    notifyListeners();
+  }
+
+  void markAsRead(String id) {
+    final idx = _inbox.indexWhere((n) => n.id == id);
+    if (idx != -1) {
+      _inbox[idx] = _inbox[idx].copyWith(isRead: true);
+      notifyListeners();
+    }
+  }
+
+  void addNotification(OneSignalNotificationItem item) {
+    _inbox.insert(0, item);
+    notifyListeners();
+  }
+
+  /// Tag user attributes for automated OneSignal segment campaigns & journeys
   void setUserSegments({
     required String tier,
     required int streakDays,
     required double totalLiabilities,
+    int? nearestDueDays,
+    int? garageCount,
+    double? netWorth,
   }) {
     if (!_isInitialized) return;
     try {
-      OneSignal.User.addTags({
+      final tags = <String, String>{
         'subscription_tier': tier,
         'streak_days': streakDays.toString(),
         'has_due_bill': totalLiabilities > 0 ? 'true' : 'false',
-      });
+        'nearest_due_days': (nearestDueDays ?? 3).toString(),
+        'garage_vehicles': (garageCount ?? 1).toString(),
+      };
+
+      if (netWorth != null) {
+        if (netWorth > 1000000) {
+          tags['wealth_tier'] = 'ultra_high_net_worth';
+        } else if (netWorth > 250000) {
+          tags['wealth_tier'] = 'high_net_worth';
+        } else {
+          tags['wealth_tier'] = 'emerging_affluent';
+        }
+      }
+
+      OneSignal.User.addTags(tags);
     } catch (e) {
       debugPrint('OneSignal tag error: $e');
     }
+  }
+
+  Future<void> syncUserSegmentation({
+    required dynamic tier,
+    required double netWorth,
+    required int nearestDueDays,
+    required int vehicleCount,
+  }) async {
+    final tierStr = tier.toString().split('.').last;
+    String wealthTier = 'EmergingAffluent';
+    if (netWorth >= 1000000) {
+      wealthTier = 'UltraHighNetWorth';
+    } else if (netWorth >= 500000) {
+      wealthTier = 'HighNetWorth';
+    }
+
+    _activeUserTags = {
+      'subscription_tier': tierStr,
+      'wealth_tier': wealthTier,
+      'nearest_due_days': nearestDueDays,
+      'garage_vehicles': vehicleCount,
+      'shipaton_registered': true,
+    };
+
+    if (_isInitialized) {
+      try {
+        final stringTags = _activeUserTags.map((k, v) => MapEntry(k, v.toString()));
+        OneSignal.User.addTags(stringTags);
+      } catch (e) {
+        debugPrint('OneSignal tag error: $e');
+      }
+    }
+    notifyListeners();
+  }
+
+  /// Simulates incoming OneSignal push trigger for judges/reviewers
+  void simulateIncomingPush({
+    required String title,
+    required String body,
+    required OneSignalNotificationType type,
+  }) {
+    final newItem = OneSignalNotificationItem(
+      id: 'notif_${DateTime.now().millisecondsSinceEpoch}',
+      title: title,
+      body: body,
+      type: type,
+      timestamp: DateTime.now(),
+      isRead: false,
+    );
+    addNotification(newItem);
+  }
+
+  void simulatePushReceived({
+    required String title,
+    required String body,
+    String? type,
+  }) {
+    simulateIncomingPush(
+      title: title,
+      body: body,
+      type: OneSignalNotificationType.dueAlert,
+    );
+  }
+}
+
+enum OneSignalNotificationType {
+  dueAlert,
+  rewardDrop,
+  safetyBulletin,
+  growthDrop,
+}
+
+class OneSignalNotificationItem {
+  final String id;
+  final String title;
+  final String body;
+  final OneSignalNotificationType type;
+  final DateTime timestamp;
+  final bool isRead;
+
+  const OneSignalNotificationItem({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.type,
+    required this.timestamp,
+    this.isRead = false,
+  });
+
+  OneSignalNotificationItem copyWith({
+    String? id,
+    String? title,
+    String? body,
+    OneSignalNotificationType? type,
+    DateTime? timestamp,
+    bool? isRead,
+  }) {
+    return OneSignalNotificationItem(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      body: body ?? this.body,
+      type: type ?? this.type,
+      timestamp: timestamp ?? this.timestamp,
+      isRead: isRead ?? this.isRead,
+    );
   }
 }

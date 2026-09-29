@@ -8,6 +8,7 @@ import 'cards_screen.dart';
 import 'garage_screen.dart';
 import 'rewards_screen.dart';
 import 'paywall_screen.dart';
+import 'networth_detail_screen.dart';
 
 class NavigationScaffold extends StatefulWidget {
   const NavigationScaffold({super.key});
@@ -32,6 +33,19 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
     });
   }
 
+  Widget _buildFoldableCompanionDetail(int index) {
+    switch (index) {
+      case 0:
+        return const NetWorthDetailScreen();
+      case 1:
+        return const GarageScreen();
+      case 2:
+        return const NetWorthDetailScreen();
+      default:
+        return const NetWorthDetailScreen();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
@@ -44,13 +58,34 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
       const SizedBox.shrink(),
     ];
 
-    return Scaffold(
-      backgroundColor: AppTheme.background,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: screens,
-      ),
-      bottomNavigationBar: Container(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isDualPane = constraints.maxWidth >= 720;
+
+        return Scaffold(
+          backgroundColor: AppTheme.background,
+          body: isDualPane
+              ? Row(
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: IndexedStack(
+                        index: _currentIndex,
+                        children: screens,
+                      ),
+                    ),
+                    Container(width: 1, color: AppTheme.surfaceBorder),
+                    Expanded(
+                      flex: 6,
+                      child: _buildFoldableCompanionDetail(_currentIndex),
+                    ),
+                  ],
+                )
+              : IndexedStack(
+                  index: _currentIndex,
+                  children: screens,
+                ),
+          bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           color: AppTheme.surface,
           border: Border(
@@ -74,7 +109,9 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
         ),
       ),
     );
-  }
+  },
+);
+}
 
   Widget _buildNavItem({required IconData icon, required String label, required int index}) {
     final isSelected = _currentIndex == index;

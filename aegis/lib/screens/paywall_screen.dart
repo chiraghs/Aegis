@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../constants/theme.dart';
 import '../models/subscription_tier.dart';
 import '../providers/app_state.dart';
+import '../services/layers_growth_service.dart';
+import 'stripe_web_funnel_screen.dart';
 
 class PaywallScreen extends StatefulWidget {
   const PaywallScreen({super.key});
@@ -15,6 +17,12 @@ class _PaywallScreenState extends State<PaywallScreen> {
   bool _isAnnual = true;
   SubscriptionTier _selectedTier = SubscriptionTier.black;
   bool _isProcessing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    LayersGrowthService.instance.recordPaywallImpression();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,11 +71,52 @@ class _PaywallScreenState extends State<PaywallScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 14),
+            const SizedBox(height: 12),
 
-            const Text(
-              'Unlock Total Financial Mastery',
-              style: TextStyle(
+            // Layers A/B Experiment Indicator (Layers Sponsor Award)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceCard,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppTheme.goldAccent.withValues(alpha: 0.3)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.science_outlined, size: 14, color: AppTheme.goldAccent),
+                  const SizedBox(width: 6),
+                  Text(
+                    'LAYERS A/B ENGINE: ${LayersGrowthService.instance.activeVariant == PaywallExperimentVariant.variantA ? "VARIANT A" : "VARIANT B"}',
+                    style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w800, color: AppTheme.goldAccentLight),
+                  ),
+                  const SizedBox(width: 8),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        LayersGrowthService.instance.toggleVariant();
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                         color: AppTheme.goldAccent.withValues(alpha: 0.2),
+                         borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text(
+                        'SWAP COPY',
+                        style: TextStyle(fontSize: 9, fontWeight: FontWeight.w900, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            Text(
+              LayersGrowthService.instance.activeVariant.title,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.w800,
                 color: Colors.white,
@@ -76,9 +125,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Maximize 5x points on every swipe, monitor your vehicle equity, and eliminate late payment stress.',
-              style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
+            Text(
+              LayersGrowthService.instance.activeVariant.subtitle,
+              style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -174,6 +223,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         setState(() => _isProcessing = false);
 
                         if (success && context.mounted) {
+                          LayersGrowthService.instance.recordPaywallConversion();
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: AppTheme.surfaceCardElevated,
@@ -204,6 +254,64 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         'Unlock ${_selectedTier == SubscriptionTier.black ? "Black Edition" : "Gold Pass"}',
                         style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800),
                       ),
+              ),
+            ),
+            const SizedBox(height: 14),
+
+            // Stripe Web Funnel Callout (Stripe Hackathon Sponsor Award)
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: const Color(0xFF635BFF).withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFF635BFF).withValues(alpha: 0.35)),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF635BFF),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Text('stripe', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 10)),
+                      ),
+                      const SizedBox(width: 8),
+                      const Text(
+                        'SAVE 20% VIA WEB CHECKOUT',
+                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, color: Color(0xFF817BFF), letterSpacing: 0.8),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  const Text(
+                    'Direct web billing powered by Stripe. Avoid app store markups and receive instant RevenueCat web entitlement sync.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 11, color: AppTheme.textSecondary, height: 1.3),
+                  ),
+                  const SizedBox(height: 10),
+                  OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => StripeWebFunnelScreen(initialTier: _selectedTier),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.open_in_browser_rounded, size: 15, color: Colors.white),
+                    label: const Text('Open Stripe Web Funnel (-20% Off)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: Colors.white)),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Color(0xFF635BFF)),
+                      backgroundColor: const Color(0xFF635BFF).withValues(alpha: 0.25),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 16),

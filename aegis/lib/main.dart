@@ -47,11 +47,13 @@ class AegisFintechApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       builder: (context, child) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final maxWidth = screenWidth >= 720 ? 880.0 : 440.0;
         return Scaffold(
           backgroundColor: const Color(0xFF040406),
           body: Center(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 440),
+              constraints: BoxConstraints(maxWidth: maxWidth),
               decoration: BoxDecoration(
                 color: AppTheme.background,
                 border: Border.symmetric(

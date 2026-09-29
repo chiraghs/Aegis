@@ -7,8 +7,12 @@ import '../widgets/credit_card_widget.dart';
 import '../widgets/coin_counter.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/asset_allocation_bar.dart';
+import '../widgets/referral_growth_loop_widget.dart';
+import '../widgets/viral_shield_story_card.dart';
+import '../services/onesignal_service.dart';
 import 'paywall_screen.dart';
 import 'networth_detail_screen.dart';
+import 'notifications_inbox_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   final Function(int) onNavigateToTab;
@@ -180,25 +184,31 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
-        title: Row(
-          children: [
-            Container(
-              width: 30,
-              height: 30,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: AppTheme.goldGradient,
+        titleSpacing: 12,
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 28,
+                height: 28,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: AppTheme.goldGradient,
+                ),
+                child: const Center(
+                  child: Text('Æ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.black)),
+                ),
               ),
-              child: const Center(
-                child: Text('Æ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: Colors.black)),
+              const SizedBox(width: 8),
+              const Text(
+                'AEGIS',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: 2),
               ),
-            ),
-            const SizedBox(width: 10),
-            const Text(
-              'AEGIS',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 3),
-            ),
-          ],
+            ],
+          ),
         ),
         actions: [
           CoinCounter(
@@ -206,9 +216,40 @@ class DashboardScreen extends StatelessWidget {
             tier: appState.tier,
             onTap: () => onNavigateToTab(3), // Navigate to Rewards
           ),
-          const SizedBox(width: 8),
+          ListenableBuilder(
+            listenable: OneSignalService.instance,
+            builder: (context, _) {
+              final unread = OneSignalService.instance.unreadCount;
+              return IconButton(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                constraints: const BoxConstraints(),
+                icon: Badge(
+                  isLabelVisible: unread > 0,
+                  label: Text('$unread', style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold)),
+                  backgroundColor: AppTheme.crimsonAccent,
+                  child: const Icon(Icons.notifications_none_rounded, color: Colors.white, size: 20),
+                ),
+                tooltip: 'OneSignal Push Center',
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const NotificationsInboxScreen()),
+                  );
+                },
+              );
+            },
+          ),
           IconButton(
-            icon: const Icon(Icons.workspace_premium, color: AppTheme.goldAccent),
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.ios_share_rounded, color: AppTheme.cyanAccent, size: 19),
+            tooltip: 'Flex Shield Story',
+            onPressed: () => ViralShieldStoryModal.show(context, appState),
+          ),
+          IconButton(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.workspace_premium, color: AppTheme.goldAccent, size: 20),
+            tooltip: 'Aegis Club Pass',
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const PaywallScreen()),
@@ -486,6 +527,12 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+
+            // VIP Referral Growth Loop (Layers Hackathon Sponsor Award)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              child: ReferralGrowthLoopWidget(appState: appState),
             ),
 
             // Card Stack Title

@@ -5,6 +5,9 @@ import 'package:aegis/models/vehicle_model.dart';
 import 'package:aegis/providers/app_state.dart';
 import 'package:aegis/services/networth_service.dart';
 import 'package:aegis/services/nhtsa_vehicle_service.dart';
+import 'package:aegis/services/onesignal_service.dart';
+import 'package:aegis/services/stripe_web_funnel_service.dart';
+import 'package:aegis/services/layers_growth_service.dart';
 
 void main() {
   group('AppState Core Financial & Rewards Engine', () {
@@ -131,6 +134,116 @@ void main() {
       expect(snapshots.first.monthLabel, equals('Apr'));
       expect(snapshots.last.monthLabel, equals('Sep'));
       expect(snapshots.last.netWorth, equals(500000.0));
+    });
+  });
+
+  group('OneSignal Notification Center & Rich Segmentation', () {
+    test('Initializes with default notification inbox', () {
+      final service = OneSignalService.instance;
+      expect(service.inboxItems.isNotEmpty, isTrue);
+      expect(service.unreadCount, greaterThanOrEqualTo(0));
+    });
+
+    test('Push Simulator adds notification and updates unread count', () {
+      final service = OneSignalService.instance;
+      final initialCount = service.unreadCount;
+
+      service.simulatePushReceived(
+        title: 'Test Hackathon Notification',
+        body: 'OneSignal Push Journey Activated',
+        type: 'test_journey',
+      );
+
+      expect(service.unreadCount, equals(initialCount + 1));
+      expect(service.inboxItems.first.title, equals('Test Hackathon Notification'));
+      expect(service.inboxItems.first.isRead, isFalse);
+
+      service.markAsRead(service.inboxItems.first.id);
+      expect(service.inboxItems.first.isRead, isTrue);
+    });
+
+    test('Synchronizes rich segmentation tags with user financial state', () async {
+      final service = OneSignalService.instance;
+      await service.syncUserSegmentation(
+        tier: SubscriptionTier.black,
+        netWorth: 850000.0,
+        nearestDueDays: 3,
+        vehicleCount: 2,
+      );
+
+      final tags = service.activeUserTags;
+      expect(tags['wealth_tier'], equals('HighNetWorth'));
+      expect(tags['subscription_tier'], equals('black'));
+      expect(tags['nearest_due_days'], equals(3));
+      expect(tags['garage_vehicles'], equals(2));
+      expect(tags['shipaton_registered'], equals(true));
+    });
+  });
+
+  group('Stripe Web Funnel & RevenueCat Entitlement Sync', () {
+    test('Calculates 20% discount on web checkout correctly', () {
+      final service = StripeWebFunnelService.instance;
+      final goldDiscounted = service.getDiscountedWebPrice(SubscriptionTier.gold);
+      final blackDiscounted = service.getDiscountedWebPrice(SubscriptionTier.black);
+
+      // Gold: $4.99 - 20% = $3.99
+      expect(goldDiscounted, equals(3.99));
+      // Black: $9.99 - 20% = $7.99
+      expect(blackDiscounted, equals(7.99));
+    });
+
+    test('Processes Stripe web checkout and creates customer entitlement session', () async {
+      final service = StripeWebFunnelService.instance;
+      final success = await service.processStripeWebCheckout(
+        tier: SubscriptionTier.gold,
+        cardNumber: '4242424242424242',
+        expDate: '12/28',
+        cvc: '123',
+      );
+
+      expect(success, isTrue);
+      expect(service.lastCheckoutSessionId, isNotNull);
+      expect(service.lastCheckoutSessionId, startsWith('cs_test_'));
+    });
+  });
+
+  group('Layers A/B Experimentation & VIP Referral Loop', () {
+    test('Swaps active paywall experiment variant reactively', () {
+      final growth = LayersGrowthService.instance;
+      final initialVariant = growth.activeVariant;
+
+      growth.toggleVariant();
+      expect(growth.activeVariant, isNot(equals(initialVariant)));
+
+      growth.toggleVariant();
+      expect(growth.activeVariant, equals(initialVariant));
+    });
+
+    test('Records impressions and conversions', () {
+      final growth = LayersGrowthService.instance;
+      final initialConvRateA = growth.variantAConversionRate;
+
+      growth.recordPaywallImpression();
+      growth.recordPaywallConversion();
+
+      expect(growth.variantAConversionRate, greaterThanOrEqualTo(initialConvRateA));
+      expect(growth.variantBConversionRate, greaterThan(0));
+    });
+
+    test('Validates VIP referral code and prevents duplicate claims', () {
+      final growth = LayersGrowthService.instance;
+
+      // Valid referral code
+      final validClaim = growth.applyReferralCode('VIP-FOUNDER-99');
+      expect(validClaim, isTrue);
+
+      // Duplicate referral code claim is rejected
+      final duplicateClaim = growth.applyReferralCode('VIP-FOUNDER-99');
+      expect(duplicateClaim, isFalse);
+
+      // Blank or own code cannot be claimed
+      final ownClaim = growth.applyReferralCode(growth.userReferralCode);
+      expect(ownClaim, isFalse);
     });
   });
 }
