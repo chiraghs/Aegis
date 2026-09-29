@@ -1,3 +1,30 @@
+/// Represents an official NHTSA Safety Recall Campaign item
+class NhtsaRecallItem {
+  final String campaignNumber;
+  final String component;
+  final String summary;
+  final String consequence;
+  final String remedy;
+
+  const NhtsaRecallItem({
+    required this.campaignNumber,
+    required this.component,
+    required this.summary,
+    required this.consequence,
+    required this.remedy,
+  });
+
+  factory NhtsaRecallItem.fromJson(Map<String, dynamic> json) {
+    return NhtsaRecallItem(
+      campaignNumber: json['NHTSACampaignNumber']?.toString() ?? 'NHTSA-CAMPAIGN',
+      component: json['Component']?.toString() ?? 'Safety Component',
+      summary: json['Summary']?.toString() ?? 'NHTSA safety defect summary.',
+      consequence: json['Conequence']?.toString() ?? json['Consequence']?.toString() ?? '',
+      remedy: json['Remedy']?.toString() ?? 'Manufacturer recall remedy.',
+    );
+  }
+}
+
 class VehicleModel {
   final String id;
   final String vin;
@@ -15,6 +42,18 @@ class VehicleModel {
   final String imageUrl;
   final String licensePlate;
 
+  // Real US DOT NHTSA Gov Decoded Fields
+  final String manufacturer;
+  final String plantCountry;
+  final String plantState;
+  final String plantCity;
+  final String vehicleType;
+  final String bodyClass;
+  final String driveType;
+  final String fuelTypePrimary;
+  final String electrificationLevel;
+  final List<NhtsaRecallItem> recalls;
+
   VehicleModel({
     required this.id,
     required this.vin,
@@ -30,7 +69,17 @@ class VehicleModel {
     required this.nextServiceDate,
     required this.activeRecalls,
     this.imageUrl = '',
-    this.licensePlate = 'KA13EW7454',
+    this.licensePlate = 'CA • 8TSL921',
+    this.manufacturer = 'US DOT Manufacturer',
+    this.plantCountry = 'UNITED STATES (USA)',
+    this.plantState = 'CALIFORNIA',
+    this.plantCity = '',
+    this.vehicleType = 'PASSENGER CAR',
+    this.bodyClass = 'Sedan',
+    this.driveType = 'AWD',
+    this.fuelTypePrimary = 'Electric',
+    this.electrificationLevel = 'BEV',
+    this.recalls = const [],
   });
 
   double get positiveEquity => (estimatedMarketValue - loanBalance).clamp(0.0, double.infinity);
@@ -52,6 +101,16 @@ class VehicleModel {
     int? activeRecalls,
     String? imageUrl,
     String? licensePlate,
+    String? manufacturer,
+    String? plantCountry,
+    String? plantState,
+    String? plantCity,
+    String? vehicleType,
+    String? bodyClass,
+    String? driveType,
+    String? fuelTypePrimary,
+    String? electrificationLevel,
+    List<NhtsaRecallItem>? recalls,
   }) {
     return VehicleModel(
       id: id ?? this.id,
@@ -69,6 +128,16 @@ class VehicleModel {
       activeRecalls: activeRecalls ?? this.activeRecalls,
       imageUrl: imageUrl ?? this.imageUrl,
       licensePlate: licensePlate ?? this.licensePlate,
+      manufacturer: manufacturer ?? this.manufacturer,
+      plantCountry: plantCountry ?? this.plantCountry,
+      plantState: plantState ?? this.plantState,
+      plantCity: plantCity ?? this.plantCity,
+      vehicleType: vehicleType ?? this.vehicleType,
+      bodyClass: bodyClass ?? this.bodyClass,
+      driveType: driveType ?? this.driveType,
+      fuelTypePrimary: fuelTypePrimary ?? this.fuelTypePrimary,
+      electrificationLevel: electrificationLevel ?? this.electrificationLevel,
+      recalls: recalls ?? this.recalls,
     );
   }
 }

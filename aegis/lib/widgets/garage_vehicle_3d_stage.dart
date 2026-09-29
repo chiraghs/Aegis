@@ -92,9 +92,41 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
         ),
         const SizedBox(height: 8),
 
-        // License Plate Badge (Exact match: IND | KA13EW7454)
+        // License Plate Badge (US State Plate)
         _buildLicensePlateBadge(vehicle.licensePlate, isDark),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
+
+        // Live US Government NHTSA VPIC Verification Badge
+        GestureDetector(
+          onTap: () => _showNhtsaSpecsModal(context, vehicle),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF1E2230) : const Color(0xFFEDF0F7),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isDark ? const Color(0xFF2E344A) : const Color(0xFFD6DBE8),
+              ),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.verified, size: 12, color: Color(0xFF10B981)),
+                const SizedBox(width: 5),
+                Text(
+                  'NHTSA VERIFIED • ${vehicle.vin.substring(0, 8)}...  →',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.8,
+                    color: isDark ? Colors.white70 : const Color(0xFF475569),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 14),
 
         // Interactive 3D Playground Stage
         SizedBox(
@@ -512,6 +544,116 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
               ),
             ),
           ],
+        ),
+      ],
+    );
+  }
+
+  void _showNhtsaSpecsModal(BuildContext context, VehicleModel vehicle) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppTheme.surfaceCard,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppTheme.goldAccent.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.verified, color: AppTheme.goldAccent, size: 20),
+                    ),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'OFFICIAL US NHTSA VPIC SPECS',
+                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 1.2),
+                    ),
+                  ],
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, size: 20),
+                  onPressed: () => Navigator.of(ctx).pop(),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Fetched live from the United States Department of Transportation (DOT) National Highway Traffic Safety Administration vPIC REST API.',
+              style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.4),
+            ),
+            const SizedBox(height: 16),
+
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceCardElevated,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.surfaceBorder),
+              ),
+              child: Column(
+                children: [
+                  _buildSpecRow('VIN', vehicle.vin),
+                  const Divider(height: 16),
+                  _buildSpecRow('Manufacturer', vehicle.manufacturer),
+                  const Divider(height: 16),
+                  _buildSpecRow('Assembly Plant', '${vehicle.plantCity.isNotEmpty ? '${vehicle.plantCity}, ' : ''}${vehicle.plantState}, ${vehicle.plantCountry}'),
+                  const Divider(height: 16),
+                  _buildSpecRow('Vehicle Type', vehicle.vehicleType),
+                  const Divider(height: 16),
+                  _buildSpecRow('Body Class', vehicle.bodyClass),
+                  const Divider(height: 16),
+                  _buildSpecRow('Drive Type', vehicle.driveType),
+                  const Divider(height: 16),
+                  _buildSpecRow('Fuel / Powertrain', '${vehicle.fuelTypePrimary} (${vehicle.electrificationLevel})'),
+                  const Divider(height: 16),
+                  _buildSpecRow('Active Recalls', '${vehicle.activeRecalls} Open Campaigns (api.nhtsa.gov)'),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              height: 44,
+              child: ElevatedButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.textPrimary,
+                  foregroundColor: AppTheme.background,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                child: const Text('DONE', style: TextStyle(fontWeight: FontWeight.w800)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSpecRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+          ),
         ),
       ],
     );

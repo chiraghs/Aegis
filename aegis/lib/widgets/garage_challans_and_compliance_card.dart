@@ -306,37 +306,149 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppTheme.surfaceCardElevated,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppTheme.surfaceBorder),
+                border: Border.all(
+                  color: appState.activeVehicle.recalls.isNotEmpty
+                      ? AppTheme.crimsonAccent.withValues(alpha: 0.4)
+                      : AppTheme.surfaceBorder,
+                ),
               ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.shield_outlined, color: AppTheme.goldAccent, size: 28),
-                  const SizedBox(width: 14),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('US NHTSA Safety Recalls', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
-                        const SizedBox(height: 4),
-                        Text(
-                          '0 Open Safety Recalls on VIN ${appState.activeVehicle.vin}',
-                          style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.shield_outlined,
+                        color: appState.activeVehicle.recalls.isNotEmpty ? AppTheme.crimsonAccent : AppTheme.goldAccent,
+                        size: 28,
+                      ),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('US NHTSA Safety Recalls', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800)),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Live from api.nhtsa.gov for ${appState.activeVehicle.make} ${appState.activeVehicle.model} (${appState.activeVehicle.year})',
+                              style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: appState.activeVehicle.recalls.isNotEmpty
+                              ? AppTheme.crimsonAccent.withValues(alpha: 0.15)
+                              : AppTheme.emeraldAccent.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          appState.activeVehicle.recalls.isNotEmpty
+                              ? '${appState.activeVehicle.recalls.length} RECALLS'
+                              : 'CLEAR',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                            color: appState.activeVehicle.recalls.isNotEmpty ? AppTheme.crimsonAccent : AppTheme.emeraldAccent,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: AppTheme.emeraldAccent.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      'CLEAR',
-                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: AppTheme.emeraldAccent),
-                    ),
-                  ),
+
+                  // If real recalls returned from official US NHTSA API, render each campaign!
+                  if (appState.activeVehicle.recalls.isNotEmpty) ...[
+                    const Divider(height: 20),
+                    ...appState.activeVehicle.recalls.take(4).map((rec) {
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 10),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: AppTheme.surfaceCard,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppTheme.surfaceBorder),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Campaign: ${rec.campaignNumber}',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w900,
+                                    color: AppTheme.goldAccent,
+                                    fontFamily: 'monospace',
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.goldAccent.withValues(alpha: 0.15),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: const Text(
+                                    'FREE REMEDY',
+                                    style: TextStyle(fontSize: 9, fontWeight: FontWeight.w800),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              rec.component,
+                              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              rec.summary,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontSize: 10, color: AppTheme.textSecondary, height: 1.3),
+                            ),
+                            if (rec.remedy.isNotEmpty) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                'Remedy: ${rec.remedy}',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 10, color: AppTheme.emeraldAccent, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ],
+                        ),
+                      );
+                    }),
+                  ],
                 ],
+              ),
+            ),
+            const SizedBox(height: 14),
+
+            // Button to Re-Check NHTSA Live
+            SizedBox(
+              width: double.infinity,
+              height: 44,
+              child: ElevatedButton.icon(
+                onPressed: () async {
+                  await appState.refreshActiveVehicleNhtsaData();
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Refreshed live from official US NHTSA servers!')),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.textPrimary,
+                  foregroundColor: AppTheme.background,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                icon: const Icon(Icons.sync, size: 16),
+                label: const Text('Live NHTSA Re-Check', style: TextStyle(fontWeight: FontWeight.w800)),
               ),
             ),
           ],

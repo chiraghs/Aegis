@@ -109,7 +109,7 @@ void main() {
 
     // Switch vehicle
     state.selectGarageVehicle(1);
-    expect(state.activeVehicle.model, equals('Taycan 4S'));
+    expect(state.activeVehicle.model, equals('Taycan'));
     expect(state.activeVehicle.licensePlate, equals('NY • TAY-442'));
 
     // Check unpaid citations

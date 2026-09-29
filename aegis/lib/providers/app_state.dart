@@ -306,6 +306,9 @@ class AppState extends ChangeNotifier {
       _tier = newTier;
       notifyListeners();
     });
+
+    // Proactively hit official US NHTSA API for the active vehicle
+    refreshActiveVehicleNhtsaData();
   }
 
   @override
@@ -444,6 +447,26 @@ class AppState extends ChangeNotifier {
     if (index >= 0 && index < _vehicles.length) {
       _selectedVehicleIndex = index;
       notifyListeners();
+      refreshActiveVehicleNhtsaData();
+    }
+  }
+
+  /// Refreshes live NHTSA Safety Recalls & Specs over HTTP for the active vehicle
+  Future<void> refreshActiveVehicleNhtsaData() async {
+    if (_vehicles.isEmpty) return;
+    try {
+      final active = activeVehicle;
+      final liveRecalls = await NhtsaVehicleService.fetchRecalls(active.make, active.model, active.year);
+      final idx = _selectedVehicleIndex;
+      if (idx >= 0 && idx < _vehicles.length) {
+        _vehicles[idx] = _vehicles[idx].copyWith(
+          recalls: liveRecalls,
+          activeRecalls: liveRecalls.length,
+        );
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error refreshing NHTSA recalls: $e');
     }
   }
 
