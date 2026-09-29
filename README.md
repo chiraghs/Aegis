@@ -54,15 +54,36 @@ Aegis is an ultra-luxury, non-custodial command center unifying **Multi-Card Cre
 * **Payment Celebrations:** Instant push notifications confirming verified balance drops.
 * **Safety Bulletins:** High-priority pushes for NHTSA vehicle recalls.
 
+### 6. Unified Net Worth Engine
+* **Multi-Asset Balance Sheet:** Live aggregate balance tracking across liquid cash, high-yield savings (4.4% APY), stock market index funds, real estate equity, physical vehicles, and crypto cold storage.
+* **6-Month Trajectory Curve:** Custom-painted interactive canvas line chart with touch point inspection.
+* **Asset Allocation Bar:** Stacked proportional distribution breakdown.
+* **Wealth Health Audit (RevenueCat Gated):** Calculates liquid living runway (months of living expenses covered by cash) and debt-to-asset ratios.
+
+---
+
+## 🌐 External APIs & Data Integrations
+
+Aegis connects to production-grade external REST APIs and SDK services to power real-time valuations, notifications, and balance sheet monitoring:
+
+| External Service / API | Integration Endpoint | Data Fetched / Functionality | Code Location |
+| :--- | :--- | :--- | :--- |
+| **US Dept of Transportation (NHTSA vPIC API)** | `https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVin/{vin}?format=json` | **Live 17-digit VIN Decoding**: Real-time vehicle make, model, year, trim level, fuel/EV classification, assembly plant, and safety recall checks. Zero API key required (public federal endpoint). | [`lib/services/nhtsa_vehicle_service.dart`](aegis/lib/services/nhtsa_vehicle_service.dart) |
+| **RevenueCat Purchases API** | `https://api.revenuecat.com/v1/` (`purchases_flutter` v10) | **Subscription Offerings & Entitlements**: Fetches paywall packages (`gold_pass` \$4.99/mo, `black_edition` \$9.99/mo), manages subscriber status, purchase verification, and judge evaluation tier toggles. | [`lib/services/revenuecat_service.dart`](aegis/lib/services/revenuecat_service.dart) |
+| **OneSignal Push Notification Gateway** | `https://onesignal.com/api/v1/` (`onesignal_flutter` v5.7) | **Device Subscription & Push Delivery**: App ID `d9515184-c70b-438c-8d11-92905402c913`. Manages push tokens, 3-day due date radar alerts, and balance drop reward celebration pushes. | [`lib/services/onesignal_service.dart`](aegis/lib/services/onesignal_service.dart) |
+| **Plaid Open Banking Engine** | Plaid `/liabilities/get` & `/accounts/balance/get` Schema | **Credit Card Balances & APRs**: Fetches statement balances, due dates, minimum payments, and detects external balance drop events for non-custodial reward minting. | [`lib/services/plaid_credit_service.dart`](aegis/lib/services/plaid_credit_service.dart) |
+| **Real Estate & Market Valuation Engine** | Automated Valuation Model (AVM) / Market Feeds | **Multi-Asset Equity Tracking**: Real-time valuation for residential real estate, liquid HYSA accounts (4.4% APY), stock market index funds (VOO/VTI), and crypto cold storage for Unified Net Worth. | [`lib/services/networth_service.dart`](aegis/lib/services/networth_service.dart) |
+
 ---
 
 ## 🛠️ Architecture & Tech Stack
 
-* **Frontend:** Flutter 3.x (Dart) with Impeller hardware acceleration
+* **Frontend:** Flutter 3.x (Dart) with Impeller hardware acceleration & centered responsive desktop frame
 * **Monetization:** RevenueCat Purchases SDK (`purchases_flutter` v10)
 * **Push Notifications:** OneSignal Flutter SDK v5 (`onesignal_flutter` v5.7)
 * **Automotive Intelligence:** US Government NHTSA vPIC REST API
 * **State Management:** Provider pattern with reactive entitlement streams
+* **Net Worth Engine:** Custom canvas curved trajectory chart & multi-asset balance sheet tracker
 
 ---
 
