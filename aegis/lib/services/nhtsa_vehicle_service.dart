@@ -50,6 +50,17 @@ class NhtsaVehicleService {
           final statePrefix = plantState.isNotEmpty ? plantState.substring(0, 2).toUpperCase() : 'CA';
           final plate = '$statePrefix • ${cleanVin.substring(cleanVin.length - 6)}';
 
+          String imageUrl = 'assets/vehicles/tesla_model_3.png';
+          final lowerMake = make.toLowerCase();
+          final lowerModel = model.toLowerCase();
+          if (lowerMake.contains('honda') || vehicleType.toLowerCase().contains('motorcycle') || bodyClass.toLowerCase().contains('scooter')) {
+            imageUrl = 'assets/vehicles/honda_activa.png';
+          } else if (lowerMake.contains('porsche') || lowerModel.contains('taycan')) {
+            imageUrl = 'assets/vehicles/porsche_taycan.png';
+          } else if (lowerMake.contains('ford') || lowerModel.contains('mustang')) {
+            imageUrl = 'assets/vehicles/ford_mustang.png';
+          }
+
           return VehicleModel(
             id: 'car_${DateTime.now().millisecondsSinceEpoch}',
             vin: cleanVin,
@@ -64,6 +75,7 @@ class NhtsaVehicleService {
             loanBalance: 19800.0,
             nextServiceDate: DateTime.now().add(const Duration(days: 72)),
             activeRecalls: recalls.length,
+            imageUrl: imageUrl,
             licensePlate: plate,
             manufacturer: manufacturer,
             plantCountry: plantCountry,
@@ -76,6 +88,7 @@ class NhtsaVehicleService {
             electrificationLevel: electrificationLevel,
             recalls: recalls,
           );
+
         }
       }
     } catch (e) {
@@ -137,6 +150,7 @@ class NhtsaVehicleService {
         loanBalance: 24000.0,
         nextServiceDate: DateTime.now().add(const Duration(days: 90)),
         activeRecalls: 0,
+        imageUrl: 'assets/vehicles/tesla_model_3.png',
         licensePlate: 'CA • 8TSL921',
         manufacturer: 'TESLA, INC.',
         plantCountry: 'UNITED STATES (USA)',
@@ -164,7 +178,9 @@ class NhtsaVehicleService {
       loanBalance: 41500.0,
       nextServiceDate: DateTime.now().add(const Duration(days: 45)),
       activeRecalls: 0,
+      imageUrl: 'assets/vehicles/porsche_taycan.png',
       licensePlate: 'NY • TAY-442',
+
       manufacturer: 'DR. ING. H.C. F. PORSCHE AG',
       plantCountry: 'GERMANY',
       plantState: 'BADEN-WURTTEMBERG',
@@ -177,9 +193,35 @@ class NhtsaVehicleService {
     );
   }
 
-  /// Default starting garage populated with authentic decoded US VINs
+  /// Default starting garage populated with authentic vehicles & decoded US VINs
   static List<VehicleModel> getDemoGarage() {
     return [
+      VehicleModel(
+        id: 'scooter_honda_activa',
+        vin: 'ME4JF501DKK007454',
+        make: 'HONDA',
+        model: 'Activa 6G',
+        year: 2023,
+        trim: 'DLX SmartKey',
+        mileage: 4820,
+        fuelOrBatteryLevel: 0.76,
+        isElectric: false,
+        estimatedMarketValue: 1250.0,
+        loanBalance: 0.0,
+        nextServiceDate: DateTime.now().add(const Duration(days: 42)),
+        activeRecalls: 0,
+        imageUrl: 'assets/vehicles/honda_activa.png',
+        licensePlate: 'KA13EW7454',
+        manufacturer: 'HONDA MOTORCYCLE & SCOOTER INDIA',
+        plantCountry: 'INDIA',
+        plantState: 'KARNATAKA',
+        plantCity: 'NARSAPURA',
+        vehicleType: 'MOTORCYCLE / SCOOTER',
+        bodyClass: 'Scooter',
+        driveType: 'Belt Drive',
+        fuelTypePrimary: 'Gasoline',
+        electrificationLevel: 'ICE (Internal Combustion Engine)',
+      ),
       VehicleModel(
         id: 'car_tesla_3',
         vin: '5YJ3E1EB8KF194821',
@@ -194,6 +236,7 @@ class NhtsaVehicleService {
         loanBalance: 24000.0,
         nextServiceDate: DateTime.now().add(const Duration(days: 54)),
         activeRecalls: 0,
+        imageUrl: 'assets/vehicles/tesla_model_3.png',
         licensePlate: 'CA • 8TSL921',
         manufacturer: 'TESLA, INC.',
         plantCountry: 'UNITED STATES (USA)',
@@ -205,6 +248,7 @@ class NhtsaVehicleService {
         fuelTypePrimary: 'Electric',
         electrificationLevel: 'BEV (Battery Electric Vehicle)',
       ),
+
       VehicleModel(
         id: 'car_porsche_taycan',
         vin: 'WP0AB2Y14MSA83921',
@@ -219,6 +263,7 @@ class NhtsaVehicleService {
         loanBalance: 41500.0,
         nextServiceDate: DateTime.now().add(const Duration(days: 31)),
         activeRecalls: 0,
+        imageUrl: 'assets/vehicles/porsche_taycan.png',
         licensePlate: 'NY • TAY-442',
         manufacturer: 'DR. ING. H.C. F. PORSCHE AG',
         plantCountry: 'GERMANY',
@@ -244,8 +289,10 @@ class NhtsaVehicleService {
         loanBalance: 18200.0,
         nextServiceDate: DateTime.now().add(const Duration(days: 60)),
         activeRecalls: 0,
+        imageUrl: 'assets/vehicles/ford_mustang.png',
         licensePlate: 'TX • FST-500',
         manufacturer: 'FORD MOTOR COMPANY',
+
         plantCountry: 'UNITED STATES (USA)',
         plantState: 'MICHIGAN',
         plantCity: 'FLAT ROCK',

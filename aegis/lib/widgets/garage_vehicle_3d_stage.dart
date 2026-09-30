@@ -81,7 +81,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
         // Vehicle Title: Editorial Serif (Exact match with reference)
         const SizedBox(height: 4),
         Text(
-          '${vehicle.make} ${vehicle.model}',
+          '${_formatBrandTitle(vehicle.make)} ${vehicle.model}',
           style: TextStyle(
             fontFamily: 'serif',
             fontSize: 26,
@@ -90,6 +90,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
             color: AppTheme.textPrimary,
           ),
         ),
+
         const SizedBox(height: 8),
 
         // License Plate Badge (US State Plate)
@@ -151,7 +152,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 200),
                           margin: const EdgeInsets.symmetric(vertical: 6),
-                          padding: const EdgeInsets.all(6),
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? (isDark ? const Color(0xFF222634) : const Color(0xFFE5E7EB))
@@ -164,10 +165,20 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
                           ),
                           child: Column(
                             children: [
-                              Icon(
-                                _getVehicleIcon(v),
-                                size: isSelected ? 22 : 18,
-                                color: isSelected ? AppTheme.textPrimary : AppTheme.textMuted,
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(4),
+                                child: Image.asset(
+                                  _getVehicleAsset(v),
+                                  width: isSelected ? 34 : 26,
+                                  height: isSelected ? 24 : 18,
+                                  fit: BoxFit.contain,
+                                  errorBuilder: (context, error, stackTrace) => Icon(
+                                    _getVehicleIcon(v),
+                                    size: isSelected ? 20 : 16,
+                                    color: isSelected ? AppTheme.textPrimary : AppTheme.textMuted,
+                                  ),
+
+                                ),
                               ),
                               if (isSelected)
                                 Container(
@@ -194,8 +205,8 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
                   });
                 },
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.72,
-                  height: 240,
+                  width: MediaQuery.of(context).size.width * 0.74,
+                  height: 250,
                   color: Colors.transparent,
                   child: Center(
                     child: Transform(
@@ -209,6 +220,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
                   ),
                 ),
               ),
+
 
               // Add Vehicle "+" Circle Button on Right
               Positioned(
@@ -259,6 +271,11 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
     );
   }
 
+  String _formatBrandTitle(String make) {
+    if (make.isEmpty) return '';
+    return make[0].toUpperCase() + make.substring(1).toLowerCase();
+  }
+
   Widget _buildBrandEmblem(String make) {
     final lower = make.toLowerCase();
     Color emblemColor = Colors.redAccent;
@@ -266,9 +283,29 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
     String brandText = make.toUpperCase();
 
     if (lower.contains('honda')) {
-      emblemColor = const Color(0xFFCC0000);
-      emblemIcon = Icons.two_wheeler;
-      brandText = 'HONDA';
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: const Color(0xFFCC0000),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: const Icon(Icons.two_wheeler, size: 16, color: Colors.white),
+          ),
+          const SizedBox(height: 3),
+          const Text(
+            'HONDA',
+            style: TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 2.0,
+              color: Color(0xFFCC0000),
+            ),
+          ),
+        ],
+      );
     } else if (lower.contains('tesla')) {
       emblemColor = const Color(0xFFE82127);
       emblemIcon = Icons.electric_car;
@@ -309,8 +346,80 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
     );
   }
 
+
   Widget _buildLicensePlateBadge(String plateNumber, bool isDark) {
-    // Parse US state prefix if present, e.g. "CA • 8TSL921" or "NY • TAY-442"
+    // Check if plate matches Indian HSRP registration format (e.g. KA13EW7454 or KA 13 EW 7454)
+    final clean = plateNumber.replaceAll(' ', '').replaceAll('•', '').trim();
+    final isIndianFormat = clean.toUpperCase().startsWith('IND') ||
+        RegExp(r'^[A-Z]{2}\d{1,2}[A-Z]{0,3}\d{4}$', caseSensitive: false).hasMatch(clean);
+
+    if (isIndianFormat) {
+      final formattedNumber = clean.toUpperCase().replaceAll('IND', '');
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: const Color(0xFFFBFBFD),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: const Color(0xFF1E293B), width: 1.5),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 6,
+              offset: Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // High Security IND Blue Band
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+              decoration: BoxDecoration(
+                color: const Color(0xFF0038A8),
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 7,
+                    height: 7,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0xFFE5A93C), width: 1),
+                    ),
+                  ),
+                  const SizedBox(height: 1),
+                  const Text(
+                    'IND',
+                    style: TextStyle(
+                      fontSize: 7,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 0.5,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              formattedNumber,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2.2,
+                color: Color(0xFF0F172A),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Otherwise render US State Plate
     String stateName = 'CALIFORNIA';
     String displayNumber = plateNumber;
 
@@ -401,143 +510,159 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
     return Icons.directions_car;
   }
 
+  String _getVehicleAsset(VehicleModel v) {
+    if (v.imageUrl.isNotEmpty) return v.imageUrl;
+    final lower = v.make.toLowerCase();
+    final lowerModel = v.model.toLowerCase();
+    if (lower.contains('honda') || v.vehicleType.toLowerCase().contains('motorcycle') || v.bodyClass.toLowerCase().contains('scooter')) {
+      return 'assets/vehicles/honda_activa.png';
+    } else if (lower.contains('porsche') || lowerModel.contains('taycan')) {
+      return 'assets/vehicles/porsche_taycan.png';
+    } else if (lower.contains('ford') || lowerModel.contains('mustang')) {
+      return 'assets/vehicles/ford_mustang.png';
+    }
+    return 'assets/vehicles/tesla_model_3.png';
+  }
+
   Widget _build3DVehicleRepresentation(VehicleModel vehicle, bool isDark, double angle) {
-    final isTwoWheeler = vehicle.make.toLowerCase().contains('honda');
-    final isPlaidOrSports = vehicle.make.toLowerCase().contains('porsche') || vehicle.make.toLowerCase().contains('tesla');
+    final isTwoWheeler = vehicle.make.toLowerCase().contains('honda') ||
+        vehicle.vehicleType.toLowerCase().contains('motorcycle') ||
+        vehicle.bodyClass.toLowerCase().contains('scooter');
+    final assetPath = _getVehicleAsset(vehicle);
+
+    // Calculate dynamic 3D lighting & shadow shifts based on rotation angle
+    final shadowScaleX = 1.0 + (math.cos(angle).abs() * 0.18);
+    final shadowOffsetX = math.sin(angle) * 14.0;
 
     return Stack(
       alignment: Alignment.center,
+      clipBehavior: Clip.none,
       children: [
-        // Ground Radial Shadow (moves dynamically with angle)
+        // 1. Realistic Dynamic Ground Contact Shadow (Soft Radial Ellipse)
         Positioned(
-          bottom: 15,
-          child: Container(
-            width: 200,
-            height: 30,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.6 : 0.25),
-                  blurRadius: 20,
-                  spreadRadius: 2,
+          bottom: isTwoWheeler ? 14 : 10,
+          child: Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.diagonal3Values(shadowScaleX, 0.35, 1.0)
+              ..setTranslationRaw(shadowOffsetX, 0.0, 0.0),
+            child: Container(
+
+
+
+              width: isTwoWheeler ? 160 : 230,
+              height: 48,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.elliptical(isTwoWheeler ? 80 : 115, 24)),
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.black.withValues(alpha: isDark ? 0.75 : 0.40),
+                    Colors.black.withValues(alpha: isDark ? 0.35 : 0.18),
+                    Colors.transparent,
+                  ],
+                  stops: const [0.0, 0.6, 1.0],
                 ),
-              ],
+              ),
             ),
           ),
         ),
 
-        // 3D Isometric Vehicle Render with Dynamic Lighting
+        // 2. Realistic 3D Vehicle Model Render
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: isTwoWheeler ? 160 : 210,
-              height: isTwoWheeler ? 170 : 130,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                gradient: LinearGradient(
-                  colors: isTwoWheeler
-                      ? [const Color(0xFFF8FAFC), const Color(0xFFE2E8F0)]
-                      : isPlaidOrSports
-                          ? [const Color(0xFF2C3E50), const Color(0xFF000000)]
-                          : [const Color(0xFF334155), const Color(0xFF0F172A)],
-                  begin: Alignment(math.sin(angle), -math.cos(angle)),
-                  end: Alignment(-math.sin(angle), math.cos(angle)),
-                ),
-                border: Border.all(
-                  color: AppTheme.goldAccent.withValues(alpha: 0.3),
-                  width: 1.5,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppTheme.goldAccent.withValues(alpha: 0.12),
-                    blurRadius: 24,
-                    spreadRadius: -4,
-                  ),
-                ],
-              ),
+            SizedBox(
+              height: isTwoWheeler ? 195 : 155,
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  // Vehicle Silhouette / Headlight glow
-                  Positioned(
-                    top: 16,
-                    left: 20,
-                    right: 20,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 14,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: vehicle.isElectric ? const Color(0xFF00F0FF) : Colors.amberAccent,
-                            borderRadius: BorderRadius.circular(3),
-                            boxShadow: [
-                              BoxShadow(
-                                color: vehicle.isElectric ? const Color(0xFF00F0FF) : Colors.amberAccent,
-                                blurRadius: 8,
-                              ),
+                  Image.asset(
+                    assetPath,
+                    height: isTwoWheeler ? 195 : 155,
+                    fit: BoxFit.contain,
+                    filterQuality: FilterQuality.high,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        isTwoWheeler ? Icons.two_wheeler : Icons.directions_car,
+                        size: 96,
+                        color: AppTheme.textPrimary,
+                      );
+                    },
+                  ),
+
+                  // 3. Dynamic Specular Light Flare sweeping across vehicle body on rotation
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment(-2.0 + math.sin(angle) * 2.0, -1.0),
+                            end: Alignment(2.0 + math.sin(angle) * 2.0, 1.0),
+                            colors: [
+                              Colors.transparent,
+                              Colors.white.withValues(alpha: (0.15 * math.cos(angle).abs()).clamp(0.0, 0.18)),
+                              Colors.transparent,
                             ],
+                            stops: const [0.35, 0.5, 0.65],
                           ),
                         ),
-                        Container(
-                          width: 14,
-                          height: 6,
-                          decoration: BoxDecoration(
-                            color: vehicle.isElectric ? const Color(0xFF00F0FF) : Colors.amberAccent,
-                            borderRadius: BorderRadius.circular(3),
-                            boxShadow: [
-                              BoxShadow(
-                                color: vehicle.isElectric ? const Color(0xFF00F0FF) : Colors.amberAccent,
-                                blurRadius: 8,
-                              ),
-                            ],
-                          ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            // 4. Telematics Live Floating HUD Overlay (Battery or Fuel Gauge)
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1E2230) : const Color(0xFF1E293B),
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.2),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+                border: Border.all(
+                  color: (vehicle.isElectric ? AppTheme.cyanAccent : AppTheme.goldAccent).withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 6,
+                    height: 6,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: vehicle.isElectric ? const Color(0xFF10B981) : Colors.amberAccent,
+                      boxShadow: [
+                        BoxShadow(
+                          color: vehicle.isElectric ? const Color(0xFF10B981) : Colors.amberAccent,
+                          blurRadius: 4,
                         ),
                       ],
                     ),
                   ),
-
-                  // Center Model Graphic
+                  const SizedBox(width: 6),
                   Icon(
-                    isTwoWheeler ? Icons.two_wheeler : Icons.directions_car,
-                    size: isTwoWheeler ? 96 : 84,
-                    color: isTwoWheeler
-                        ? const Color(0xFF1E293B)
-                        : (isDark ? Colors.white.withValues(alpha: 0.9) : const Color(0xFF0F172A)),
+                    vehicle.isElectric ? Icons.bolt : Icons.local_gas_station,
+                    size: 12,
+                    color: vehicle.isElectric ? AppTheme.cyanAccent : AppTheme.goldAccent,
                   ),
-
-                  // Telematics Live Overlay (Battery or Fuel Gauge)
-                  Positioned(
-                    bottom: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            vehicle.isElectric ? Icons.bolt : Icons.local_gas_station,
-                            size: 11,
-                            color: vehicle.isElectric ? AppTheme.cyanAccent : AppTheme.goldAccent,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${(vehicle.fuelOrBatteryLevel * 100).toInt()}% • ${vehicle.mileage} MI',
-                            style: const TextStyle(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                        ],
-                      ),
+                  const SizedBox(width: 4),
+                  Text(
+                    '${(vehicle.fuelOrBatteryLevel * 100).toInt()}% • ${vehicle.mileage} ${isTwoWheeler ? "KM" : "MI"}',
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      letterSpacing: 0.6,
                     ),
                   ),
                 ],
@@ -548,6 +673,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
       ],
     );
   }
+
 
   void _showNhtsaSpecsModal(BuildContext context, VehicleModel vehicle) {
     showModalBottomSheet(

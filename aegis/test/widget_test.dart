@@ -102,15 +102,21 @@ void main() {
   test('Garage AppState supports vehicle selection, citation clearing with 2X coins, and US insurance selling', () {
     final state = AppState();
 
-    // Verify initial US vehicles
+    // Verify initial vehicles (Activa 6G matching reference, Model 3, Taycan, Mustang GT)
     expect(state.vehicles.length, greaterThanOrEqualTo(3));
+    expect(state.activeVehicle.model, equals('Activa 6G'));
+    expect(state.activeVehicle.licensePlate, equals('KA13EW7454'));
+
+    // Switch to Tesla Model 3
+    state.selectGarageVehicle(1);
     expect(state.activeVehicle.model, equals('Model 3'));
     expect(state.activeVehicle.licensePlate, equals('CA • 8TSL921'));
 
-    // Switch vehicle
-    state.selectGarageVehicle(1);
+    // Switch to Porsche Taycan
+    state.selectGarageVehicle(2);
     expect(state.activeVehicle.model, equals('Taycan'));
     expect(state.activeVehicle.licensePlate, equals('NY • TAY-442'));
+
 
     // Check unpaid citations
     expect(state.unpaidChallansCount, equals(1));

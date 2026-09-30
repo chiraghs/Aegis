@@ -501,7 +501,9 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'citations',
+                      appState.activeVehicle.make.toLowerCase().contains('honda') || appState.activeVehicle.licensePlate.startsWith('KA')
+                          ? 'challans'
+                          : 'citations',
                       style: TextStyle(
                         fontFamily: 'serif',
                         fontSize: 17,
@@ -526,7 +528,7 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
           ),
           const SizedBox(width: 14),
 
-          // DMV & Smog Dual Card
+          // DMV & Smog / PUCC Dual Card
           Expanded(
             child: GestureDetector(
               onTap: () => _showDmvAndRecallsModal(context),
@@ -553,14 +555,20 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        Icons.verified_outlined,
+                        appState.activeVehicle.make.toLowerCase().contains('honda') || appState.activeVehicle.licensePlate.startsWith('KA')
+                            ? Icons.tire_repair
+                            : Icons.verified_outlined,
                         size: 24,
-                        color: AppTheme.emeraldAccent,
+                        color: appState.activeVehicle.make.toLowerCase().contains('honda') || appState.activeVehicle.licensePlate.startsWith('KA')
+                            ? AppTheme.textSecondary
+                            : AppTheme.emeraldAccent,
                       ),
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'DMV & smog',
+                      appState.activeVehicle.make.toLowerCase().contains('honda') || appState.activeVehicle.licensePlate.startsWith('KA')
+                          ? 'PUCC'
+                          : 'DMV & smog',
                       style: TextStyle(
                         fontFamily: 'serif',
                         fontSize: 17,
@@ -570,12 +578,16 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'VALID THRU 2027',
+                      appState.activeVehicle.make.toLowerCase().contains('honda') || appState.activeVehicle.licensePlate.startsWith('KA')
+                          ? 'NOT AVAILABLE'
+                          : 'VALID THRU 2027',
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 1.2,
-                        color: AppTheme.emeraldAccent,
+                        color: appState.activeVehicle.make.toLowerCase().contains('honda') || appState.activeVehicle.licensePlate.startsWith('KA')
+                            ? AppTheme.textMuted
+                            : AppTheme.emeraldAccent,
                       ),
                     ),
                   ],
@@ -583,6 +595,7 @@ class GarageChallansAndComplianceCard extends StatelessWidget {
               ),
             ),
           ),
+
         ],
       ),
     );
