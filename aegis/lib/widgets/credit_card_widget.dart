@@ -2,16 +2,35 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/credit_card_model.dart';
-import '../constants/theme.dart';
 
 class CreditCardWidget extends StatefulWidget {
   final CreditCardModel card;
   final VoidCallback? onSimulatePayment;
+  final VoidCallback? onPayNow;
+  final VoidCallback? onMarkAsPaid;
+  final VoidCallback? onSmartStatement;
+  final VoidCallback? onPaymentHistory;
+  final VoidCallback? onCardPerks;
+  final VoidCallback? onRecentSpends;
+  final VoidCallback? onMoreActions;
+  final VoidCallback? onViewDetails;
+  final bool isStacked;
+  final double peekHeight;
 
   const CreditCardWidget({
     super.key,
     required this.card,
     this.onSimulatePayment,
+    this.onPayNow,
+    this.onMarkAsPaid,
+    this.onSmartStatement,
+    this.onPaymentHistory,
+    this.onCardPerks,
+    this.onRecentSpends,
+    this.onMoreActions,
+    this.onViewDetails,
+    this.isStacked = false,
+    this.peekHeight = 65.0,
   });
 
   @override
@@ -19,259 +38,228 @@ class CreditCardWidget extends StatefulWidget {
 }
 
 class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerProviderStateMixin {
-  late AnimationController _flipController;
-  late Animation<double> _flipAnimation;
-  bool _isFront = true;
+  late AnimationController _swipeController;
+  late Animation<double> _swipeAnimation;
+  bool _isSwipedOpen = false;
 
   @override
   void initState() {
     super.initState();
-    _flipController = AnimationController(
+    _swipeController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 320),
     );
-    _flipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _flipController, curve: Curves.easeInOut),
+    _swipeAnimation = CurvedAnimation(
+      parent: _swipeController,
+      curve: Curves.easeOutCubic,
     );
   }
 
   @override
   void dispose() {
-    _flipController.dispose();
+    _swipeController.dispose();
     super.dispose();
   }
 
-  void _toggleFlip() {
-    if (_isFront) {
-      _flipController.forward();
+  void _toggleSwipe([bool? open]) {
+    final target = open ?? !_isSwipedOpen;
+    if (target) {
+      _swipeController.forward();
     } else {
-      _flipController.reverse();
+      _swipeController.reverse();
     }
     setState(() {
-      _isFront = !_isFront;
+      _isSwipedOpen = target;
     });
   }
 
   LinearGradient _getCardGradient() {
     switch (widget.card.themePreset) {
       case CardThemePreset.amexGold:
-        return AppTheme.goldGradient;
+        return const LinearGradient(
+          colors: [Color(0xFFC6923C), Color(0xFFDFBA68), Color(0xFF9E7124)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
       case CardThemePreset.chaseSapphire:
-        return AppTheme.chaseGradient;
+        return const LinearGradient(
+          colors: [Color(0xFF0F326E), Color(0xFF1B4E9B), Color(0xFF091F47)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
       case CardThemePreset.ventureX:
-        return AppTheme.ventureGradient;
+        return const LinearGradient(
+          colors: [Color(0xFF1B2E4B), Color(0xFF2A4365), Color(0xFF101B2E)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
       case CardThemePreset.appleTitanium:
-        return AppTheme.blackEditionGradient;
+        return const LinearGradient(
+          colors: [Color(0xFF2B2D30), Color(0xFF1E1F22), Color(0xFF141517)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final currency = NumberFormat.simpleCurrency();
-
-    return AnimatedBuilder(
-      animation: _flipAnimation,
-      builder: (context, child) {
-        final angle = _flipAnimation.value * pi;
-        final isFrontSide = angle < (pi / 2);
-
-        return Transform(
-          transform: Matrix4.identity()
-            ..setEntry(3, 2, 0.001)
-            ..rotateY(angle),
-          alignment: Alignment.center,
-          child: GestureDetector(
-            onTap: _toggleFlip,
+  Widget _buildEmvChip() {
+    return Container(
+      width: 44,
+      height: 34,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(6),
+        gradient: const LinearGradient(
+          colors: [Color(0xFFF6D365), Color(0xFFFDA085), Color(0xFFE2B867)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.35),
+            blurRadius: 3,
+            offset: const Offset(1, 1),
+          ),
+        ],
+        border: Border.all(color: Colors.amber.shade200, width: 0.8),
+      ),
+      child: Stack(
+        children: [
+          Positioned(
+            left: 12,
+            top: 0,
+            bottom: 0,
+            child: Container(width: 1, color: Colors.brown.withValues(alpha: 0.35)),
+          ),
+          Positioned(
+            right: 12,
+            top: 0,
+            bottom: 0,
+            child: Container(width: 1, color: Colors.brown.withValues(alpha: 0.35)),
+          ),
+          Positioned(
+            top: 10,
+            left: 0,
+            right: 0,
+            child: Container(height: 1, color: Colors.brown.withValues(alpha: 0.35)),
+          ),
+          Positioned(
+            bottom: 10,
+            left: 0,
+            right: 0,
+            child: Container(height: 1, color: Colors.brown.withValues(alpha: 0.35)),
+          ),
+          Center(
             child: Container(
-              width: double.infinity,
-              height: 220,
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              width: 14,
+              height: 12,
               decoration: BoxDecoration(
-                gradient: _getCardGradient(),
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.4),
-                    blurRadius: 18,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  width: 1,
-                ),
+                borderRadius: BorderRadius.circular(3),
+                border: Border.all(color: Colors.brown.withValues(alpha: 0.4), width: 0.8),
               ),
-              child: isFrontSide ? _buildFront(currency) : _buildBack(currency),
             ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  Widget _buildFront(NumberFormat currency) {
-    return Padding(
-      padding: const EdgeInsets.all(20),
+  Widget _buildActionItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: () {
+        _toggleSwipe(false);
+        onTap();
+      },
+      borderRadius: BorderRadius.circular(25),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Top Row: Issuer & Status Badge
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      width: 32,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.25),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(color: Colors.white30),
-                      ),
-                      child: const Icon(Icons.credit_card, size: 16, color: Colors.white),
-                    ),
-                    const SizedBox(width: 10),
-                    Flexible(
-                      child: Text(
-                        widget.card.issuer.toUpperCase(),
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.5,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              border: Border.all(color: Colors.black.withValues(alpha: 0.08), width: 1.2),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.08),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
                 ),
+              ],
+            ),
+            child: Icon(icon, color: Colors.black87, size: 18),
+          ),
+          const SizedBox(height: 3),
+          SizedBox(
+            width: 64,
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 8.5,
+                fontWeight: FontWeight.w600,
+                height: 1.1,
+                letterSpacing: -0.1,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: widget.card.isPaidThisCycle
-                      ? AppTheme.emeraldAccent.withValues(alpha: 0.2)
-                      : Colors.black.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: widget.card.isPaidThisCycle
-                        ? AppTheme.emeraldAccent
-                        : Colors.white24,
-                  ),
-                ),
-                child: Text(
-                  widget.card.isPaidThisCycle
-                      ? '✓ BILL CLEARED'
-                      : 'DUE IN ${widget.card.daysUntilDue} DAYS',
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.8,
-                    color: widget.card.isPaidThisCycle
-                        ? AppTheme.emeraldAccent
-                        : Colors.white,
-                  ),
-                ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionDrawer() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      alignment: Alignment.centerRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildActionItem(
+                icon: Icons.check_circle_outline_rounded,
+                title: 'mark as paid',
+                onTap: widget.onMarkAsPaid ?? widget.onSimulatePayment ?? () {},
+              ),
+              _buildActionItem(
+                icon: Icons.history_rounded,
+                title: 'payment history',
+                onTap: widget.onPaymentHistory ?? () {},
+              ),
+              _buildActionItem(
+                icon: Icons.sync_rounded,
+                title: 'recent spends',
+                onTap: widget.onRecentSpends ?? () {},
               ),
             ],
           ),
-
-          // Middle: Masked Number & Card Name
+          const SizedBox(width: 14),
           Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                '•••• •••• •••• ${widget.card.lastFour}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 3,
-                  color: Colors.white,
-                ),
+              _buildActionItem(
+                icon: Icons.description_outlined,
+                title: 'smart statement',
+                onTap: widget.onSmartStatement ?? () {},
               ),
-              const SizedBox(height: 4),
-              Text(
-                widget.card.cardName,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white.withValues(alpha: 0.85),
-                ),
+              _buildActionItem(
+                icon: Icons.percent_rounded,
+                title: 'card perks',
+                onTap: widget.onCardPerks ?? () {},
               ),
-            ],
-          ),
-
-          // Bottom: Balance & Utilization Bar
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'CURRENT BALANCE',
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
-                          color: Colors.white.withValues(alpha: 0.7),
-                        ),
-                      ),
-                      Text(
-                        currency.format(widget.card.currentBalance),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        'UTILIZATION',
-                        style: TextStyle(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1,
-                          color: Colors.white.withValues(alpha: 0.7),
-                        ),
-                      ),
-                      Text(
-                        '${(widget.card.utilizationRate * 100).toStringAsFixed(1)}%',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: LinearProgressIndicator(
-                  value: widget.card.utilizationRate,
-                  backgroundColor: Colors.white.withValues(alpha: 0.2),
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    widget.card.utilizationRate > 0.3
-                        ? AppTheme.crimsonAccent
-                        : (widget.card.utilizationRate > 0.1
-                            ? AppTheme.amberAccent
-                            : AppTheme.emeraldAccent),
-                  ),
-                  minHeight: 4,
-                ),
+              _buildActionItem(
+                icon: Icons.grid_view_rounded,
+                title: 'more actions',
+                onTap: widget.onMoreActions ?? () {},
               ),
             ],
           ),
@@ -280,111 +268,269 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     );
   }
 
-  Widget _buildBack(NumberFormat currency) {
-    // Rotated 180 degrees back to normal readable text
-    return Transform(
-      transform: Matrix4.identity()..rotateY(pi),
-      alignment: Alignment.center,
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'STATEMENT & BENEFITS',
-                  style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.2,
-                    color: Colors.white.withValues(alpha: 0.8),
-                  ),
-                ),
-                Text(
-                  'APR ${widget.card.apr}%',
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: widget.card.topPerks.map((perk) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2),
-                  child: Row(
-                    children: [
-                      Icon(Icons.star_rounded, size: 14, color: AppTheme.goldAccentLight),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          perk,
-                          style: const TextStyle(fontSize: 11, color: Colors.white),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+  @override
+  Widget build(BuildContext context) {
+    final currency = NumberFormat.simpleCurrency();
+    final dueMonthDay = DateFormat('d MMM').format(widget.card.dueDate).toUpperCase();
+
+    return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        if (details.primaryVelocity != null) {
+          if (details.primaryVelocity! < -150) {
+            _toggleSwipe(true);
+          } else if (details.primaryVelocity! > 150) {
+            _toggleSwipe(false);
+          }
+        }
+      },
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned.fill(
+            child: _buildActionDrawer(),
+          ),
+          AnimatedBuilder(
+            animation: _swipeAnimation,
+            builder: (context, child) {
+              final screenWidth = MediaQuery.of(context).size.width;
+              final offset = -_swipeAnimation.value * (screenWidth * 0.58);
+              final angle = -_swipeAnimation.value * (pi / 32);
+
+              return Transform(
+                transform: Matrix4.identity()
+                  ..setEntry(3, 2, 0.001)
+                  ..setTranslationRaw(offset, 0.0, 0.0)
+                  ..rotateY(angle),
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  onTap: () {
+                    if (_isSwipedOpen) {
+                      _toggleSwipe(false);
+                    }
+                  },
+                  child: Container(
+                    height: 220,
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      gradient: _getCardGradient(),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.45),
+                          blurRadius: 18,
+                          offset: const Offset(0, 10),
                         ),
+                      ],
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.22),
+                        width: 1.2,
                       ),
-                    ],
-                  ),
-                );
-              }).toList(),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'STATEMENT DUE',
-                        style: TextStyle(fontSize: 9, color: Colors.white.withValues(alpha: 0.7)),
-                      ),
-                      Text(
-                        currency.format(widget.card.statementBalance),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w800,
-                          color: Colors.white,
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Opacity(
+                              opacity: 0.08,
+                              child: CustomPaint(
+                                painter: _CardTexturePainter(
+                                  patternType: widget.card.themePreset,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white.withValues(alpha: 0.18),
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: const Icon(
+                                            Icons.shield_outlined,
+                                            size: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            widget.card.issuer.toUpperCase(),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w900,
+                                              letterSpacing: 1.5,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        currency.format(widget.card.statementBalance),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: 0.2,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        widget.card.isPaidThisCycle
+                                            ? '✓ PAID'
+                                            : 'DUE ON $dueMonthDay',
+                                        style: TextStyle(
+                                          color: widget.card.isPaidThisCycle
+                                              ? const Color(0xFF68D391)
+                                              : Colors.white.withValues(alpha: 0.8),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w700,
+                                          letterSpacing: 0.8,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  _buildEmvChip(),
+                                  const SizedBox(width: 14),
+                                  Text(
+                                    '•• ${widget.card.lastFour}',
+                                    style: TextStyle(
+                                      color: Colors.white.withValues(alpha: 0.9),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 3,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'CHIRAG HS',
+                                          style: TextStyle(
+                                            color: Colors.white.withValues(alpha: 0.95),
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: 1.5,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          widget.card.cardName,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.white.withValues(alpha: 0.65),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  ElevatedButton(
+                                    onPressed: widget.card.isPaidThisCycle
+                                        ? null
+                                        : (widget.onPayNow ?? widget.onSimulatePayment),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      foregroundColor: Colors.black,
+                                      elevation: 3,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                        vertical: 8,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      disabledBackgroundColor: Colors.white.withValues(alpha: 0.4),
+                                      disabledForegroundColor: Colors.black45,
+                                    ),
+                                    child: Text(
+                                      widget.card.isPaidThisCycle ? 'Paid' : 'Pay now',
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: 0.4,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                if (!widget.card.isPaidThisCycle)
-                  ElevatedButton.icon(
-                    onPressed: widget.onSimulatePayment,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      elevation: 4,
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    icon: const Icon(Icons.bolt, size: 16, color: Colors.orange),
-                    label: const Text(
-                      'Simulate Bank Pay',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
-                    ),
-                  )
-                else
-                  Chip(
-                    label: Text(
-                      '✓ Cleared & Rewarded',
-                      style: TextStyle(fontSize: 11, color: AppTheme.emeraldAccent, fontWeight: FontWeight.w700),
-                    ),
-                    backgroundColor: Colors.black45,
-                  ),
-              ],
-            ),
-          ],
-        ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
+}
+
+class _CardTexturePainter extends CustomPainter {
+  final CardThemePreset patternType;
+
+  _CardTexturePainter({required this.patternType});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 1.0
+      ..style = PaintingStyle.stroke;
+
+    if (patternType == CardThemePreset.chaseSapphire) {
+      for (double r = 40; r < size.width; r += 35) {
+        canvas.drawCircle(Offset(size.width * 0.8, size.height * 0.2), r, paint);
+      }
+    } else {
+      final path = Path();
+      for (int i = 0; i < 6; i++) {
+        path.moveTo(0, size.height * (i / 5));
+        path.lineTo(size.width, size.height * ((i + 1) / 6));
+      }
+      canvas.drawPath(path, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

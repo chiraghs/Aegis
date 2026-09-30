@@ -1,4 +1,26 @@
 
+import 'package:flutter/material.dart';
+
+class CardTransaction {
+  final String id;
+  final String merchant;
+  final String category;
+  final double amount;
+  final DateTime date;
+  final String cashBackOrReward;
+  final IconData icon;
+
+  const CardTransaction({
+    required this.id,
+    required this.merchant,
+    required this.category,
+    required this.amount,
+    required this.date,
+    required this.cashBackOrReward,
+    required this.icon,
+  });
+}
+
 enum CardNetwork { visa, mastercard, amex }
 
 enum CardThemePreset { amexGold, chaseSapphire, ventureX, appleTitanium }
@@ -18,6 +40,7 @@ class CreditCardModel {
   final List<String> topPerks;
   final CardThemePreset themePreset;
   final bool isPaidThisCycle;
+  final List<CardTransaction> transactions;
 
   CreditCardModel({
     required this.id,
@@ -34,6 +57,7 @@ class CreditCardModel {
     required this.topPerks,
     required this.themePreset,
     this.isPaidThisCycle = false,
+    this.transactions = const [],
   });
 
   double get utilizationRate => (currentBalance / creditLimit).clamp(0.0, 1.0);
@@ -58,6 +82,7 @@ class CreditCardModel {
     List<String>? topPerks,
     CardThemePreset? themePreset,
     bool? isPaidThisCycle,
+    List<CardTransaction>? transactions,
   }) {
     return CreditCardModel(
       id: id ?? this.id,
@@ -74,6 +99,7 @@ class CreditCardModel {
       topPerks: topPerks ?? this.topPerks,
       themePreset: themePreset ?? this.themePreset,
       isPaidThisCycle: isPaidThisCycle ?? this.isPaidThisCycle,
+      transactions: transactions ?? this.transactions,
     );
   }
 }
