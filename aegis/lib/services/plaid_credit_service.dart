@@ -93,7 +93,7 @@ class PlaidCreditService {
         dueDate: now.add(const Duration(days: 4)),
         apr: 24.99,
         topPerks: ['4x Dining Worldwide', '4x US Supermarkets', '\$120 Dining Credit'],
-        themePreset: CardThemePreset.mintGreen,
+        themePreset: CardThemePreset.amexGold,
         isPaidThisCycle: false,
         transactions: [
           CardTransaction(
@@ -138,7 +138,7 @@ class PlaidCreditService {
         dueDate: now.add(const Duration(days: 15)),
         apr: 19.99,
         topPerks: ['2x on All Purchases', '10,000 Anniversary Miles', 'Capital One Lounge Access'],
-        themePreset: CardThemePreset.charcoal,
+        themePreset: CardThemePreset.ventureX,
         isPaidThisCycle: true, // Marked as paid to demonstrate Cleared badge
         transactions: [
           CardTransaction(

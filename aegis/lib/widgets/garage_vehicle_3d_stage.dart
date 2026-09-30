@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import '../constants/theme.dart';
 import '../models/vehicle_model.dart';
 import '../providers/app_state.dart';
+import 'car_brand_logo.dart';
 
 class GarageVehicle3DStage extends StatefulWidget {
   final AppState appState;
   final VoidCallback onAddVehiclePressed;
-  final VoidCallback onSettingsPressed;
+  final VoidCallback? onSettingsPressed;
 
   const GarageVehicle3DStage({
     super.key,
     required this.appState,
     required this.onAddVehiclePressed,
-    required this.onSettingsPressed,
+    this.onSettingsPressed,
   });
 
   @override
@@ -70,10 +71,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
                 onPressed: () => Navigator.of(context).maybePop(),
               ),
               _buildBrandEmblem(vehicle.make),
-              IconButton(
-                icon: Icon(Icons.settings_outlined, color: AppTheme.textPrimary, size: 22),
-                onPressed: widget.onSettingsPressed,
-              ),
+              const SizedBox(width: 48), // Keep emblem centered without settings gear
             ],
           ),
         ),
@@ -277,73 +275,7 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
   }
 
   Widget _buildBrandEmblem(String make) {
-    final lower = make.toLowerCase();
-    Color emblemColor = Colors.redAccent;
-    IconData emblemIcon = Icons.two_wheeler;
-    String brandText = make.toUpperCase();
-
-    if (lower.contains('honda')) {
-      return Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-            decoration: BoxDecoration(
-              color: const Color(0xFFCC0000),
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: const Icon(Icons.two_wheeler, size: 16, color: Colors.white),
-          ),
-          const SizedBox(height: 3),
-          const Text(
-            'HONDA',
-            style: TextStyle(
-              fontSize: 9,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 2.0,
-              color: Color(0xFFCC0000),
-            ),
-          ),
-        ],
-      );
-    } else if (lower.contains('tesla')) {
-      emblemColor = const Color(0xFFE82127);
-      emblemIcon = Icons.electric_car;
-      brandText = 'TESLA';
-    } else if (lower.contains('porsche')) {
-      emblemColor = const Color(0xFFD4AF37);
-      emblemIcon = Icons.sports_score;
-      brandText = 'PORSCHE';
-    } else if (lower.contains('ford')) {
-      emblemColor = const Color(0xFF003478);
-      emblemIcon = Icons.directions_car;
-      brandText = 'FORD';
-    } else if (lower.contains('bmw')) {
-      emblemColor = const Color(0xFF0066B1);
-      emblemIcon = Icons.adjust;
-      brandText = 'BMW';
-    } else if (lower.contains('rivian')) {
-      emblemColor = const Color(0xFFE5A93C);
-      emblemIcon = Icons.navigation;
-      brandText = 'RIVIAN';
-    }
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(emblemIcon, size: 24, color: emblemColor),
-        const SizedBox(height: 2),
-        Text(
-          brandText,
-          style: TextStyle(
-            fontSize: 9,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.5,
-            color: emblemColor,
-          ),
-        ),
-      ],
-    );
+    return CarBrandLogo(make: make, size: 34);
   }
 
 

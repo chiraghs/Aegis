@@ -144,7 +144,7 @@ class ThemePalette {
     surfaceBorderLight: Color(0xFF383D50),
     goldAccent: Color(0xFFD4AF37), // Matte champagne brass
     goldAccentLight: Color(0xFFE6C875),
-    emeraldAccent: Color(0xFF10B981), // Matte emerald
+    emeraldAccent: Color(0xFF7DE43A), // Aegis Mint Green
     cyanAccent: Color(0xFF0EA5E9), // Slate cyan
     crimsonAccent: Color(0xFFF43F5E), // Terracotta crimson
     amberAccent: Color(0xFFF59E0B),
@@ -186,21 +186,21 @@ class ThemePalette {
   /// Light Palette: Warm gallery paper, crisp matte card surfaces, deep ink typography
   static const ThemePalette light = ThemePalette(
     brightness: Brightness.light,
-    background: Color(0xFFF6F7F9), // Warm gallery paper canvas
+    background: Color(0xFFEFF3ED), // Aegis Cloud Palette Grey
     surface: Color(0xFFFFFFFF),
     surfaceCard: Color(0xFFFFFFFF),
-    surfaceCardElevated: Color(0xFFF1F3F6),
-    surfaceBorder: Color(0xFFE2E4E9), // Hairline subtle border
-    surfaceBorderLight: Color(0xFFD1D5DB),
-    goldAccent: Color(0xFF9E742E), // Rich matte brass (strong contrast on light)
-    goldAccentLight: Color(0xFFB8860B),
-    emeraldAccent: Color(0xFF0D7A46), // British racing matte green
+    surfaceCardElevated: Color(0xFFE5ECE2),
+    surfaceBorder: Color(0xFFE2E7DF), // Aegis Grey border
+    surfaceBorderLight: Color(0xFFD6DDD2),
+    goldAccent: Color(0xFF2B2B2B), // Aegis Charcoal
+    goldAccentLight: Color(0xFF7DE43A), // Aegis Mint
+    emeraldAccent: Color(0xFF7DE43A), // Aegis Mint Green
     cyanAccent: Color(0xFF0369A1), // Deep slate cyan
     crimsonAccent: Color(0xFFBE123C), // Matte berry crimson
     amberAccent: Color(0xFFB45309),
-    textPrimary: Color(0xFF0F172A), // Deep ink charcoal
-    textSecondary: Color(0xFF475569), // Slate secondary
-    textMuted: Color(0xFF94A3B8),
+    textPrimary: Color(0xFF2B2B2B), // Aegis Charcoal
+    textSecondary: Color(0xFF5F685B), // Slate secondary
+    textMuted: Color(0xFF8F988A),
     goldGradient: LinearGradient(
       colors: [Color(0xFFC59B3C), Color(0xFF9E742E)],
       begin: Alignment.topLeft,

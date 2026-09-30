@@ -11,6 +11,8 @@ import '../widgets/referral_growth_loop_widget.dart';
 import '../widgets/viral_shield_story_card.dart';
 import '../widgets/personal_family_insurance_card.dart';
 import '../services/onesignal_service.dart';
+import '../models/subscription_tier.dart';
+import '../widgets/aegis_logo.dart';
 import 'paywall_screen.dart';
 import 'networth_detail_screen.dart';
 import 'notifications_inbox_screen.dart';
@@ -176,6 +178,141 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
+  void _showSettingsModal(BuildContext context, AppState appState) {
+    final isDark = appState.isDarkMode;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: isDark ? const Color(0xFF161922) : const Color(0xFFFFFFFF),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      builder: (ctx) => StatefulBuilder(
+        builder: (ctx, setModalState) => Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppTheme.surfaceBorder,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF7DE43A).withValues(alpha: 0.15),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.settings, color: Color(0xFF7DE43A), size: 20),
+                      ),
+                      const SizedBox(width: 10),
+                      const Text(
+                        'APP SETTINGS',
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: 1.2),
+                      ),
+                    ],
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, size: 20),
+                    onPressed: () => Navigator.pop(ctx),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // Theme Mode Setting (Light / Dark switch - exclusive control)
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF1E2230) : const Color(0xFFF4F6F2),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: AppTheme.surfaceBorder),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Icon(
+                            isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
+                            color: const Color(0xFF7DE43A),
+                            size: 22,
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Theme Mode',
+                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  isDark ? 'Dark Mode (Stealth Carbon)' : 'Light Mode (Cloud Clean)',
+                                  style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Switch(
+                      value: isDark,
+                      activeThumbColor: const Color(0xFF7DE43A),
+                      onChanged: (val) {
+                        appState.toggleThemeMode();
+                        Navigator.pop(ctx);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // Push Notification Alerts
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.notifications_active_outlined),
+                title: const Text('Push & Due Date Alerts', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+                subtitle: const Text('Real-time alerts via OneSignal for card bills & citations', style: TextStyle(fontSize: 11)),
+                trailing: const Icon(Icons.check_circle, color: Color(0xFF7DE43A)),
+              ),
+
+              // DMV Auto Sync
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.security),
+                title: const Text('State DMV & NHTSA Auto-Sync', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13)),
+                subtitle: const Text('Automated compliance & safety recall scanning', style: TextStyle(fontSize: 11)),
+                trailing: const Icon(Icons.check_circle, color: Color(0xFF7DE43A)),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context);
@@ -185,28 +322,71 @@ class DashboardScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppTheme.background,
       appBar: AppBar(
-        titleSpacing: 12,
+        titleSpacing: 4,
+        centerTitle: false,
+        leadingWidth: 84,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const PaywallScreen()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF86EA45), Color(0xFF7DE43A)],
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF7DE43A).withValues(alpha: 0.35),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.workspace_premium, size: 12, color: Color(0xFF1E2818)),
+                      const SizedBox(width: 3),
+                      Text(
+                        appState.isBlackEdition ? 'BLACK' : (appState.tier == SubscriptionTier.gold ? 'GOLD' : 'UPGRADE'),
+                        style: const TextStyle(
+                          fontSize: 9.0,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.5,
+                          color: Color(0xFF1E2818),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         title: FittedBox(
           fit: BoxFit.scaleDown,
-          alignment: Alignment.centerLeft,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 28,
-                height: 28,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: AppTheme.goldGradient,
-                ),
-                child: const Center(
-                  child: Text('Æ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.black)),
-                ),
-              ),
-              const SizedBox(width: 8),
-              const Text(
+              const AegisLogo(size: 24, borderRadius: 6),
+              const SizedBox(width: 6),
+              Text(
                 'AEGIS',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: 2),
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 2.2,
+                  color: AppTheme.textPrimary,
+                ),
               ),
             ],
           ),
@@ -247,30 +427,16 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () => ViralShieldStoryModal.show(context, appState),
           ),
           IconButton(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            constraints: const BoxConstraints(),
-            icon: Icon(
-              appState.isDarkMode ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
-              color: AppTheme.textPrimary,
-              size: 20,
-            ),
-            tooltip: appState.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode',
-            onPressed: () => appState.toggleThemeMode(),
-          ),
-          IconButton(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             constraints: const BoxConstraints(),
-            icon: Icon(Icons.workspace_premium, color: AppTheme.goldAccent, size: 20),
-            tooltip: 'Aegis Club Pass',
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const PaywallScreen()),
-              );
-            },
+            icon: Icon(Icons.settings_outlined, color: AppTheme.textPrimary, size: 21),
+            tooltip: 'Settings',
+            onPressed: () => _showSettingsModal(context, appState),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
         ],
       ),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 40),
         child: Column(

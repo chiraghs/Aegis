@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../constants/theme.dart';
 import '../providers/app_state.dart';
+import 'aegis_logo.dart';
 
 class ViralShieldStoryModal extends StatefulWidget {
   final AppState appState;
@@ -111,17 +112,7 @@ class _ViralShieldStoryModalState extends State<ViralShieldStoryModal> {
                           children: [
                             Row(
                               children: [
-                                Container(
-                                  width: 28,
-                                  height: 28,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: AppTheme.goldGradient,
-                                  ),
-                                  child: const Center(
-                                    child: Text('Æ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Colors.black)),
-                                  ),
-                                ),
+                                const AegisLogo(size: 28, borderRadius: 8),
                                 const SizedBox(width: 8),
                                 const Text('AEGIS', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, letterSpacing: 2)),
                               ],

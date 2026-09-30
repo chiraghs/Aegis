@@ -7,7 +7,6 @@ import '../widgets/garage_challans_and_compliance_card.dart';
 import '../widgets/garage_insurance_hub.dart';
 import '../widgets/garage_glovebox_card.dart';
 import '../widgets/garage_rush_hour_rewards.dart';
-import '../widgets/garage_rewards_meter.dart';
 import 'paywall_screen.dart';
 
 class GarageScreen extends StatefulWidget {
@@ -193,67 +192,6 @@ class _GarageScreenState extends State<GarageScreen> {
     );
   }
 
-  void _showSettingsModal(BuildContext context, AppState appState) {
-    final isDark = appState.isDarkMode;
-
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: isDark ? const Color(0xFF161922) : Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
-      ),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'GARAGE SETTINGS',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, letterSpacing: 1.2),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.pop(ctx),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.dark_mode_outlined),
-              title: const Text('Theme Mode', style: TextStyle(fontWeight: FontWeight.w700)),
-              subtitle: Text(isDark ? 'Dark Mode (Stealth Carbon)' : 'Light Mode (Clean Studio)'),
-              trailing: Switch(
-                value: isDark,
-                onChanged: (_) {
-                  appState.toggleThemeMode();
-                  Navigator.pop(ctx);
-                },
-              ),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.notifications_active_outlined),
-              title: const Text('Traffic Citation Alerts', style: TextStyle(fontWeight: FontWeight.w700)),
-              subtitle: const Text('Instant notification when municipal speed/red-light camera tags vehicle'),
-              trailing: Icon(Icons.check_circle, color: AppTheme.accentEmerald),
-            ),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.security),
-              title: const Text('State DMV Auto-Sync', style: TextStyle(fontWeight: FontWeight.w700)),
-              subtitle: const Text('Real-time sync with State DMV & Apple Wallet mDL'),
-              trailing: Icon(Icons.check_circle, color: AppTheme.accentEmerald),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +210,6 @@ class _GarageScreenState extends State<GarageScreen> {
               GarageVehicle3DStage(
                 appState: appState,
                 onAddVehiclePressed: () => _showAddVehicleModal(context, appState),
-                onSettingsPressed: () => _showSettingsModal(context, appState),
               ),
 
               const SizedBox(height: 12),
@@ -288,9 +225,6 @@ class _GarageScreenState extends State<GarageScreen> {
 
               // 5. RUSH HOUR REWARDS Podium Carousel (Peak Traffic Hour Drops)
               GarageRushHourRewards(appState: appState),
-
-              // 6. September Rewards Meter (Segmented Battery Bar + You Won Card + Spends Breakdown)
-              GarageRewardsMeter(appState: appState),
 
               const SizedBox(height: 40),
             ],
