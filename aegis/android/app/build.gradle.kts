@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         // Specify unique Application ID
-        applicationId = "com.shipaton.aegis"
+        applicationId = "com.aegisfintech.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
