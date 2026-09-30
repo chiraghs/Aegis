@@ -9,6 +9,7 @@ import '../widgets/glass_container.dart';
 import '../widgets/asset_allocation_bar.dart';
 import '../widgets/referral_growth_loop_widget.dart';
 import '../widgets/viral_shield_story_card.dart';
+import '../widgets/personal_family_insurance_card.dart';
 import '../services/onesignal_service.dart';
 import 'paywall_screen.dart';
 import 'networth_detail_screen.dart';
@@ -539,6 +540,9 @@ class DashboardScreen extends StatelessWidget {
                 ],
               ),
             ),
+
+            // Personal & Family Insurance Vault Card
+            PersonalFamilyInsuranceCard(appState: appState),
 
             // VIP Referral Growth Loop (Layers Hackathon Sponsor Award)
             Padding(

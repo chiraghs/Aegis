@@ -1,5 +1,57 @@
 import 'package:flutter/material.dart';
 
+/// Telematics & Usage-Based Insurance (UBI) tracking data
+class VehicleTelematicsTracking {
+  final int safeDriverScore; // 0-100 (e.g. 96)
+  final double discountPercent; // e.g. 28.0%
+  final double smoothBrakingScore; // 0-100 (e.g. 98)
+  final double speedComplianceScore; // 0-100 (e.g. 95)
+  final double safeCorneringScore; // 0-100 (e.g. 96)
+  final double phoneFreeScore; // 0-100 (e.g. 100)
+  final double daytimeDrivingScore; // 0-100 (e.g. 94)
+  final int annualMilesLogged; // e.g. 4210
+  final int annualMilesLimit; // e.g. 10000
+  final String tierGrade; // 'Tier A+ Elite'
+
+  const VehicleTelematicsTracking({
+    required this.safeDriverScore,
+    required this.discountPercent,
+    required this.smoothBrakingScore,
+    required this.speedComplianceScore,
+    required this.safeCorneringScore,
+    required this.phoneFreeScore,
+    required this.daytimeDrivingScore,
+    required this.annualMilesLogged,
+    required this.annualMilesLimit,
+    required this.tierGrade,
+  });
+}
+
+/// Vehicle insurance claim with step-by-step pipeline status
+class VehicleInsuranceClaimItem {
+  final String id;
+  final String claimNumber;
+  final String title;
+  final DateTime filedDate;
+  final String status; // 'Filed', 'In Review', 'Approved', 'Paid'
+  final int currentStep; // 0 to 3
+  final double payoutAmount;
+  final double deductiblePaid;
+  final String repairShop;
+
+  const VehicleInsuranceClaimItem({
+    required this.id,
+    required this.claimNumber,
+    required this.title,
+    required this.filedDate,
+    required this.status,
+    required this.currentStep,
+    required this.payoutAmount,
+    required this.deductiblePaid,
+    required this.repairShop,
+  });
+}
+
 /// Represents an active or quotable US automotive insurance policy
 class InsurancePolicyModel {
   final String id;
@@ -12,6 +64,16 @@ class InsurancePolicyModel {
   final bool isActive;
   final String vehicleId;
   final double idv; // Insured Value / Replacement Value
+  final VehicleTelematicsTracking? telematics;
+  final List<VehicleInsuranceClaimItem> claims;
+  final double comprehensiveDeductible;
+  final double collisionDeductible;
+  final String bodilyInjuryLimit;
+  final String propertyDamageLimit;
+  final bool hasRoadsideAssistance;
+  final bool hasRentalReimbursement;
+  final int continuousCoverageYears;
+  final DateTime? nextBillingDate;
 
   const InsurancePolicyModel({
     required this.id,
@@ -24,7 +86,20 @@ class InsurancePolicyModel {
     required this.isActive,
     required this.vehicleId,
     required this.idv,
+    this.telematics,
+    this.claims = const [],
+    this.comprehensiveDeductible = 250.0,
+    this.collisionDeductible = 500.0,
+    this.bodilyInjuryLimit = '\$100k / \$300k',
+    this.propertyDamageLimit = '\$100k',
+    this.hasRoadsideAssistance = true,
+    this.hasRentalReimbursement = true,
+    this.continuousCoverageYears = 5,
+    this.nextBillingDate,
   });
+
+  double get monthlyPremium => annualPremium / 12;
+  int get daysUntilRenewal => expiryDate.difference(DateTime.now()).inDays.clamp(0, 365);
 
   InsurancePolicyModel copyWith({
     String? id,
@@ -37,6 +112,16 @@ class InsurancePolicyModel {
     bool? isActive,
     String? vehicleId,
     double? idv,
+    VehicleTelematicsTracking? telematics,
+    List<VehicleInsuranceClaimItem>? claims,
+    double? comprehensiveDeductible,
+    double? collisionDeductible,
+    String? bodilyInjuryLimit,
+    String? propertyDamageLimit,
+    bool? hasRoadsideAssistance,
+    bool? hasRentalReimbursement,
+    int? continuousCoverageYears,
+    DateTime? nextBillingDate,
   }) {
     return InsurancePolicyModel(
       id: id ?? this.id,
@@ -49,6 +134,16 @@ class InsurancePolicyModel {
       isActive: isActive ?? this.isActive,
       vehicleId: vehicleId ?? this.vehicleId,
       idv: idv ?? this.idv,
+      telematics: telematics ?? this.telematics,
+      claims: claims ?? this.claims,
+      comprehensiveDeductible: comprehensiveDeductible ?? this.comprehensiveDeductible,
+      collisionDeductible: collisionDeductible ?? this.collisionDeductible,
+      bodilyInjuryLimit: bodilyInjuryLimit ?? this.bodilyInjuryLimit,
+      propertyDamageLimit: propertyDamageLimit ?? this.propertyDamageLimit,
+      hasRoadsideAssistance: hasRoadsideAssistance ?? this.hasRoadsideAssistance,
+      hasRentalReimbursement: hasRentalReimbursement ?? this.hasRentalReimbursement,
+      continuousCoverageYears: continuousCoverageYears ?? this.continuousCoverageYears,
+      nextBillingDate: nextBillingDate ?? this.nextBillingDate,
     );
   }
 }

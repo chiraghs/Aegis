@@ -133,4 +133,65 @@ void main() {
     expect(claimed, isTrue);
     expect(state.rushHourRewards.first.isClaimed, isTrue);
   });
+
+  test('AppState tracks Vehicle Insurance Telematics and Personal & Family Insurance Vault', () {
+    final state = AppState();
+
+    // 1. Vehicle Insurance Telematics & UBI Tracking
+    final activePolicy = state.activeVehicleInsurancePolicy;
+    expect(activePolicy, isNotNull);
+    expect(activePolicy!.telematics, isNotNull);
+    expect(activePolicy.telematics!.safeDriverScore, equals(96));
+    expect(activePolicy.telematics!.discountPercent, equals(28.0));
+    expect(activePolicy.claims.length, greaterThanOrEqualTo(1));
+    expect(activePolicy.claims.first.title, contains('Windshield'));
+
+    // File a new vehicle claim
+    final claimFiled = state.fileVehicleInsuranceClaim(
+      policyId: activePolicy.id,
+      title: 'Bumper scratch in parking lot',
+      shop: 'Tesla Collision Fremont',
+      estimatedCost: 850.0,
+    );
+    expect(claimFiled, isTrue);
+    expect(state.activeVehicleInsurancePolicy!.claims.length, equals(2));
+
+    // 2. Personal & Family Insurance Vault
+    expect(state.familyPolicies.length, equals(3));
+
+    // Health Policy
+    final health = state.primaryHealthPolicy;
+    expect(health, isNotNull);
+    expect(health!.provider, equals('Blue Cross Blue Shield'));
+    expect(health.familyDeductibleMet, equals(1450.0));
+    expect(health.familyDeductibleTotal, equals(3000.0));
+    expect(health.coveredMembers.length, equals(4));
+
+    // Term Life Policy
+    final life = state.primaryLifePolicy;
+    expect(life, isNotNull);
+    expect(life!.lifeFaceValue, equals(1000000.0));
+    expect(life.termYearsRemaining, equals(14));
+    expect(life.beneficiaries.length, equals(2));
+
+    // Homeowners Policy
+    final home = state.primaryHomePolicy;
+    expect(home, isNotNull);
+    expect(home!.dwellingCoverage, equals(650000.0));
+
+    // Total Family Insured Value calculation
+    expect(state.totalFamilyInsuredValue, equals(1900000.0)); // 1M life + 650k dwelling + 250k personal prop
+
+    // File a Family Health claim
+    final famClaimFiled = state.fileFamilyClaim(
+      policyId: health.id,
+      title: 'Dermatology consultation',
+      memberName: 'Sarah Vance',
+      amount: 180.0,
+      notes: 'Out-of-network specialist copay',
+    );
+    expect(famClaimFiled, isTrue);
+    expect(state.primaryHealthPolicy!.claims.length, equals(3));
+  });
 }
+

@@ -7,6 +7,7 @@ import '../models/reward_model.dart';
 import '../models/subscription_tier.dart';
 import '../models/asset_model.dart';
 import '../models/garage_extras_model.dart';
+import '../models/family_insurance_model.dart';
 import '../services/revenuecat_service.dart';
 import '../services/plaid_credit_service.dart';
 import '../services/nhtsa_vehicle_service.dart';
@@ -30,6 +31,7 @@ class AppState extends ChangeNotifier {
   // CRED Garage Extended State
   int _selectedVehicleIndex = 0;
   List<InsurancePolicyModel> _insurancePolicies = [];
+  List<FamilyInsurancePolicyModel> _familyPolicies = [];
   List<ChallanModel> _challans = [];
   List<VehicleSpendItem> _vehicleSpends = [];
   List<GloveboxDocModel> _gloveboxDocs = [];
@@ -147,7 +149,7 @@ class AppState extends ChangeNotifier {
     _fixedLiabilities = NetWorthService.getInitialLiabilities();
     _tier = RevenueCatService.instance.currentTier;
 
-    // Aegis US Garage Initial Seed Data
+    // Aegis US Garage Initial Seed Data with Live Telematics & Claims Tracking
     _insurancePolicies = [
       InsurancePolicyModel(
         id: 'pol_1',
@@ -160,6 +162,39 @@ class AppState extends ChangeNotifier {
         isActive: true,
         vehicleId: 'car_tesla_3',
         idv: 42500.0,
+        comprehensiveDeductible: 250.0,
+        collisionDeductible: 500.0,
+        bodilyInjuryLimit: '\$100k / \$300k',
+        propertyDamageLimit: '\$100k',
+        hasRoadsideAssistance: true,
+        hasRentalReimbursement: true,
+        continuousCoverageYears: 5,
+        nextBillingDate: DateTime.now().add(const Duration(days: 14)),
+        telematics: const VehicleTelematicsTracking(
+          safeDriverScore: 96,
+          discountPercent: 28.0,
+          smoothBrakingScore: 98.0,
+          speedComplianceScore: 95.0,
+          safeCorneringScore: 96.0,
+          phoneFreeScore: 100.0,
+          daytimeDrivingScore: 94.0,
+          annualMilesLogged: 4210,
+          annualMilesLimit: 10000,
+          tierGrade: 'Tier A+ Elite',
+        ),
+        claims: [
+          VehicleInsuranceClaimItem(
+            id: 'v_clm_1',
+            claimNumber: 'CLM-2026-8812',
+            title: 'OEM Windshield Glass Chip Repair',
+            filedDate: DateTime.now().subtract(const Duration(days: 42)),
+            status: 'Paid',
+            currentStep: 3,
+            payoutAmount: 450.0,
+            deductiblePaid: 0.0,
+            repairShop: 'Safelite AutoGlass Certified Center',
+          ),
+        ],
       ),
       InsurancePolicyModel(
         id: 'pol_2',
@@ -170,8 +205,162 @@ class AppState extends ChangeNotifier {
         annualPremium: 1540.0,
         expiryDate: DateTime.now().add(const Duration(days: 140)),
         isActive: true,
-        vehicleId: 'car_tesla_3',
-        idv: 45000.0,
+        vehicleId: 'car_porsche_taycan',
+        idv: 84000.0,
+        comprehensiveDeductible: 500.0,
+        collisionDeductible: 1000.0,
+        bodilyInjuryLimit: '\$250k / \$500k',
+        propertyDamageLimit: '\$250k',
+        hasRoadsideAssistance: true,
+        hasRentalReimbursement: true,
+        continuousCoverageYears: 3,
+        nextBillingDate: DateTime.now().add(const Duration(days: 28)),
+        telematics: const VehicleTelematicsTracking(
+          safeDriverScore: 92,
+          discountPercent: 22.0,
+          smoothBrakingScore: 94.0,
+          speedComplianceScore: 91.0,
+          safeCorneringScore: 92.0,
+          phoneFreeScore: 98.0,
+          daytimeDrivingScore: 92.0,
+          annualMilesLogged: 3150,
+          annualMilesLimit: 8000,
+          tierGrade: 'Tier A Preferred',
+        ),
+      ),
+    ];
+
+    // Personal & Family Insurance Hub (Health, Term Life, Homeowners)
+    _familyPolicies = [
+      FamilyInsurancePolicyModel(
+        id: 'fam_pol_health',
+        provider: 'Blue Cross Blue Shield',
+        planName: 'Gold PPO 80/20 Family Health & Rx',
+        policyNumber: 'BCBS-US-991204',
+        policyType: FamilyPolicyType.health,
+        annualPremium: 6840.0,
+        monthlyPremium: 570.0,
+        renewalDate: DateTime.now().add(const Duration(days: 94)),
+        isActive: true,
+        familyDeductibleMet: 1450.0,
+        familyDeductibleTotal: 3000.0,
+        outOfPocketMet: 4200.0,
+        outOfPocketMax: 8500.0,
+        hsaFsaBalance: 3250.0,
+        coveredMembers: const [
+          FamilyMemberCoverage(
+            id: 'mem_1',
+            name: 'Alex Vance',
+            relation: 'Self (Policyholder)',
+            memberId: 'BCBS-01-VNC',
+            rxBin: '004336',
+            rxGroup: 'RX7810',
+            individualDeductibleMet: 750.0,
+            individualDeductibleLimit: 1500.0,
+          ),
+          FamilyMemberCoverage(
+            id: 'mem_2',
+            name: 'Sarah Vance',
+            relation: 'Spouse',
+            memberId: 'BCBS-02-VNC',
+            rxBin: '004336',
+            rxGroup: 'RX7810',
+            individualDeductibleMet: 450.0,
+            individualDeductibleLimit: 1500.0,
+          ),
+          FamilyMemberCoverage(
+            id: 'mem_3',
+            name: 'Emma Vance',
+            relation: 'Dependent (Daughter)',
+            memberId: 'BCBS-03-VNC',
+            rxBin: '004336',
+            rxGroup: 'RX7810',
+            individualDeductibleMet: 250.0,
+            individualDeductibleLimit: 1500.0,
+          ),
+          FamilyMemberCoverage(
+            id: 'mem_4',
+            name: 'Noah Vance',
+            relation: 'Dependent (Son)',
+            memberId: 'BCBS-04-VNC',
+            rxBin: '004336',
+            rxGroup: 'RX7810',
+            individualDeductibleMet: 0.0,
+            individualDeductibleLimit: 1500.0,
+          ),
+        ],
+        claims: [
+          FamilyClaimItem(
+            id: 'f_clm_1',
+            title: 'Pediatric Annual Wellness Exam & Vaccines',
+            provider: 'Stanford Children\'s Health',
+            memberName: 'Emma Vance',
+            filedDate: DateTime.now().subtract(const Duration(days: 18)),
+            amountClaimed: 320.0,
+            amountCovered: 320.0,
+            memberResponsibility: 0.0,
+            status: FamilyClaimStatus.paid,
+            notes: '100% preventative care coverage applied under ACA guidelines.',
+          ),
+          FamilyClaimItem(
+            id: 'f_clm_2',
+            title: 'Urgent Care Visit & Ankle X-Ray',
+            provider: 'Sutter Health Walk-In Care',
+            memberName: 'Alex Vance',
+            filedDate: DateTime.now().subtract(const Duration(days: 34)),
+            amountClaimed: 450.0,
+            amountCovered: 350.0,
+            memberResponsibility: 100.0,
+            status: FamilyClaimStatus.paid,
+            notes: 'Tier 1 in-network copay applied; \$350 covered by insurer.',
+          ),
+        ],
+      ),
+      FamilyInsurancePolicyModel(
+        id: 'fam_pol_life',
+        provider: 'Northwestern Mutual',
+        planName: '20-Year Level Term Life Protection',
+        policyNumber: 'NWM-TERM-1000K',
+        policyType: FamilyPolicyType.termLife,
+        annualPremium: 720.0,
+        monthlyPremium: 60.0,
+        renewalDate: DateTime.now().add(const Duration(days: 310)),
+        isActive: true,
+        lifeFaceValue: 1000000.0,
+        termYearsRemaining: 14,
+        beneficiaries: const [
+          LifeBeneficiaryAllocation(name: 'Sarah Vance', relation: 'Spouse', percentage: 70.0),
+          LifeBeneficiaryAllocation(name: 'Vance Family Irrevocable Trust', relation: 'Family Trust', percentage: 30.0),
+        ],
+      ),
+      FamilyInsurancePolicyModel(
+        id: 'fam_pol_home',
+        provider: 'Lemonade',
+        planName: 'Smart Homeowners High-Value HO-3',
+        policyNumber: 'LMN-HO3-55912',
+        policyType: FamilyPolicyType.homeowners,
+        annualPremium: 1140.0,
+        monthlyPremium: 95.0,
+        renewalDate: DateTime.now().add(const Duration(days: 180)),
+        isActive: true,
+        dwellingCoverage: 650000.0,
+        personalPropertyCoverage: 250000.0,
+        liabilityCoverage: 500000.0,
+        propertyDeductible: 1000.0,
+        claims: [
+          FamilyClaimItem(
+            id: 'f_clm_3',
+            title: 'Water Heater Pressure Valve Minor Repair',
+            provider: 'Lemonade Fast-Track',
+            memberName: 'Alex & Sarah Vance',
+            filedDate: DateTime.now().subtract(const Duration(days: 75)),
+            amountClaimed: 2400.0,
+            amountCovered: 1400.0,
+            memberResponsibility: 1000.0,
+            status: FamilyClaimStatus.paid,
+            notes: '\$1,400 direct deposited to account after \$1,000 policy deductible.',
+          ),
+        ],
       ),
     ];
 
@@ -505,11 +694,136 @@ class AppState extends ChangeNotifier {
   List<GloveboxDocModel> get gloveboxDocs => _gloveboxDocs;
   List<RushHourRewardModel> get rushHourRewards => _rushHourRewards;
 
-  bool claimRushHourReward(String id) {
+    bool claimRushHourReward(String id) {
     final idx = _rushHourRewards.indexWhere((r) => r.id == id);
     if (idx == -1 || _rushHourRewards[idx].isClaimed) return false;
     _rushHourRewards[idx] = _rushHourRewards[idx].copyWith(isClaimed: true);
     _rewards = _rewards.copyWith(totalCoins: _rewards.totalCoins + 500);
+    notifyListeners();
+    return true;
+  }
+
+  // --- Family & Personal Insurance Tracking ---
+  List<FamilyInsurancePolicyModel> get familyPolicies => _familyPolicies;
+
+  FamilyInsurancePolicyModel? get primaryHealthPolicy {
+    final healths = _familyPolicies.where((p) => p.policyType == FamilyPolicyType.health);
+    return healths.isNotEmpty ? healths.first : null;
+  }
+
+  FamilyInsurancePolicyModel? get primaryLifePolicy {
+    final lifes = _familyPolicies.where((p) => p.policyType == FamilyPolicyType.termLife);
+    return lifes.isNotEmpty ? lifes.first : null;
+  }
+
+  FamilyInsurancePolicyModel? get primaryHomePolicy {
+    final homes = _familyPolicies.where((p) => p.policyType == FamilyPolicyType.homeowners);
+    return homes.isNotEmpty ? homes.first : null;
+  }
+
+  double get totalFamilyInsuredValue {
+    double total = 0.0;
+    for (final p in _familyPolicies) {
+      if (p.lifeFaceValue != null) total += p.lifeFaceValue!;
+      if (p.dwellingCoverage != null) total += p.dwellingCoverage!;
+      if (p.personalPropertyCoverage != null) total += p.personalPropertyCoverage!;
+    }
+    return total;
+  }
+
+  double get totalFamilyAnnualPremium {
+    return _familyPolicies.fold(0.0, (s, p) => s + p.annualPremium);
+  }
+
+  /// Active vehicle's insurance policy
+  InsurancePolicyModel? get activeVehicleInsurancePolicy {
+    final activeId = activeVehicle.id;
+    final match = _insurancePolicies.where((p) => p.vehicleId == activeId || p.vehicleId.contains(activeVehicle.make.toLowerCase()));
+    if (match.isNotEmpty) return match.first;
+    return _insurancePolicies.isNotEmpty ? _insurancePolicies.first : null;
+  }
+
+  /// File a rapid claim on vehicle policy
+  bool fileVehicleInsuranceClaim({
+    required String policyId,
+    required String title,
+    required String shop,
+    required double estimatedCost,
+  }) {
+    final idx = _insurancePolicies.indexWhere((p) => p.id == policyId);
+    if (idx == -1) return false;
+
+    final newClaim = VehicleInsuranceClaimItem(
+      id: 'v_clm_${DateTime.now().millisecondsSinceEpoch}',
+      claimNumber: 'CLM-2026-${(1000 + _insurancePolicies[idx].claims.length * 23)}',
+      title: title,
+      filedDate: DateTime.now(),
+      status: 'In Review',
+      currentStep: 1,
+      payoutAmount: estimatedCost,
+      deductiblePaid: _insurancePolicies[idx].comprehensiveDeductible,
+      repairShop: shop,
+    );
+
+    final updatedClaims = [newClaim, ..._insurancePolicies[idx].claims];
+    _insurancePolicies[idx] = _insurancePolicies[idx].copyWith(claims: updatedClaims);
+    notifyListeners();
+    return true;
+  }
+
+  /// File a family policy claim
+  bool fileFamilyClaim({
+    required String policyId,
+    required String title,
+    required String memberName,
+    required double amount,
+    required String notes,
+  }) {
+    final idx = _familyPolicies.indexWhere((p) => p.id == policyId);
+    if (idx == -1) return false;
+
+    final newClaim = FamilyClaimItem(
+      id: 'f_clm_${DateTime.now().millisecondsSinceEpoch}',
+      title: title,
+      provider: _familyPolicies[idx].provider,
+      memberName: memberName,
+      filedDate: DateTime.now(),
+      amountClaimed: amount,
+      amountCovered: amount * 0.8,
+      memberResponsibility: amount * 0.2,
+      status: FamilyClaimStatus.inReview,
+      notes: notes,
+    );
+
+    final updatedClaims = [newClaim, ..._familyPolicies[idx].claims];
+    final updatedList = List<FamilyInsurancePolicyModel>.from(_familyPolicies);
+    final policy = updatedList[idx];
+    updatedList[idx] = FamilyInsurancePolicyModel(
+      id: policy.id,
+      provider: policy.provider,
+      planName: policy.planName,
+      policyNumber: policy.policyNumber,
+      policyType: policy.policyType,
+      annualPremium: policy.annualPremium,
+      monthlyPremium: policy.monthlyPremium,
+      renewalDate: policy.renewalDate,
+      isActive: policy.isActive,
+      familyDeductibleMet: policy.familyDeductibleMet,
+      familyDeductibleTotal: policy.familyDeductibleTotal,
+      outOfPocketMet: policy.outOfPocketMet,
+      outOfPocketMax: policy.outOfPocketMax,
+      hsaFsaBalance: policy.hsaFsaBalance,
+      coveredMembers: policy.coveredMembers,
+      lifeFaceValue: policy.lifeFaceValue,
+      termYearsRemaining: policy.termYearsRemaining,
+      beneficiaries: policy.beneficiaries,
+      dwellingCoverage: policy.dwellingCoverage,
+      personalPropertyCoverage: policy.personalPropertyCoverage,
+      liabilityCoverage: policy.liabilityCoverage,
+      propertyDeductible: policy.propertyDeductible,
+      claims: updatedClaims,
+    );
+    _familyPolicies = updatedList;
     notifyListeners();
     return true;
   }
