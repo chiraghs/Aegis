@@ -21,37 +21,9 @@ class GarageVehicle3DStage extends StatefulWidget {
   State<GarageVehicle3DStage> createState() => _GarageVehicle3DStageState();
 }
 
-class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with SingleTickerProviderStateMixin {
+class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> {
   double _rotationAngle = 0.15; // Initial slight angle
   double _tiltAngle = 0.05;
-  late AnimationController _animController;
-  Animation<double>? _resetAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animController.dispose();
-    super.dispose();
-  }
-
-  void _rotateToAngle(double targetAngle) {
-    _resetAnimation = Tween<double>(begin: _rotationAngle, end: targetAngle).animate(
-      CurvedAnimation(parent: _animController, curve: Curves.easeOutCubic),
-    )..addListener(() {
-        setState(() {
-          _rotationAngle = _resetAnimation!.value;
-        });
-      });
-    _animController.forward(from: 0.0);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -248,23 +220,6 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
             ],
           ),
         ),
-
-        // 3D Quick-Angle Selector Pills
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildAnglePill('360° Drag', () {}, isActive: true),
-              const SizedBox(width: 8),
-              _buildAnglePill('Front', () => _rotateToAngle(0.0)),
-              const SizedBox(width: 8),
-              _buildAnglePill('Side', () => _rotateToAngle(math.pi / 2)),
-              const SizedBox(width: 8),
-              _buildAnglePill('Rear', () => _rotateToAngle(math.pi)),
-            ],
-          ),
-        ),
       ],
     );
   }
@@ -408,30 +363,6 @@ class _GarageVehicle3DStageState extends State<GarageVehicle3DStage> with Single
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildAnglePill(String label, VoidCallback onTap, {bool isActive = false}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-        decoration: BoxDecoration(
-          color: isActive ? AppTheme.goldAccent.withValues(alpha: 0.15) : AppTheme.surfaceCard,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isActive ? AppTheme.goldAccent : AppTheme.surfaceBorder,
-          ),
-        ),
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-            color: isActive ? AppTheme.goldAccent : AppTheme.textSecondary,
-          ),
-        ),
       ),
     );
   }

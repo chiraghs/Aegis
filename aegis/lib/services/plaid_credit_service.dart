@@ -70,7 +70,7 @@ class PlaidCreditService {
           ),
           CardTransaction(
             id: 'tx_cs_6',
-            merchant: 'Aegis 1.5% Yield Auto-Cashback',
+            merchant: 'Aegis Yield Auto-Cashback',
             category: 'Rewards & Yield',
             amount: -48.50,
             date: now.subtract(const Duration(days: 12)),

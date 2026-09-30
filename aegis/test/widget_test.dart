@@ -81,16 +81,16 @@ void main() {
     // Verify initial dark mode
     expect(appState.isDarkMode, isTrue);
 
-    // Open Settings modal from top-right of Home
-    final settingsBtn = find.byTooltip('Settings');
+    // Open Profile & Settings from top-right of Home
+    final settingsBtn = find.byTooltip('Profile & Settings');
     expect(settingsBtn, findsOneWidget);
     await tester.tap(settingsBtn);
     await tester.pumpAndSettle();
 
-    // Verify Settings modal is open
-    expect(find.text('APP SETTINGS'), findsOneWidget);
+    // Verify Profile & Settings page is open
+    expect(find.text('PROFILE & SETTINGS'), findsOneWidget);
 
-    // Toggle theme switch in Settings modal
+    // Toggle theme switch in Profile & Settings page
     final switchFinder = find.byType(Switch);
     expect(switchFinder, findsOneWidget);
     await tester.tap(switchFinder);
@@ -103,20 +103,20 @@ void main() {
   test('Garage AppState supports vehicle selection, citation clearing with 2X coins, and US insurance selling', () {
     final state = AppState();
 
-    // Verify initial vehicles (Activa 6G matching reference, Model 3, Taycan, Mustang GT)
+    // Verify initial vehicles (Model 3, Taycan, Mustang GT, Rivian R1T)
     expect(state.vehicles.length, greaterThanOrEqualTo(3));
-    expect(state.activeVehicle.model, equals('Activa 6G'));
-    expect(state.activeVehicle.licensePlate, equals('KA13EW7454'));
-
-    // Switch to Tesla Model 3
-    state.selectGarageVehicle(1);
     expect(state.activeVehicle.model, equals('Model 3'));
     expect(state.activeVehicle.licensePlate, equals('CA • 8TSL921'));
 
     // Switch to Porsche Taycan
-    state.selectGarageVehicle(2);
+    state.selectGarageVehicle(1);
     expect(state.activeVehicle.model, equals('Taycan'));
     expect(state.activeVehicle.licensePlate, equals('NY • TAY-442'));
+
+    // Switch to Ford Mustang
+    state.selectGarageVehicle(2);
+    expect(state.activeVehicle.model, equals('Mustang'));
+    expect(state.activeVehicle.licensePlate, equals('TX • FST-500'));
 
 
     // Check unpaid citations

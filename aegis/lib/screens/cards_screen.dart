@@ -744,7 +744,7 @@ class _CardsScreenState extends State<CardsScreen> {
                   InkWell(
                     onTap: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Aegis Cash Back Engine: 1.5% auto-yield on all payments.')),
+                        const SnackBar(content: Text('Aegis Cash Back Engine: Auto-yield rewards on all card bill payments.')),
                       );
                     },
                     borderRadius: BorderRadius.circular(20),
