@@ -236,7 +236,7 @@ class ThemePalette {
 
 /// Centralized Config Engine: Changing active palette or theme mode updates all colors across the app
 class AppThemeConfig {
-  static ThemeMode _themeMode = ThemeMode.dark;
+  static ThemeMode _themeMode = ThemeMode.light;
   static ThemePalette darkPalette = ThemePalette.dark;
   static ThemePalette lightPalette = ThemePalette.light;
   static ThemePalette? _customPalette;

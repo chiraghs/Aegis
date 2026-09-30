@@ -78,8 +78,8 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    // Verify initial dark mode
-    expect(appState.isDarkMode, isTrue);
+    // Verify initial light mode (default)
+    expect(appState.isDarkMode, isFalse);
 
     // Open Profile & Settings from top-right of Home
     final settingsBtn = find.byTooltip('Profile & Settings');
@@ -96,8 +96,8 @@ void main() {
     await tester.tap(switchFinder);
     await tester.pumpAndSettle();
 
-    // Verify it switched to light mode
-    expect(appState.isDarkMode, isFalse);
+    // Verify it switched to dark mode
+    expect(appState.isDarkMode, isTrue);
   });
 
   test('Garage AppState supports vehicle selection, citation clearing with 2X coins, and US insurance selling', () {

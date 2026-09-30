@@ -26,7 +26,7 @@ class AppState extends ChangeNotifier {
   );
   SubscriptionTier _tier = SubscriptionTier.free;
   StreamSubscription<SubscriptionTier>? _tierSubscription;
-  ThemeMode _themeMode = ThemeMode.dark;
+  ThemeMode _themeMode = ThemeMode.light;
 
   // Aegis Garage Extended State
   int _selectedVehicleIndex = 0;
