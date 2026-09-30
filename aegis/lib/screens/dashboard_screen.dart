@@ -184,19 +184,29 @@ class DashboardScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppTheme.background,
-      appBar: AppBar(
-        titleSpacing: 4,
+       appBar: AppBar(
+        titleSpacing: 12,
         centerTitle: false,
-        leadingWidth: 84,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 8),
-          child: Center(
-            child: GestureDetector(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const PaywallScreen()),
-                );
-              },
+        automaticallyImplyLeading: false,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const AegisLogo(size: 24, borderRadius: 6),
+            const SizedBox(width: 6),
+            Text(
+              'AEGIS',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2.2,
+                color: AppTheme.textPrimary,
+              ),
+            ),
+            const SizedBox(width: 8),
+            GestureDetector(
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const PaywallScreen()),
+              ),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                 decoration: BoxDecoration(
@@ -212,47 +222,25 @@ class DashboardScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.workspace_premium, size: 12, color: Color(0xFF1E2818)),
-                      const SizedBox(width: 3),
-                      Text(
-                        appState.isBlackEdition ? 'BLACK' : (appState.tier == SubscriptionTier.gold ? 'GOLD' : 'UPGRADE'),
-                        style: const TextStyle(
-                          fontSize: 9.0,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 0.5,
-                          color: Color(0xFF1E2818),
-                        ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.workspace_premium, size: 12, color: Color(0xFF1E2818)),
+                    const SizedBox(width: 3),
+                    Text(
+                      appState.isBlackEdition ? 'BLACK' : (appState.tier == SubscriptionTier.gold ? 'GOLD' : 'UPGRADE'),
+                      style: const TextStyle(
+                        fontSize: 9.0,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.5,
+                        color: Color(0xFF1E2818),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ),
-        title: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const AegisLogo(size: 24, borderRadius: 6),
-              const SizedBox(width: 6),
-              Text(
-                'AEGIS',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 2.2,
-                  color: AppTheme.textPrimary,
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
         actions: [
           CoinCounter(
