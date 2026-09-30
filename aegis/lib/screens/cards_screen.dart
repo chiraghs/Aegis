@@ -109,9 +109,9 @@ class _CardsScreenState extends State<CardsScreen> {
       builder: (ctx) => Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceCardElevated,
+          color: AegisCloudPalette.cloud,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -122,7 +122,7 @@ class _CardsScreenState extends State<CardsScreen> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.white24,
+                  color: AegisCloudPalette.greyBorder,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -134,36 +134,36 @@ class _CardsScreenState extends State<CardsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'SMART STATEMENT',
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w800,
-                        color: AppTheme.goldAccent,
+                        color: AegisCloudPalette.charcoal,
                         letterSpacing: 1.5,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       card.cardName,
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.white),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal),
                     ),
                   ],
                 ),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: AppTheme.emeraldAccent.withValues(alpha: 0.2),
+                    color: AegisCloudPalette.mintGreen.withValues(alpha: 0.25),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Text(
+                  child: const Text(
                     'OCT 2026 CYCLE',
-                    style: TextStyle(color: AppTheme.emeraldAccent, fontSize: 10, fontWeight: FontWeight.w800),
+                    style: TextStyle(color: Color(0xFF1E2818), fontSize: 10, fontWeight: FontWeight.w800),
                   ),
                 ),
               ],
             ),
-            const Divider(color: Colors.white12, height: 32),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 32),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -173,14 +173,14 @@ class _CardsScreenState extends State<CardsScreen> {
               ],
             ),
             const SizedBox(height: 20),
-            Text(
+            const Text(
               'SPENDING BREAKDOWN',
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.textSecondary),
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AegisCloudPalette.textSecondary),
             ),
             const SizedBox(height: 10),
-            _buildCategoryRow('Travel & Flights', '\$642.80', 0.52, AppTheme.goldAccent),
+            _buildCategoryRow('Travel & Flights', '\$642.80', 0.52, const Color(0xFF0F326E)),
             const SizedBox(height: 8),
-            _buildCategoryRow('Dining & Groceries', '\$429.70', 0.35, AppTheme.emeraldAccent),
+            _buildCategoryRow('Dining & Groceries', '\$429.70', 0.35, AegisCloudPalette.mintGreen),
             const SizedBox(height: 8),
             _buildCategoryRow('Rideshare & Transit', '\$68.20', 0.13, Colors.blueAccent),
             const SizedBox(height: 24),
@@ -194,8 +194,8 @@ class _CardsScreenState extends State<CardsScreen> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
+                  backgroundColor: AegisCloudPalette.charcoal,
+                  foregroundColor: AegisCloudPalette.cloud,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -216,9 +216,9 @@ class _CardsScreenState extends State<CardsScreen> {
       builder: (ctx) => Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceCardElevated,
+          color: AegisCloudPalette.cloud,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -228,17 +228,17 @@ class _CardsScreenState extends State<CardsScreen> {
               child: Container(
                 width: 40,
                 height: 4,
-                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
               ),
             ),
             const SizedBox(height: 18),
-            Text(
+            const Text(
               'PAYMENT HISTORY',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.goldAccent, letterSpacing: 1.5),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.5),
             ),
             const SizedBox(height: 4),
-            Text('Settled Statements for •• ${card.lastFour}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.white)),
-            const Divider(color: Colors.white12, height: 28),
+            Text('Settled Statements for •• ${card.lastFour}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal)),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 28),
             _buildHistoryItem('Sep 18, 2026', '\$2,840.10', 'CONF-99214-US', true),
             _buildHistoryItem('Aug 19, 2026', '\$3,110.00', 'CONF-88123-US', true),
             _buildHistoryItem('Jul 18, 2026', '\$1,940.50', 'CONF-77641-US', true),
@@ -255,9 +255,9 @@ class _CardsScreenState extends State<CardsScreen> {
       builder: (ctx) => Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceCardElevated,
+          color: AegisCloudPalette.cloud,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -267,29 +267,29 @@ class _CardsScreenState extends State<CardsScreen> {
               child: Container(
                 width: 40,
                 height: 4,
-                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
               ),
             ),
             const SizedBox(height: 18),
-            Text(
+            const Text(
               'EXCLUSIVE PERKS & APR',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.goldAccent, letterSpacing: 1.5),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.5),
             ),
             const SizedBox(height: 4),
-            Text(card.cardName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.white)),
-            const Divider(color: Colors.white12, height: 28),
+            Text(card.cardName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal)),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 28),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.black26,
+                color: AegisCloudPalette.grey,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white10),
+                border: Border.all(color: AegisCloudPalette.greyBorder),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Standard Purchase APR', style: TextStyle(color: Colors.white, fontSize: 13)),
-                  Text('${card.apr}%', style: TextStyle(color: AppTheme.goldAccent, fontWeight: FontWeight.w800, fontSize: 14)),
+                  const Text('Standard Purchase APR', style: TextStyle(color: AegisCloudPalette.charcoal, fontSize: 13, fontWeight: FontWeight.w600)),
+                  Text('${card.apr}%', style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w800, fontSize: 14)),
                 ],
               ),
             ),
@@ -298,10 +298,10 @@ class _CardsScreenState extends State<CardsScreen> {
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   child: Row(
                     children: [
-                      Icon(Icons.check_circle_rounded, color: AppTheme.emeraldAccent, size: 16),
+                      const Icon(Icons.check_circle_rounded, color: Color(0xFF2E7D32), size: 16),
                       const SizedBox(width: 10),
                       Expanded(
-                        child: Text(p, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w500)),
+                        child: Text(p, style: const TextStyle(color: AegisCloudPalette.charcoal, fontSize: 13, fontWeight: FontWeight.w500)),
                       ),
                     ],
                   ),
@@ -322,9 +322,9 @@ class _CardsScreenState extends State<CardsScreen> {
         height: MediaQuery.of(context).size.height * 0.7,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceCardElevated,
+          color: AegisCloudPalette.cloud,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -333,23 +333,23 @@ class _CardsScreenState extends State<CardsScreen> {
               child: Container(
                 width: 40,
                 height: 4,
-                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
               ),
             ),
             const SizedBox(height: 18),
-            Text(
+            const Text(
               'LIVE MERCHANT FEED',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.goldAccent, letterSpacing: 1.5),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.5),
             ),
             const SizedBox(height: 4),
-            Text('Recent Spends for ${card.issuer}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.white)),
-            const Divider(color: Colors.white12, height: 28),
+            Text('Recent Spends for ${card.issuer}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal)),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 28),
             Expanded(
               child: card.transactions.isEmpty
-                  ? Center(child: Text('No recent transactions.', style: TextStyle(color: AppTheme.textSecondary)))
+                  ? const Center(child: Text('No recent transactions.', style: TextStyle(color: AegisCloudPalette.textSecondary)))
                   : ListView.separated(
                       itemCount: card.transactions.length,
-                      separatorBuilder: (_, _) => const Divider(color: Colors.white10),
+                      separatorBuilder: (_, _) => const Divider(color: AegisCloudPalette.greyBorder),
                       itemBuilder: (context, idx) {
                         final tx = card.transactions[idx];
                         return ListTile(
@@ -358,23 +358,24 @@ class _CardsScreenState extends State<CardsScreen> {
                             width: 42,
                             height: 42,
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.08),
+                              color: AegisCloudPalette.grey,
                               borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: AegisCloudPalette.greyBorder),
                             ),
-                            child: Icon(tx.icon, color: Colors.white, size: 20),
+                            child: Icon(tx.icon, color: AegisCloudPalette.charcoal, size: 20),
                           ),
-                          title: Text(tx.merchant, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14)),
+                          title: Text(tx.merchant, style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w700, fontSize: 14)),
                           subtitle: Text(
                             '${tx.category} • ${DateFormat('MMM d').format(tx.date)}',
-                            style: TextStyle(color: AppTheme.textSecondary, fontSize: 11),
+                            style: const TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 11),
                           ),
                           trailing: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(currency.format(tx.amount), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 14)),
+                              Text(currency.format(tx.amount), style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w800, fontSize: 14)),
                               const SizedBox(height: 2),
-                              Text(tx.cashBackOrReward, style: TextStyle(color: AppTheme.emeraldAccent, fontWeight: FontWeight.w600, fontSize: 10)),
+                              Text(tx.cashBackOrReward, style: const TextStyle(color: Color(0xFF2E7D32), fontWeight: FontWeight.w700, fontSize: 10)),
                             ],
                           ),
                         );
@@ -394,9 +395,9 @@ class _CardsScreenState extends State<CardsScreen> {
       builder: (ctx) => Container(
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceCardElevated,
+          color: AegisCloudPalette.cloud,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -406,36 +407,44 @@ class _CardsScreenState extends State<CardsScreen> {
               child: Container(
                 width: 40,
                 height: 4,
-                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
               ),
             ),
             const SizedBox(height: 18),
-            Text(
+            const Text(
               'CARD MANAGEMENT',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AppTheme.goldAccent, letterSpacing: 1.5),
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.5),
             ),
             const SizedBox(height: 4),
-            Text('•• ${card.lastFour} Settings', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: Colors.white)),
-            const Divider(color: Colors.white12, height: 28),
+            Text('•• ${card.lastFour} Settings', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal)),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 28),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.lock_outline_rounded, color: Colors.white),
-              title: const Text('Freeze / Lock Card', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-              subtitle: Text('Instantly blocks new card-not-present charges', style: TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
-              trailing: Switch(value: false, onChanged: (v) {}),
+              leading: const Icon(Icons.lock_outline_rounded, color: AegisCloudPalette.charcoal),
+              title: const Text('Freeze / Lock Card', style: TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w600)),
+              subtitle: const Text('Instantly blocks new card-not-present charges', style: TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 11)),
+              trailing: Switch(
+                value: false,
+                onChanged: (v) {},
+                activeTrackColor: AegisCloudPalette.mintGreen,
+              ),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.autorenew_rounded, color: Colors.white),
-              title: const Text('Autopay Full Balance', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-              subtitle: Text('Auto-debited on due date from primary checking', style: TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
-              trailing: Switch(value: true, onChanged: (v) {}),
+              leading: const Icon(Icons.autorenew_rounded, color: AegisCloudPalette.charcoal),
+              title: const Text('Autopay Full Balance', style: TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w600)),
+              subtitle: const Text('Auto-debited on due date from primary checking', style: TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 11)),
+              trailing: Switch(
+                value: true,
+                onChanged: (v) {},
+                activeTrackColor: AegisCloudPalette.mintGreen,
+              ),
             ),
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.phone_in_talk_rounded, color: Colors.white),
-              title: const Text('Concierge & Support', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
-              subtitle: Text('Direct US VIP line for cardholders', style: TextStyle(color: AppTheme.textSecondary, fontSize: 11)),
+              leading: const Icon(Icons.phone_in_talk_rounded, color: AegisCloudPalette.charcoal),
+              title: const Text('Concierge & Support', style: TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w600)),
+              subtitle: const Text('Direct US VIP line for cardholders', style: TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 11)),
               onTap: () {
                 Navigator.of(ctx).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -459,9 +468,9 @@ class _CardsScreenState extends State<CardsScreen> {
         height: MediaQuery.of(context).size.height * 0.75,
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: AppTheme.surfaceCardElevated,
+          color: AegisCloudPalette.cloud,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-          border: Border.all(color: Colors.white12),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -470,7 +479,7 @@ class _CardsScreenState extends State<CardsScreen> {
               child: Container(
                 width: 40,
                 height: 4,
-                decoration: BoxDecoration(color: Colors.white24, borderRadius: BorderRadius.circular(2)),
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
               ),
             ),
             const SizedBox(height: 18),
@@ -480,14 +489,14 @@ class _CardsScreenState extends State<CardsScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(card.issuer.toUpperCase(), style: TextStyle(color: AppTheme.goldAccent, fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.5)),
-                    Text(card.cardName, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800)),
+                    Text(card.issuer.toUpperCase(), style: const TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.5)),
+                    Text(card.cardName, style: const TextStyle(color: AegisCloudPalette.charcoal, fontSize: 18, fontWeight: FontWeight.w800)),
                   ],
                 ),
-                Text('•• ${card.lastFour}', style: const TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 2)),
+                Text('•• ${card.lastFour}', style: const TextStyle(color: AegisCloudPalette.charcoal, fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 2)),
               ],
             ),
-            const Divider(color: Colors.white12, height: 28),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 28),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -501,23 +510,23 @@ class _CardsScreenState extends State<CardsScreen> {
               borderRadius: BorderRadius.circular(4),
               child: LinearProgressIndicator(
                 value: card.utilizationRate,
-                backgroundColor: Colors.white12,
+                backgroundColor: AegisCloudPalette.grey,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  card.utilizationRate > 0.3 ? AppTheme.crimsonAccent : AppTheme.emeraldAccent,
+                  card.utilizationRate > 0.3 ? AppTheme.crimsonAccent : AegisCloudPalette.mintGreen,
                 ),
                 minHeight: 6,
               ),
             ),
             const SizedBox(height: 24),
-            Text('REWARD MULTIPLIERS', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.textSecondary)),
+            const Text('REWARD MULTIPLIERS', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AegisCloudPalette.textSecondary)),
             const SizedBox(height: 8),
             ...card.topPerks.map((perk) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Row(
                     children: [
-                      Icon(Icons.star_rounded, size: 16, color: AppTheme.goldAccent),
+                      const Icon(Icons.star_rounded, size: 16, color: AegisCloudPalette.mintGreen),
                       const SizedBox(width: 8),
-                      Expanded(child: Text(perk, style: const TextStyle(color: Colors.white, fontSize: 13))),
+                      Expanded(child: Text(perk, style: const TextStyle(color: AegisCloudPalette.charcoal, fontSize: 13, fontWeight: FontWeight.w500))),
                     ],
                   ),
                 )),
@@ -527,8 +536,8 @@ class _CardsScreenState extends State<CardsScreen> {
               child: ElevatedButton(
                 onPressed: () => Navigator.of(ctx).pop(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.goldAccent,
-                  foregroundColor: Colors.black,
+                  backgroundColor: AegisCloudPalette.charcoal,
+                  foregroundColor: AegisCloudPalette.cloud,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
@@ -556,38 +565,41 @@ class _CardsScreenState extends State<CardsScreen> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: AppTheme.surfaceCardElevated,
+        backgroundColor: AegisCloudPalette.cloud,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
+        title: const Row(
           children: [
-            const Icon(Icons.bolt, color: Colors.orange, size: 22),
-            const SizedBox(width: 8),
-            const Text('SETTLE ALL STATEMENTS', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
+            Icon(Icons.bolt, color: AegisCloudPalette.mintGreen, size: 22),
+            SizedBox(width: 8),
+            Text(
+              'SETTLE ALL STATEMENTS',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1, color: AegisCloudPalette.charcoal),
+            ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Clear total statement balance across ${unpaidCards.length} cards:\n',
-              style: TextStyle(fontSize: 13, color: AppTheme.textSecondary),
+            const Text(
+              'Clear total statement balance across all cards:\n',
+              style: TextStyle(fontSize: 13, color: AegisCloudPalette.textSecondary),
             ),
             Text(
               currency.format(totalDue),
-              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white),
+              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: AegisCloudPalette.charcoal),
             ),
             const SizedBox(height: 12),
-            Text(
+            const Text(
               '• Chase ACH Clearinghouse auto-connects\n• Avoids ~\$142.80 in revolving interest\n• Earns +250 Aegis Shield Coins',
-              style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.4),
+              style: TextStyle(fontSize: 12, color: AegisCloudPalette.textSecondary, height: 1.4),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
+            child: const Text('Cancel', style: TextStyle(color: AegisCloudPalette.textSecondary)),
           ),
           ElevatedButton(
             onPressed: () {
@@ -599,13 +611,13 @@ class _CardsScreenState extends State<CardsScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('All ${unpaidCards.length} cards settled! +250 Aegis Coins minted.'),
-                  backgroundColor: AppTheme.surfaceCardElevated,
+                  backgroundColor: AegisCloudPalette.charcoal,
                 ),
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
+              backgroundColor: AegisCloudPalette.charcoal,
+              foregroundColor: AegisCloudPalette.cloud,
             ),
             child: const Text('Confirm Settle', style: TextStyle(fontWeight: FontWeight.w900)),
           ),
@@ -618,9 +630,9 @@ class _CardsScreenState extends State<CardsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: TextStyle(fontSize: 10, color: AppTheme.textSecondary, fontWeight: FontWeight.w600)),
+        Text(label, style: const TextStyle(fontSize: 10, color: AegisCloudPalette.textSecondary, fontWeight: FontWeight.w600)),
         const SizedBox(height: 2),
-        Text(value, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.white)),
+        Text(value, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal)),
       ],
     );
   }
@@ -631,8 +643,8 @@ class _CardsScreenState extends State<CardsScreen> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: const TextStyle(fontSize: 12, color: Colors.white70)),
-            Text(amount, style: const TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.w700)),
+            Text(title, style: const TextStyle(fontSize: 12, color: AegisCloudPalette.charcoal)),
+            Text(amount, style: const TextStyle(fontSize: 12, color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w700)),
           ],
         ),
         const SizedBox(height: 4),
@@ -640,7 +652,7 @@ class _CardsScreenState extends State<CardsScreen> {
           borderRadius: BorderRadius.circular(3),
           child: LinearProgressIndicator(
             value: ratio,
-            backgroundColor: Colors.white10,
+            backgroundColor: AegisCloudPalette.grey,
             valueColor: AlwaysStoppedAnimation<Color>(color),
             minHeight: 4,
           ),
@@ -658,15 +670,15 @@ class _CardsScreenState extends State<CardsScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(date, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 13)),
-              Text(ref, style: TextStyle(color: AppTheme.textSecondary, fontSize: 10)),
+              Text(date, style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w700, fontSize: 13)),
+              Text(ref, style: const TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 10)),
             ],
           ),
           Row(
             children: [
-              Text(amount, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 14)),
+              Text(amount, style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w800, fontSize: 14)),
               const SizedBox(width: 8),
-              Icon(Icons.check_circle_rounded, color: AppTheme.emeraldAccent, size: 16),
+              const Icon(Icons.check_circle_rounded, color: Color(0xFF2E7D32), size: 16),
             ],
           ),
         ],
@@ -684,6 +696,10 @@ class _CardsScreenState extends State<CardsScreen> {
         return const LinearGradient(colors: [Color(0xFF1B2E4B), Color(0xFF2A4365)]);
       case CardThemePreset.appleTitanium:
         return const LinearGradient(colors: [Color(0xFF2B2D30), Color(0xFF141517)]);
+      case CardThemePreset.mintGreen:
+        return const LinearGradient(colors: [Color(0xFF8AEF47), Color(0xFF7DE43A)]);
+      case CardThemePreset.charcoal:
+        return const LinearGradient(colors: [Color(0xFF383838), Color(0xFF2B2B2B)]);
     }
   }
 
@@ -701,7 +717,7 @@ class _CardsScreenState extends State<CardsScreen> {
     final totalDue = unpaidCards.fold(0.0, (acc, c) => acc + c.statementBalance);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF0C0E14),
+      backgroundColor: AegisCloudPalette.grey,
       body: SafeArea(
         child: Column(
           children: [
@@ -724,10 +740,17 @@ class _CardsScreenState extends State<CardsScreen> {
                       height: 38,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withValues(alpha: 0.08),
-                        border: Border.all(color: Colors.white12),
+                        color: AegisCloudPalette.cloud,
+                        border: Border.all(color: AegisCloudPalette.greyBorder, width: 1.2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      child: const Icon(Icons.percent_rounded, size: 18, color: Colors.white),
+                      child: const Icon(Icons.percent_rounded, size: 18, color: AegisCloudPalette.charcoal),
                     ),
                   ),
 
@@ -735,9 +758,9 @@ class _CardsScreenState extends State<CardsScreen> {
                   Container(
                     padding: const EdgeInsets.all(3),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.08),
+                      color: const Color(0xFFE2E7DF),
                       borderRadius: BorderRadius.circular(24),
-                      border: Border.all(color: Colors.white12),
+                      border: Border.all(color: AegisCloudPalette.greyBorder),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -748,8 +771,17 @@ class _CardsScreenState extends State<CardsScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                             decoration: BoxDecoration(
-                              color: _selectedTopTab == 0 ? Colors.white : Colors.transparent,
+                              color: _selectedTopTab == 0 ? AegisCloudPalette.cloud : Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
+                              boxShadow: _selectedTopTab == 0
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: 0.08),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ]
+                                  : null,
                             ),
                             child: Row(
                               children: [
@@ -758,7 +790,7 @@ class _CardsScreenState extends State<CardsScreen> {
                                   style: TextStyle(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w800,
-                                    color: _selectedTopTab == 0 ? Colors.black : Colors.white60,
+                                    color: _selectedTopTab == 0 ? AegisCloudPalette.charcoal : AegisCloudPalette.textSecondary,
                                     letterSpacing: 0.6,
                                   ),
                                 ),
@@ -767,15 +799,15 @@ class _CardsScreenState extends State<CardsScreen> {
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFFE53E3E),
+                                      color: AegisCloudPalette.mintGreen,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
                                       '${unpaidCards.length}',
                                       style: const TextStyle(
                                         fontSize: 9,
-                                        fontWeight: FontWeight.w800,
-                                        color: Colors.white,
+                                        fontWeight: FontWeight.w900,
+                                        color: Color(0xFF1E2818),
                                       ),
                                     ),
                                   ),
@@ -791,15 +823,24 @@ class _CardsScreenState extends State<CardsScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                             decoration: BoxDecoration(
-                              color: _selectedTopTab == 1 ? Colors.white : Colors.transparent,
+                              color: _selectedTopTab == 1 ? AegisCloudPalette.cloud : Colors.transparent,
                               borderRadius: BorderRadius.circular(20),
+                              boxShadow: _selectedTopTab == 1
+                                  ? [
+                                      BoxShadow(
+                                        color: Colors.black.withValues(alpha: 0.08),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ]
+                                  : null,
                             ),
                             child: Text(
                               'RECENT SPENDS',
                               style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.w800,
-                                color: _selectedTopTab == 1 ? Colors.black : Colors.white60,
+                                color: _selectedTopTab == 1 ? AegisCloudPalette.charcoal : AegisCloudPalette.textSecondary,
                                 letterSpacing: 0.6,
                               ),
                             ),
@@ -818,10 +859,17 @@ class _CardsScreenState extends State<CardsScreen> {
                       height: 38,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white.withValues(alpha: 0.08),
-                        border: Border.all(color: Colors.white12),
+                        color: AegisCloudPalette.cloud,
+                        border: Border.all(color: AegisCloudPalette.greyBorder, width: 1.2),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 4,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
-                      child: const Icon(Icons.settings_outlined, size: 18, color: Colors.white),
+                      child: const Icon(Icons.settings_outlined, size: 18, color: AegisCloudPalette.charcoal),
                     ),
                   ),
                 ],
@@ -872,10 +920,10 @@ class _CardsScreenState extends State<CardsScreen> {
           // Total Statement Due Headline
           Text(
             'STATEMENT DUE FOR ${unpaidCards.length} ${unpaidCards.length == 1 ? 'CARD' : 'CARDS'}',
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w700,
-              color: Colors.white.withValues(alpha: 0.6),
+              color: AegisCloudPalette.textSecondary,
               letterSpacing: 1.8,
             ),
           ),
@@ -893,14 +941,14 @@ class _CardsScreenState extends State<CardsScreen> {
                   style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w900,
-                    color: Colors.white,
+                    color: AegisCloudPalette.charcoal,
                     letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(width: 6),
                 Icon(
                   _isBreakdownExpanded ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
-                  color: Colors.white60,
+                  color: AegisCloudPalette.textSecondary,
                   size: 24,
                 ),
               ],
@@ -913,9 +961,16 @@ class _CardsScreenState extends State<CardsScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: AegisCloudPalette.cloud,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.white10),
+                border: Border.all(color: AegisCloudPalette.greyBorder),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: Column(
                 children: cards.map((c) {
@@ -926,14 +981,14 @@ class _CardsScreenState extends State<CardsScreen> {
                       children: [
                         Text(
                           '${c.issuer} (•• ${c.lastFour})',
-                          style: TextStyle(fontSize: 12, color: Colors.white.withValues(alpha: 0.8)),
+                          style: const TextStyle(fontSize: 12, color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w600),
                         ),
                         Text(
                           c.isPaidThisCycle ? 'Paid' : currency.format(c.statementBalance),
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: c.isPaidThisCycle ? AppTheme.emeraldAccent : Colors.white,
+                            color: c.isPaidThisCycle ? const Color(0xFF2E7D32) : AegisCloudPalette.charcoal,
                           ),
                         ),
                       ],
@@ -946,13 +1001,13 @@ class _CardsScreenState extends State<CardsScreen> {
 
           const SizedBox(height: 10),
 
-          // Black Pill "Pay bill" / "Pay all bills" Button
+          // Solid Charcoal Pill "Pay all bills" Button matching reference
           ElevatedButton(
             onPressed: () => _showPayAllDialog(context, appState),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              elevation: 4,
+              backgroundColor: AegisCloudPalette.charcoal,
+              foregroundColor: AegisCloudPalette.cloud,
+              elevation: 3,
               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 10),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             ),
@@ -969,9 +1024,16 @@ class _CardsScreenState extends State<CardsScreen> {
             margin: const EdgeInsets.symmetric(horizontal: 24),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.06),
+              color: AegisCloudPalette.cloud,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.white12),
+              border: Border.all(color: AegisCloudPalette.greyBorder),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 6,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -979,22 +1041,22 @@ class _CardsScreenState extends State<CardsScreen> {
                 Container(
                   padding: const EdgeInsets.all(4),
                   decoration: const BoxDecoration(
-                    color: Color(0xFFF6AD55),
+                    color: AegisCloudPalette.mintGreen,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.bolt, size: 12, color: Colors.black),
+                  child: const Icon(Icons.bolt, size: 12, color: Color(0xFF1E2818)),
                 ),
                 const SizedBox(width: 8),
-                Text(
+                const Text(
                   'pay bills & unlock 2% auto-cashback.',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white.withValues(alpha: 0.85),
+                    color: AegisCloudPalette.charcoal,
                   ),
                 ),
                 const SizedBox(width: 6),
-                const Icon(Icons.chevron_right_rounded, size: 16, color: Colors.white60),
+                const Icon(Icons.chevron_right_rounded, size: 16, color: AegisCloudPalette.textSecondary),
               ],
             ),
           ),
@@ -1009,10 +1071,10 @@ class _CardsScreenState extends State<CardsScreen> {
               children: [
                 Text(
                   _isStackedMode ? 'CARD DECK (SWIPE LEFT FOR ACTIONS)' : 'ALL CARDS FEED',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 9,
                     fontWeight: FontWeight.w800,
-                    color: AppTheme.textSecondary,
+                    color: AegisCloudPalette.textSecondary,
                     letterSpacing: 1.2,
                   ),
                 ),
@@ -1023,15 +1085,15 @@ class _CardsScreenState extends State<CardsScreen> {
                       Icon(
                         _isStackedMode ? Icons.view_agenda_outlined : Icons.layers_outlined,
                         size: 14,
-                        color: AppTheme.goldAccent,
+                        color: AegisCloudPalette.charcoal,
                       ),
                       const SizedBox(width: 4),
                       Text(
                         _isStackedMode ? 'Expand Feed' : 'Stack Deck',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w700,
-                          color: AppTheme.goldAccent,
+                          color: AegisCloudPalette.charcoal,
                         ),
                       ),
                     ],
@@ -1087,8 +1149,8 @@ class _CardsScreenState extends State<CardsScreen> {
             InkWell(
               onTap: () => _showCardDetailsModal(context, activeCard),
               borderRadius: BorderRadius.circular(16),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -1097,14 +1159,14 @@ class _CardsScreenState extends State<CardsScreen> {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: AegisCloudPalette.textSecondary,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Icon(
                       Icons.chevron_right_rounded,
                       size: 16,
-                      color: Colors.white.withValues(alpha: 0.7),
+                      color: AegisCloudPalette.textSecondary,
                     ),
                   ],
                 ),
@@ -1117,6 +1179,8 @@ class _CardsScreenState extends State<CardsScreen> {
             ...cards.asMap().entries.where((e) => e.key != _activeCardIndex).map((entry) {
               final index = entry.key;
               final c = entry.value;
+              final isMint = c.themePreset == CardThemePreset.mintGreen;
+              final chipTextColor = isMint ? const Color(0xFF1E2818) : Colors.white;
 
               return GestureDetector(
                 onTap: () => setState(() => _activeCardIndex = index),
@@ -1127,12 +1191,15 @@ class _CardsScreenState extends State<CardsScreen> {
                   decoration: BoxDecoration(
                     gradient: _getMiniChipGradient(c.themePreset),
                     borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.white24, width: 1),
+                    border: Border.all(
+                      color: isMint ? Colors.black.withValues(alpha: 0.12) : Colors.white24,
+                      width: 1,
+                    ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.35),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: Colors.black.withValues(alpha: 0.2),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -1141,12 +1208,12 @@ class _CardsScreenState extends State<CardsScreen> {
                     children: [
                       Row(
                         children: [
-                          const Icon(Icons.credit_card, size: 16, color: Colors.white),
+                          Icon(Icons.credit_card, size: 16, color: chipTextColor),
                           const SizedBox(width: 8),
                           Text(
                             c.issuer.toUpperCase(),
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: chipTextColor,
                               fontSize: 12,
                               fontWeight: FontWeight.w800,
                               letterSpacing: 1,
@@ -1156,7 +1223,7 @@ class _CardsScreenState extends State<CardsScreen> {
                           Text(
                             '•• ${c.lastFour}',
                             style: TextStyle(
-                              color: Colors.white.withValues(alpha: 0.7),
+                              color: chipTextColor.withValues(alpha: 0.75),
                               fontSize: 12,
                               letterSpacing: 2,
                             ),
@@ -1166,12 +1233,12 @@ class _CardsScreenState extends State<CardsScreen> {
                       Row(
                         children: [
                           if (c.isPaidThisCycle) ...[
-                            const Icon(Icons.check_circle_rounded, size: 14, color: Color(0xFF68D391)),
+                            Icon(Icons.check_circle_rounded, size: 14, color: isMint ? const Color(0xFF1E2818) : const Color(0xFF68D391)),
                             const SizedBox(width: 4),
                             Text(
                               currency.format(c.statementBalance),
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: chipTextColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -1179,15 +1246,15 @@ class _CardsScreenState extends State<CardsScreen> {
                           ] else ...[
                             Text(
                               currency.format(c.statementBalance),
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: chipTextColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w800,
                               ),
                             ),
                           ],
                           const SizedBox(width: 8),
-                          Icon(Icons.unfold_more_rounded, size: 16, color: Colors.white.withValues(alpha: 0.6)),
+                          Icon(Icons.unfold_more_rounded, size: 16, color: chipTextColor.withValues(alpha: 0.7)),
                         ],
                       ),
                     ],
@@ -1244,8 +1311,8 @@ class _CardsScreenState extends State<CardsScreen> {
                   InkWell(
                     onTap: () => _showCardDetailsModal(context, card),
                     borderRadius: BorderRadius.circular(16),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -1254,14 +1321,14 @@ class _CardsScreenState extends State<CardsScreen> {
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white.withValues(alpha: 0.7),
+                              color: AegisCloudPalette.textSecondary,
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4),
                           Icon(
                             Icons.chevron_right_rounded,
                             size: 16,
-                            color: Colors.white.withValues(alpha: 0.7),
+                            color: AegisCloudPalette.textSecondary,
                           ),
                         ],
                       ),
@@ -1275,9 +1342,16 @@ class _CardsScreenState extends State<CardsScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.05),
+                        color: AegisCloudPalette.cloud,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.white12),
+                        border: Border.all(color: AegisCloudPalette.greyBorder),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 6,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -1293,14 +1367,14 @@ class _CardsScreenState extends State<CardsScreen> {
                           const SizedBox(width: 8),
                           Text(
                             '1 pending action: Autopay due in ${card.daysUntilDue} days',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
-                              color: Colors.white.withValues(alpha: 0.8),
+                              color: AegisCloudPalette.charcoal,
                             ),
                           ),
                           const SizedBox(width: 6),
-                          const Icon(Icons.chevron_right_rounded, size: 16, color: Colors.white60),
+                          const Icon(Icons.chevron_right_rounded, size: 16, color: AegisCloudPalette.textSecondary),
                         ],
                       ),
                     ),
@@ -1346,7 +1420,7 @@ class _CardsScreenState extends State<CardsScreen> {
     return ListView.separated(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       itemCount: allTransactions.length,
-      separatorBuilder: (_, _) => const Divider(color: Colors.white10),
+      separatorBuilder: (_, _) => const Divider(color: AegisCloudPalette.greyBorder),
       itemBuilder: (context, idx) {
         final item = allTransactions[idx];
         final card = item['card'] as CreditCardModel;
@@ -1358,19 +1432,26 @@ class _CardsScreenState extends State<CardsScreen> {
             width: 44,
             height: 44,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.08),
+              color: AegisCloudPalette.cloud,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.white12),
+              border: Border.all(color: AegisCloudPalette.greyBorder),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.04),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
-            child: Icon(tx.icon, color: Colors.white, size: 22),
+            child: Icon(tx.icon, color: AegisCloudPalette.charcoal, size: 22),
           ),
           title: Text(
             tx.merchant,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 14),
+            style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w700, fontSize: 14),
           ),
           subtitle: Text(
             '${card.issuer} (•• ${card.lastFour}) • ${DateFormat('MMM d').format(tx.date)}',
-            style: TextStyle(color: AppTheme.textSecondary, fontSize: 11),
+            style: const TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 11),
           ),
           trailing: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -1378,12 +1459,12 @@ class _CardsScreenState extends State<CardsScreen> {
             children: [
               Text(
                 currency.format(tx.amount),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 14),
+                style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w800, fontSize: 14),
               ),
               const SizedBox(height: 2),
               Text(
                 tx.cashBackOrReward,
-                style: TextStyle(color: AppTheme.emeraldAccent, fontWeight: FontWeight.w700, fontSize: 10),
+                style: const TextStyle(color: Color(0xFF2E7D32), fontWeight: FontWeight.w700, fontSize: 10),
               ),
             ],
           ),
@@ -1396,8 +1477,15 @@ class _CardsScreenState extends State<CardsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: const Color(0xFF0F121A),
-        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.08))),
+        color: AegisCloudPalette.cloud,
+        border: Border(top: BorderSide(color: AegisCloudPalette.greyBorder, width: 1.2)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, -3),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1409,7 +1497,7 @@ class _CardsScreenState extends State<CardsScreen> {
               Text(
                 'ALL (${cards.length})',
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: AegisCloudPalette.charcoal,
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.5,
@@ -1420,7 +1508,7 @@ class _CardsScreenState extends State<CardsScreen> {
                 width: 24,
                 height: 2.5,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: AegisCloudPalette.mintGreen,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -1433,6 +1521,7 @@ class _CardsScreenState extends State<CardsScreen> {
               final index = entry.key;
               final card = entry.value;
               final isSelected = index == _activeCardIndex;
+              final isMint = card.themePreset == CardThemePreset.mintGreen;
 
               return GestureDetector(
                 onTap: () {
@@ -1449,14 +1538,15 @@ class _CardsScreenState extends State<CardsScreen> {
                     gradient: _getMiniChipGradient(card.themePreset),
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
-                      color: isSelected ? Colors.white : Colors.white24,
-                      width: isSelected ? 1.8 : 0.8,
+                      color: isSelected ? AegisCloudPalette.charcoal : AegisCloudPalette.greyBorder,
+                      width: isSelected ? 2.0 : 1.0,
                     ),
                     boxShadow: isSelected
                         ? [
                             BoxShadow(
-                              color: Colors.white.withValues(alpha: 0.3),
+                              color: Colors.black.withValues(alpha: 0.18),
                               blurRadius: 6,
+                              offset: const Offset(0, 2),
                             ),
                           ]
                         : null,
@@ -1464,10 +1554,10 @@ class _CardsScreenState extends State<CardsScreen> {
                   child: Center(
                     child: Text(
                       card.lastFour,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 8,
                         fontWeight: FontWeight.w900,
-                        color: Colors.white,
+                        color: isMint ? const Color(0xFF1E2818) : Colors.white,
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -1486,10 +1576,10 @@ class _CardsScreenState extends State<CardsScreen> {
               height: 28,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.white30, width: 1),
-                color: Colors.white.withValues(alpha: 0.05),
+                border: Border.all(color: AegisCloudPalette.greyBorder, width: 1.2),
+                color: AegisCloudPalette.grey,
               ),
-              child: const Icon(Icons.add, size: 18, color: Colors.white),
+              child: const Icon(Icons.add, size: 18, color: AegisCloudPalette.charcoal),
             ),
           ),
 
@@ -1497,9 +1587,9 @@ class _CardsScreenState extends State<CardsScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.06),
+              color: AegisCloudPalette.grey,
               borderRadius: BorderRadius.circular(6),
-              border: Border.all(color: Colors.white12),
+              border: Border.all(color: AegisCloudPalette.greyBorder),
             ),
             child: Row(
               children: [
@@ -1507,7 +1597,7 @@ class _CardsScreenState extends State<CardsScreen> {
                   width: 6,
                   height: 6,
                   decoration: const BoxDecoration(
-                    color: Color(0xFF68D391),
+                    color: AegisCloudPalette.mintGreen,
                     shape: BoxShape.circle,
                   ),
                 ),
@@ -1517,7 +1607,7 @@ class _CardsScreenState extends State<CardsScreen> {
                   style: TextStyle(
                     fontSize: 10,
                     fontWeight: FontWeight.w800,
-                    color: Colors.white,
+                    color: AegisCloudPalette.charcoal,
                   ),
                 ),
               ],

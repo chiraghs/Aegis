@@ -1,6 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Exact color palette requested by user: Mint Green (#7DE43A), Charcoal (#2B2B2B), Grey, Cloud (#FFFFFF)
+class AegisCloudPalette {
+  static const Color mintGreen = Color(0xFF7DE43A);
+  static const Color charcoal = Color(0xFF2B2B2B);
+  static const Color grey = Color(0xFFEFF3ED);
+  static const Color greyBorder = Color(0xFFE2E7DF);
+  static const Color cloud = Color(0xFFFFFFFF);
+  static const Color textPrimary = Color(0xFF2B2B2B);
+  static const Color textSecondary = Color(0xFF6B7280);
+  static const Color textMuted = Color(0xFF9CA3AF);
+
+  static const LinearGradient mintGradient = LinearGradient(
+    colors: [Color(0xFF86EA45), Color(0xFF7DE43A), Color(0xFF5ABF1C)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  static const LinearGradient charcoalGradient = LinearGradient(
+    colors: [Color(0xFF333333), Color(0xFF2B2B2B), Color(0xFF1E1E1E)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+}
+
 /// Design tokens for a theme palette (matte, non-glossy, architectural fintech aesthetic)
 class ThemePalette {
   final Brightness brightness;

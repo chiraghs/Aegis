@@ -23,7 +23,7 @@ class CardTransaction {
 
 enum CardNetwork { visa, mastercard, amex }
 
-enum CardThemePreset { amexGold, chaseSapphire, ventureX, appleTitanium }
+enum CardThemePreset { amexGold, chaseSapphire, ventureX, appleTitanium, mintGreen, charcoal }
 
 class CreditCardModel {
   final String id;

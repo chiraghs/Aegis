@@ -101,6 +101,18 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         );
+      case CardThemePreset.mintGreen:
+        return const LinearGradient(
+          colors: [Color(0xFF8AEF47), Color(0xFF7DE43A), Color(0xFF5CBF21)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
+      case CardThemePreset.charcoal:
+        return const LinearGradient(
+          colors: [Color(0xFF383838), Color(0xFF2B2B2B), Color(0xFF1C1C1C)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        );
     }
   }
 
@@ -304,6 +316,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
   Widget build(BuildContext context) {
     final currency = NumberFormat.simpleCurrency();
     final dueMonthDay = DateFormat('d MMM').format(widget.card.dueDate).toUpperCase();
+    final isMint = widget.card.themePreset == CardThemePreset.mintGreen;
+    final cardTextColor = isMint ? const Color(0xFF1E2818) : Colors.white;
+    final cardTextSecondary = isMint ? const Color(0xFF2C3925) : Colors.white.withValues(alpha: 0.8);
+    final cardIconBg = isMint ? Colors.black.withValues(alpha: 0.12) : Colors.white.withValues(alpha: 0.18);
+    final cardIconColor = isMint ? const Color(0xFF1E2818) : Colors.white;
+    final payBtnBg = isMint ? const Color(0xFF2B2B2B) : Colors.white;
+    final payBtnFg = isMint ? Colors.white : Colors.black;
 
     return GestureDetector(
       onHorizontalDragUpdate: (details) {
@@ -344,7 +363,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
 
               final shadowBlur = 18.0 + (t * 10.0);
               final shadowOffset = Offset(-t * 8.0, 10.0 + (t * 6.0));
-              final shadowAlpha = 0.45 + (t * 0.15);
+              final shadowAlpha = isMint ? (0.25 + (t * 0.1)) : (0.45 + (t * 0.15));
 
               return Transform(
                 transform: Matrix4.identity()
@@ -374,7 +393,9 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                         ),
                       ],
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.22 + (t * 0.1)),
+                        color: isMint
+                            ? Colors.black.withValues(alpha: 0.12)
+                            : Colors.white.withValues(alpha: 0.22 + (t * 0.1)),
                         width: 1.2,
                       ),
                     ),
@@ -384,7 +405,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Opacity(
-                              opacity: 0.08,
+                              opacity: isMint ? 0.12 : 0.08,
                               child: CustomPaint(
                                 painter: _CardTexturePainter(
                                   patternType: widget.card.themePreset,
@@ -429,13 +450,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                         Container(
                                           padding: const EdgeInsets.all(5),
                                           decoration: BoxDecoration(
-                                            color: Colors.white.withValues(alpha: 0.18),
+                                            color: cardIconBg,
                                             shape: BoxShape.circle,
                                           ),
-                                          child: const Icon(
+                                          child: Icon(
                                             Icons.shield_outlined,
                                             size: 16,
-                                            color: Colors.white,
+                                            color: cardIconColor,
                                           ),
                                         ),
                                         const SizedBox(width: 8),
@@ -443,8 +464,8 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                           child: Text(
                                             widget.card.issuer.toUpperCase(),
                                             overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              color: Colors.white,
+                                            style: TextStyle(
+                                              color: cardTextColor,
                                               fontSize: 13,
                                               fontWeight: FontWeight.w900,
                                               letterSpacing: 1.5,
@@ -460,8 +481,8 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                     children: [
                                       Text(
                                         currency.format(widget.card.statementBalance),
-                                        style: const TextStyle(
-                                          color: Colors.white,
+                                        style: TextStyle(
+                                          color: cardTextColor,
                                           fontSize: 18,
                                           fontWeight: FontWeight.w900,
                                           letterSpacing: 0.2,
@@ -474,8 +495,8 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                             : 'DUE ON $dueMonthDay',
                                         style: TextStyle(
                                           color: widget.card.isPaidThisCycle
-                                              ? const Color(0xFF68D391)
-                                              : Colors.white.withValues(alpha: 0.8),
+                                              ? (isMint ? const Color(0xFF1B6A20) : const Color(0xFF68D391))
+                                              : cardTextSecondary,
                                           fontSize: 10,
                                           fontWeight: FontWeight.w700,
                                           letterSpacing: 0.8,
@@ -492,7 +513,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                   Text(
                                     '•• ${widget.card.lastFour}',
                                     style: TextStyle(
-                                      color: Colors.white.withValues(alpha: 0.9),
+                                      color: cardTextColor,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: 3,
@@ -511,7 +532,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                         Text(
                                           'CHIRAG HS',
                                           style: TextStyle(
-                                            color: Colors.white.withValues(alpha: 0.95),
+                                            color: cardTextColor,
                                             fontSize: 12,
                                             fontWeight: FontWeight.w800,
                                             letterSpacing: 1.5,
@@ -523,7 +544,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            color: Colors.white.withValues(alpha: 0.65),
+                                            color: cardTextSecondary,
                                             fontSize: 10,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -537,8 +558,8 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                         ? null
                                         : (widget.onPayNow ?? widget.onSimulatePayment),
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      foregroundColor: Colors.black,
+                                      backgroundColor: payBtnBg,
+                                      foregroundColor: payBtnFg,
                                       elevation: 3,
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 16,
@@ -547,15 +568,16 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      disabledBackgroundColor: Colors.white.withValues(alpha: 0.4),
-                                      disabledForegroundColor: Colors.black45,
+                                      disabledBackgroundColor: payBtnBg.withValues(alpha: 0.4),
+                                      disabledForegroundColor: payBtnFg.withValues(alpha: 0.5),
                                     ),
                                     child: Text(
                                       widget.card.isPaidThisCycle ? 'Paid' : 'Pay now',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w800,
                                         letterSpacing: 0.4,
+                                        color: payBtnFg,
                                       ),
                                     ),
                                   ),
