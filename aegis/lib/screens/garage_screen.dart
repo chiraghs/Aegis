@@ -268,7 +268,7 @@ class _GarageScreenState extends State<GarageScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. CRED Garage 3D Rotatable Playground Stage
+              // 1. Aegis US Garage 3D Rotatable Playground Stage
               GarageVehicle3DStage(
                 appState: appState,
                 onAddVehiclePressed: () => _showAddVehicleModal(context, appState),

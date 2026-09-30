@@ -28,7 +28,7 @@ class AppState extends ChangeNotifier {
   StreamSubscription<SubscriptionTier>? _tierSubscription;
   ThemeMode _themeMode = ThemeMode.dark;
 
-  // CRED Garage Extended State
+  // Aegis Garage Extended State
   int _selectedVehicleIndex = 0;
   List<InsurancePolicyModel> _insurancePolicies = [];
   List<FamilyInsurancePolicyModel> _familyPolicies = [];
@@ -607,7 +607,7 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // --- CRED GARAGE GETTERS & ACTIONS ---
+  // --- AEGIS US GARAGE GETTERS & ACTIONS ---
 
   int get selectedVehicleIndex => _selectedVehicleIndex;
 
