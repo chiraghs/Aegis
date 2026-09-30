@@ -39,7 +39,6 @@ class CreditCardWidget extends StatefulWidget {
 
 class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerProviderStateMixin {
   late AnimationController _swipeController;
-  late Animation<double> _swipeAnimation;
   bool _isSwipedOpen = false;
 
   @override
@@ -48,10 +47,6 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     _swipeController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 320),
-    );
-    _swipeAnimation = CurvedAnimation(
-      parent: _swipeController,
-      curve: Curves.easeOutCubic,
     );
   }
 
@@ -63,14 +58,21 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
 
   void _toggleSwipe([bool? open]) {
     final target = open ?? !_isSwipedOpen;
+    _isSwipedOpen = target;
     if (target) {
-      _swipeController.forward();
+      _swipeController.animateTo(
+        1.0,
+        duration: const Duration(milliseconds: 380),
+        curve: Curves.easeOutBack,
+      );
     } else {
-      _swipeController.reverse();
+      _swipeController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 280),
+        curve: Curves.easeOutCubic,
+      );
     }
-    setState(() {
-      _isSwipedOpen = target;
-    });
+    setState(() {});
   }
 
   LinearGradient _getCardGradient() {
@@ -167,50 +169,74 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     required IconData icon,
     required String title,
     required VoidCallback onTap,
+    required int staggerIndex,
   }) {
-    return InkWell(
-      onTap: () {
-        _toggleSwipe(false);
-        onTap();
-      },
-      borderRadius: BorderRadius.circular(25),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-              border: Border.all(color: Colors.black.withValues(alpha: 0.08), width: 1.2),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.08),
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+    return AnimatedBuilder(
+      animation: _swipeController,
+      builder: (context, child) {
+        final startTime = (staggerIndex * 0.12).clamp(0.0, 0.6);
+        final endTime = (startTime + 0.4).clamp(0.0, 1.0);
+        final itemProgress = ((_swipeController.value - startTime) / (endTime - startTime)).clamp(0.0, 1.0);
+
+        final scale = 0.5 + 0.5 * Curves.easeOutBack.transform(itemProgress);
+        final opacity = Curves.easeIn.transform(itemProgress);
+        final slideX = (1.0 - Curves.easeOutCubic.transform(itemProgress)) * 20.0;
+
+        return Opacity(
+          opacity: opacity,
+          child: Transform.translate(
+            offset: Offset(slideX, 0),
+            child: Transform.scale(
+              scale: scale,
+              child: child,
             ),
-            child: Icon(icon, color: Colors.black87, size: 18),
           ),
-          const SizedBox(height: 3),
-          SizedBox(
-            width: 64,
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 8.5,
-                fontWeight: FontWeight.w600,
-                height: 1.1,
-                letterSpacing: -0.1,
+        );
+      },
+      child: InkWell(
+        onTap: () {
+          _toggleSwipe(false);
+          onTap();
+        },
+        borderRadius: BorderRadius.circular(25),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 36,
+              height: 36,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                border: Border.all(color: Colors.black.withValues(alpha: 0.08), width: 1.2),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.12),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Icon(icon, color: Colors.black87, size: 18),
+            ),
+            const SizedBox(height: 3),
+            SizedBox(
+              width: 64,
+              child: Text(
+                title,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 8.5,
+                  fontWeight: FontWeight.w600,
+                  height: 1.1,
+                  letterSpacing: -0.1,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -229,16 +255,19 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                 icon: Icons.check_circle_outline_rounded,
                 title: 'mark as paid',
                 onTap: widget.onMarkAsPaid ?? widget.onSimulatePayment ?? () {},
+                staggerIndex: 0,
               ),
               _buildActionItem(
                 icon: Icons.history_rounded,
                 title: 'payment history',
                 onTap: widget.onPaymentHistory ?? () {},
+                staggerIndex: 1,
               ),
               _buildActionItem(
                 icon: Icons.sync_rounded,
                 title: 'recent spends',
                 onTap: widget.onRecentSpends ?? () {},
+                staggerIndex: 2,
               ),
             ],
           ),
@@ -250,16 +279,19 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                 icon: Icons.description_outlined,
                 title: 'smart statement',
                 onTap: widget.onSmartStatement ?? () {},
+                staggerIndex: 1,
               ),
               _buildActionItem(
                 icon: Icons.percent_rounded,
                 title: 'card perks',
                 onTap: widget.onCardPerks ?? () {},
+                staggerIndex: 2,
               ),
               _buildActionItem(
                 icon: Icons.grid_view_rounded,
                 title: 'more actions',
                 onTap: widget.onMoreActions ?? () {},
+                staggerIndex: 3,
               ),
             ],
           ),
@@ -274,11 +306,22 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
     final dueMonthDay = DateFormat('d MMM').format(widget.card.dueDate).toUpperCase();
 
     return GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        final screenWidth = MediaQuery.of(context).size.width;
+        final maxDrag = screenWidth * 0.58;
+        final deltaProgress = -details.primaryDelta! / maxDrag;
+        _swipeController.value = (_swipeController.value + deltaProgress).clamp(0.0, 1.0);
+      },
       onHorizontalDragEnd: (details) {
-        if (details.primaryVelocity != null) {
-          if (details.primaryVelocity! < -150) {
+        final velocity = details.primaryVelocity ?? 0;
+        if (velocity < -250) {
+          _toggleSwipe(true);
+        } else if (velocity > 250) {
+          _toggleSwipe(false);
+        } else {
+          if (_swipeController.value > 0.35) {
             _toggleSwipe(true);
-          } else if (details.primaryVelocity! > 150) {
+          } else {
             _toggleSwipe(false);
           }
         }
@@ -290,17 +333,26 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
             child: _buildActionDrawer(),
           ),
           AnimatedBuilder(
-            animation: _swipeAnimation,
+            animation: _swipeController,
             builder: (context, child) {
               final screenWidth = MediaQuery.of(context).size.width;
-              final offset = -_swipeAnimation.value * (screenWidth * 0.58);
-              final angle = -_swipeAnimation.value * (pi / 32);
+              final t = _swipeController.value;
+              final offset = -t * (screenWidth * 0.58);
+              final rotateY = -t * (pi / 22);
+              final rotateZ = -t * 0.02;
+              final scale = 1.0 - (t * 0.025);
+
+              final shadowBlur = 18.0 + (t * 10.0);
+              final shadowOffset = Offset(-t * 8.0, 10.0 + (t * 6.0));
+              final shadowAlpha = 0.45 + (t * 0.15);
 
               return Transform(
                 transform: Matrix4.identity()
-                  ..setEntry(3, 2, 0.001)
+                  ..setEntry(3, 2, 0.0012)
                   ..setTranslationRaw(offset, 0.0, 0.0)
-                  ..rotateY(angle),
+                  ..rotateY(rotateY)
+                  ..rotateZ(rotateZ)
+                  ..scaleByDouble(scale, scale, 1.0, 1.0),
                 alignment: Alignment.centerLeft,
                 child: GestureDetector(
                   onTap: () {
@@ -316,13 +368,13 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.45),
-                          blurRadius: 18,
-                          offset: const Offset(0, 10),
+                          color: Colors.black.withValues(alpha: shadowAlpha),
+                          blurRadius: shadowBlur,
+                          offset: shadowOffset,
                         ),
                       ],
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.22),
+                        color: Colors.white.withValues(alpha: 0.22 + (t * 0.1)),
                         width: 1.2,
                       ),
                     ),
@@ -336,6 +388,26 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
                               child: CustomPaint(
                                 painter: _CardTexturePainter(
                                   patternType: widget.card.themePreset,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Dynamic specular sheen light sweep that follows the swipe gesture
+                        Positioned.fill(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment(-1.5 + (t * 2.8), -1.0),
+                                  end: Alignment(-0.5 + (t * 2.8), 1.0),
+                                  colors: [
+                                    Colors.white.withValues(alpha: 0.0),
+                                    Colors.white.withValues(alpha: 0.15 * t),
+                                    Colors.white.withValues(alpha: 0.0),
+                                  ],
+                                  stops: const [0.0, 0.5, 1.0],
                                 ),
                               ),
                             ),
