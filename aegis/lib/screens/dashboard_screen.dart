@@ -3,11 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../constants/theme.dart';
 import '../providers/app_state.dart';
-import '../widgets/credit_card_widget.dart';
 import '../widgets/coin_counter.dart';
 import '../widgets/glass_container.dart';
 import '../widgets/asset_allocation_bar.dart';
-import '../widgets/referral_growth_loop_widget.dart';
 import '../widgets/personal_family_insurance_card.dart';
 import '../services/onesignal_service.dart';
 import '../models/subscription_tier.dart';
@@ -460,159 +458,102 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       AssetAllocationBar(appState: appState),
+                      const SizedBox(height: 12),
+                      // Breakdown row: Debt / Limit / Utilization
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildNetworthStat(
+                              label: 'Card Debt',
+                              value: '-${currency.format(appState.totalCurrentBalance)}',
+                              valueColor: AppTheme.crimsonAccent,
+                            ),
+                          ),
+                          Container(width: 1, height: 28, color: AppTheme.surfaceBorder),
+                          Expanded(
+                            child: _buildNetworthStat(
+                              label: 'Credit Limit',
+                              value: currency.format(appState.totalCreditLimit),
+                              valueColor: AppTheme.textPrimary,
+                            ),
+                          ),
+                          Container(width: 1, height: 28, color: AppTheme.surfaceBorder),
+                          Expanded(
+                            child: _buildNetworthStat(
+                              label: 'Utilization',
+                              value: '${(appState.overallUtilization * 100).toStringAsFixed(1)}%',
+                              valueColor: appState.overallUtilization > 0.3
+                                  ? AppTheme.crimsonAccent
+                                  : AppTheme.emeraldAccent,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
 
-            // Revolving Credit Health Card
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: GlassContainer(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'CARD REVOLVING DEBT',
-                            style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1, color: AppTheme.textSecondary),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            currency.format(appState.totalCurrentBalance),
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary),
-                          ),
-                          const SizedBox(height: 2),
-                          Text(
-                            'Total Limit: ${currency.format(appState.totalCreditLimit)}',
-                            style: TextStyle(fontSize: 11, color: AppTheme.textMuted),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          'UTILIZATION',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1, color: AppTheme.textSecondary),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${(appState.overallUtilization * 100).toStringAsFixed(1)}%',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            color: appState.overallUtilization > 0.3
-                                ? AppTheme.crimsonAccent
-                                : AppTheme.emeraldAccent,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          appState.overallUtilization < 0.1 ? 'Excellent (<10%)' : 'Good Standing',
-                          style: TextStyle(fontSize: 11, color: AppTheme.emeraldAccent),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Action Pills
+            // AI Advisor action pill (full width — Garage/Cards via bottom nav)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => _showAiSwipeAdvisor(context, appState),
-                      icon: Icon(Icons.auto_awesome, size: 14, color: AppTheme.goldAccent),
-                      label: Text(
-                        appState.hasAiCardOptimizer ? 'AI Swipe Advisor' : 'Unlock AI Advisor 🔒',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: AppTheme.surfaceBorder),
-                        backgroundColor: AppTheme.surfaceCard,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () => onNavigateToTab(2), // Garage
-                      icon: Icon(Icons.directions_car, size: 14, color: AppTheme.cyanAccent),
-                      label: Text(
-                        'View Garage',
-                        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
-                      ),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: AppTheme.surfaceBorder),
-                        backgroundColor: AppTheme.surfaceCard,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                    ),
-                  ),
-                ],
+              child: OutlinedButton.icon(
+                onPressed: () => _showAiSwipeAdvisor(context, appState),
+                icon: Icon(Icons.auto_awesome, size: 14, color: AppTheme.goldAccent),
+                label: Text(
+                  appState.hasAiCardOptimizer ? 'AI Swipe Advisor' : 'Unlock AI Advisor 🔒',
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: AppTheme.surfaceBorder),
+                  backgroundColor: AppTheme.surfaceCard,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  minimumSize: const Size(double.infinity, 0),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
               ),
             ),
 
             // Personal & Family Insurance Vault Card
             PersonalFamilyInsuranceCard(appState: appState),
-
-            // VIP Referral Growth Loop (Layers Hackathon Sponsor Award)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-              child: ReferralGrowthLoopWidget(appState: appState),
-            ),
-
-            // Card Stack Title
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'PORTFOLIO CARDS',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800, letterSpacing: 1.5, color: AppTheme.textSecondary),
-                  ),
-                  GestureDetector(
-                    onTap: () => onNavigateToTab(1),
-                    child: Text(
-                      'Manage All →',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.goldAccent),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Cards List
-            Column(
-              children: appState.cards.map((card) {
-                return CreditCardWidget(
-                  card: card,
-                  onSimulatePayment: () {
-                    final res = appState.simulateExternalPayment(card.id);
-                    if (res['success'] == true) {
-                      _showPaymentRewardDialog(context, res);
-                    }
-                  },
-                );
-              }).toList(),
-            ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildNetworthStat({
+    required String label,
+    required String value,
+    required Color valueColor,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 9,
+              fontWeight: FontWeight.w600,
+              color: AppTheme.textMuted,
+              letterSpacing: 0.4,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+              color: valueColor,
+            ),
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }

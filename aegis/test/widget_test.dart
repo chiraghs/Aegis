@@ -26,7 +26,7 @@ void main() {
     // Verify Aegis header and radar are present
     expect(find.text('AEGIS'), findsWidgets);
     expect(find.text('UNIFIED NET WORTH'), findsWidgets);
-    expect(find.text('CARD REVOLVING DEBT'), findsWidgets);
+    expect(find.text('Card Debt'), findsWidgets);
   });
 
   testWidgets('Aegis adapts to Samsung Galaxy Z Fold dual-pane layout', (WidgetTester tester) async {
