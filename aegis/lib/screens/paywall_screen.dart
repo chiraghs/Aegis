@@ -344,6 +344,15 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       _buildQuickEvalButton('Black', SubscriptionTier.black, appState),
                     ],
                   ),
+                  const SizedBox(height: 8),
+                  TextButton.icon(
+                    onPressed: () => _showPromoCodeDialog(context, appState),
+                    icon: Icon(Icons.card_giftcard, size: 14, color: AppTheme.goldAccent),
+                    label: Text(
+                      'Have a Promo Code? (e.g. SHIPATON2026)',
+                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.goldAccent),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -378,6 +387,62 @@ class _PaywallScreenState extends State<PaywallScreen> {
           color: isActive ? AppTheme.goldAccent : Colors.white70,
           fontWeight: FontWeight.w700,
         ),
+      ),
+    );
+  }
+
+  void _showPromoCodeDialog(BuildContext context, AppState appState) {
+    final controller = TextEditingController(text: 'SHIPATON2026');
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.surfaceCard,
+        title: Text('Redeem Promo Code', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Enter your hackathon promo code to unlock VIP features:', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+            const SizedBox(height: 12),
+            TextField(
+              controller: controller,
+              style: TextStyle(color: AppTheme.textPrimary, fontWeight: FontWeight.w700),
+              decoration: InputDecoration(
+                hintText: 'PROMO CODE',
+                filled: true,
+                fillColor: AppTheme.surfaceCardElevated,
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('Cancel', style: TextStyle(color: AppTheme.textSecondary)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final code = controller.text.trim().toUpperCase();
+              if (code == 'SHIPATON2026' || code == 'AEGISVIP' || code == 'VIP') {
+                appState.debugSetTier(SubscriptionTier.black);
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: AppTheme.emeraldAccent,
+                    content: Text('🎉 Promo Code $code Applied! Black Edition VIP Unlocked.'),
+                  ),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Invalid promo code. Try SHIPATON2026')),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.goldAccent, foregroundColor: Colors.black),
+            child: const Text('Redeem', style: TextStyle(fontWeight: FontWeight.w800)),
+          ),
+        ],
       ),
     );
   }
