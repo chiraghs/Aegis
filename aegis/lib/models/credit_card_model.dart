@@ -9,6 +9,7 @@ class CardTransaction {
   final DateTime date;
   final String cashBackOrReward;
   final IconData icon;
+  final String type; // 'debit', 'credit', 'reward'
 
   const CardTransaction({
     required this.id,
@@ -18,6 +19,7 @@ class CardTransaction {
     required this.date,
     required this.cashBackOrReward,
     required this.icon,
+    this.type = 'debit',
   });
 }
 

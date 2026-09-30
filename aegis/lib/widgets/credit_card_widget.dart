@@ -295,7 +295,7 @@ class _CreditCardWidgetState extends State<CreditCardWidget> with SingleTickerPr
               ),
               _buildActionItem(
                 icon: Icons.percent_rounded,
-                title: 'card perks',
+                title: 'card offers',
                 onTap: widget.onCardPerks ?? () {},
                 staggerIndex: 2,
               ),

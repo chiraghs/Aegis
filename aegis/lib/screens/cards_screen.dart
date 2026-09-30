@@ -24,6 +24,19 @@ class _CardsScreenState extends State<CardsScreen> {
   // Expand statement breakdown in header
   bool _isBreakdownExpanded = false;
 
+  // Recent Spends Filters
+  final TextEditingController _searchController = TextEditingController();
+  String _cardFilter = 'ALL';
+  String _categoryFilter = 'ALL';
+  String _rangeFilter = 'ALL'; // 'ALL', '7D', '30D', '90D'
+  String _typeFilter = 'ALL'; // 'ALL', 'DEBIT', 'CREDIT', 'REWARD'
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   void _handleAddCard(BuildContext context, AppState appState) {
     if (!appState.canAddMoreCards) {
       showDialog(
@@ -1001,7 +1014,7 @@ class _CardsScreenState extends State<CardsScreen> {
 
           const SizedBox(height: 10),
 
-          // Solid Charcoal Pill "Pay all bills" Button matching reference
+          // Solid Charcoal Pill "Pay bills" Button matching reference
           ElevatedButton(
             onPressed: () => _showPayAllDialog(context, appState),
             style: ElevatedButton.styleFrom(
@@ -1012,7 +1025,7 @@ class _CardsScreenState extends State<CardsScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
             ),
             child: const Text(
-              'Pay all bills',
+              'Pay bills',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, letterSpacing: 0.5),
             ),
           ),
@@ -1048,7 +1061,7 @@ class _CardsScreenState extends State<CardsScreen> {
                 ),
                 const SizedBox(width: 8),
                 const Text(
-                  'pay bills & unlock 2% auto-cashback.',
+                  'pay bills & earn rewards',
                   style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w600,
@@ -1391,85 +1404,712 @@ class _CardsScreenState extends State<CardsScreen> {
     );
   }
 
+  Widget _buildFilterChip({
+    required IconData icon,
+    required String label,
+    required bool isActive,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+        decoration: BoxDecoration(
+          color: isActive ? AegisCloudPalette.charcoal : AegisCloudPalette.cloud,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: isActive ? AegisCloudPalette.charcoal : AegisCloudPalette.greyBorder,
+            width: 1.1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              size: 13,
+              color: isActive ? AegisCloudPalette.mintGreen : AegisCloudPalette.charcoal,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: isActive ? AegisCloudPalette.cloud : AegisCloudPalette.charcoal,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.keyboard_arrow_down_rounded,
+              size: 14,
+              color: isActive ? Colors.white70 : AegisCloudPalette.textSecondary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showCardFilterSheet(BuildContext context, List<CreditCardModel> cards) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AegisCloudPalette.cloud,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'FILTER BY CARD',
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.2),
+            ),
+            const SizedBox(height: 12),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.credit_card_rounded, color: AegisCloudPalette.charcoal),
+              title: const Text('All Connected Cards', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AegisCloudPalette.charcoal)),
+              trailing: _cardFilter == 'ALL' ? const Icon(Icons.check_circle_rounded, color: AegisCloudPalette.mintGreen) : null,
+              onTap: () {
+                setState(() => _cardFilter = 'ALL');
+                Navigator.of(ctx).pop();
+              },
+            ),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 1),
+            ...cards.map((card) {
+              final isSelected = _cardFilter == card.id;
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Container(
+                  width: 32,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    gradient: _getMiniChipGradient(card.themePreset),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                ),
+                title: Text(card.cardName, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13, color: AegisCloudPalette.charcoal)),
+                subtitle: Text('${card.issuer} •• ${card.lastFour}', style: const TextStyle(fontSize: 11, color: AegisCloudPalette.textSecondary)),
+                trailing: isSelected ? const Icon(Icons.check_circle_rounded, color: AegisCloudPalette.mintGreen) : null,
+                onTap: () {
+                  setState(() => _cardFilter = card.id);
+                  Navigator.of(ctx).pop();
+                },
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showCategoryFilterSheet(BuildContext context, List<String> categories) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) => Container(
+        height: MediaQuery.of(context).size.height * 0.65,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AegisCloudPalette.cloud,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'FILTER BY CATEGORY',
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.2),
+            ),
+            const SizedBox(height: 12),
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.category_rounded, color: AegisCloudPalette.charcoal),
+              title: const Text('All Categories', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AegisCloudPalette.charcoal)),
+              trailing: _categoryFilter == 'ALL' ? const Icon(Icons.check_circle_rounded, color: AegisCloudPalette.mintGreen) : null,
+              onTap: () {
+                setState(() => _categoryFilter = 'ALL');
+                Navigator.of(ctx).pop();
+              },
+            ),
+            const Divider(color: AegisCloudPalette.greyBorder, height: 1),
+            Expanded(
+              child: ListView.separated(
+                itemCount: categories.length,
+                separatorBuilder: (_, _) => const Divider(color: AegisCloudPalette.greyBorder, height: 1),
+                itemBuilder: (context, idx) {
+                  final cat = categories[idx];
+                  final isSelected = _categoryFilter == cat;
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(cat, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AegisCloudPalette.charcoal)),
+                    trailing: isSelected ? const Icon(Icons.check_circle_rounded, color: AegisCloudPalette.mintGreen) : null,
+                    onTap: () {
+                      setState(() => _categoryFilter = cat);
+                      Navigator.of(ctx).pop();
+                    },
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showRangeFilterSheet(BuildContext context) {
+    final ranges = [
+      {'key': 'ALL', 'label': 'All Time', 'sub': 'All recorded transactions'},
+      {'key': '7D', 'label': 'Past 7 Days', 'sub': 'Last 1 week activity'},
+      {'key': '30D', 'label': 'Past 30 Days', 'sub': 'Current billing cycle'},
+      {'key': '90D', 'label': 'Past 90 Days', 'sub': 'Quarterly spend history'},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AegisCloudPalette.cloud,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'FILTER BY DATE RANGE',
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.2),
+            ),
+            const SizedBox(height: 12),
+            ...ranges.map((r) {
+              final isSelected = _rangeFilter == r['key'];
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(r['label']!, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AegisCloudPalette.charcoal)),
+                subtitle: Text(r['sub']!, style: const TextStyle(fontSize: 11, color: AegisCloudPalette.textSecondary)),
+                trailing: isSelected ? const Icon(Icons.check_circle_rounded, color: AegisCloudPalette.mintGreen) : null,
+                onTap: () {
+                  setState(() => _rangeFilter = r['key']!);
+                  Navigator.of(ctx).pop();
+                },
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showTypeFilterSheet(BuildContext context) {
+    final types = [
+      {'key': 'ALL', 'label': 'All Types', 'icon': Icons.swap_vert_rounded, 'sub': 'Purchases, refunds & rewards'},
+      {'key': 'DEBIT', 'label': 'Debits (Purchases)', 'icon': Icons.arrow_outward_rounded, 'sub': 'Card swipes and charges'},
+      {'key': 'CREDIT', 'label': 'Credits (Refunds)', 'icon': Icons.replay_rounded, 'sub': 'Merchant returns and credits'},
+      {'key': 'REWARD', 'label': 'Rewards & Cash Back', 'icon': Icons.bolt_rounded, 'sub': 'Aegis yield and bonus points'},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AegisCloudPalette.cloud,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: Border.all(color: AegisCloudPalette.greyBorder),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(color: AegisCloudPalette.greyBorder, borderRadius: BorderRadius.circular(2)),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'FILTER BY TRANSACTION TYPE',
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: AegisCloudPalette.charcoal, letterSpacing: 1.2),
+            ),
+            const SizedBox(height: 12),
+            ...types.map((t) {
+              final isSelected = _typeFilter == t['key'];
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(t['icon'] as IconData, color: AegisCloudPalette.charcoal),
+                title: Text(t['label'] as String, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: AegisCloudPalette.charcoal)),
+                subtitle: Text(t['sub'] as String, style: const TextStyle(fontSize: 11, color: AegisCloudPalette.textSecondary)),
+                trailing: isSelected ? const Icon(Icons.check_circle_rounded, color: AegisCloudPalette.mintGreen) : null,
+                onTap: () {
+                  setState(() => _typeFilter = t['key'] as String);
+                  Navigator.of(ctx).pop();
+                },
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildUnifiedSpendsFeed(
     BuildContext context,
     List<CreditCardModel> cards,
     NumberFormat currency,
   ) {
-    final allTransactions = <Map<String, dynamic>>[];
+    // 1. Collect all transactions with their originating card
+    final rawTransactions = <Map<String, dynamic>>[];
+    final categoriesSet = <String>{};
+
     for (final c in cards) {
       for (final tx in c.transactions) {
-        allTransactions.add({
+        rawTransactions.add({
           'card': c,
           'tx': tx,
         });
+        if (tx.category.isNotEmpty) {
+          categoriesSet.add(tx.category);
+        }
       }
     }
 
-    allTransactions.sort((a, b) => (b['tx'] as CardTransaction).date.compareTo((a['tx'] as CardTransaction).date));
+    final categoriesList = categoriesSet.toList()..sort();
+    final searchQuery = _searchController.text.trim().toLowerCase();
 
-    if (allTransactions.isEmpty) {
-      return Center(
-        child: Text(
-          'No recent transactions tracked.',
-          style: TextStyle(color: AppTheme.textSecondary),
-        ),
-      );
+    // 2. Apply filters: Card, Category, Date Range, Type, and Search query
+    final now = DateTime.now();
+    final filteredTransactions = rawTransactions.where((item) {
+      final card = item['card'] as CreditCardModel;
+      final tx = item['tx'] as CardTransaction;
+
+      // Card filter
+      if (_cardFilter != 'ALL' && card.id != _cardFilter) {
+        return false;
+      }
+
+      // Category filter
+      if (_categoryFilter != 'ALL' && tx.category != _categoryFilter) {
+        return false;
+      }
+
+      // Date Range filter
+      if (_rangeFilter == '7D' && tx.date.isBefore(now.subtract(const Duration(days: 7)))) {
+        return false;
+      } else if (_rangeFilter == '30D' && tx.date.isBefore(now.subtract(const Duration(days: 30)))) {
+        return false;
+      } else if (_rangeFilter == '90D' && tx.date.isBefore(now.subtract(const Duration(days: 90)))) {
+        return false;
+      }
+
+      // Type filter
+      if (_typeFilter == 'DEBIT' && tx.type != 'debit') {
+        return false;
+      } else if (_typeFilter == 'CREDIT' && tx.type != 'credit') {
+        return false;
+      } else if (_typeFilter == 'REWARD' && tx.type != 'reward') {
+        return false;
+      }
+
+      // Search option
+      if (searchQuery.isNotEmpty) {
+        final matchMerchant = tx.merchant.toLowerCase().contains(searchQuery);
+        final matchCat = tx.category.toLowerCase().contains(searchQuery);
+        final matchAmount = tx.amount.abs().toString().contains(searchQuery);
+        final matchIssuer = card.issuer.toLowerCase().contains(searchQuery);
+        final matchCardName = card.cardName.toLowerCase().contains(searchQuery);
+        if (!matchMerchant && !matchCat && !matchAmount && !matchIssuer && !matchCardName) {
+          return false;
+        }
+      }
+
+      return true;
+    }).toList();
+
+    filteredTransactions.sort((a, b) => (b['tx'] as CardTransaction).date.compareTo((a['tx'] as CardTransaction).date));
+
+    final isAnyFilterActive = _cardFilter != 'ALL' ||
+        _categoryFilter != 'ALL' ||
+        _rangeFilter != 'ALL' ||
+        _typeFilter != 'ALL' ||
+        searchQuery.isNotEmpty;
+
+    // Selected labels for chips
+    String selectedCardLabel = 'Cards: All';
+    if (_cardFilter != 'ALL') {
+      final matched = cards.where((c) => c.id == _cardFilter).toList();
+      selectedCardLabel = matched.isNotEmpty ? matched.first.issuer : '1 Card';
     }
 
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      itemCount: allTransactions.length,
-      separatorBuilder: (_, _) => const Divider(color: AegisCloudPalette.greyBorder),
-      itemBuilder: (context, idx) {
-        final item = allTransactions[idx];
-        final card = item['card'] as CreditCardModel;
-        final tx = item['tx'] as CardTransaction;
+    String selectedRangeLabel = 'Range: All';
+    if (_rangeFilter == '7D') selectedRangeLabel = 'Range: 7D';
+    if (_rangeFilter == '30D') selectedRangeLabel = 'Range: 30D';
+    if (_rangeFilter == '90D') selectedRangeLabel = 'Range: 90D';
 
-        return ListTile(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-          leading: Container(
-            width: 44,
-            height: 44,
+    String selectedTypeLabel = 'Type: All';
+    if (_typeFilter == 'DEBIT') selectedTypeLabel = 'Type: Debits';
+    if (_typeFilter == 'CREDIT') selectedTypeLabel = 'Type: Credits';
+    if (_typeFilter == 'REWARD') selectedTypeLabel = 'Type: Rewards';
+
+    String selectedCatLabel = _categoryFilter == 'ALL' ? 'Category: All' : _categoryFilter;
+    if (selectedCatLabel.length > 18) {
+      selectedCatLabel = '${selectedCatLabel.substring(0, 16)}...';
+    }
+
+    final totalSpend = filteredTransactions.fold(0.0, (acc, item) {
+      final tx = item['tx'] as CardTransaction;
+      return acc + (tx.type == 'debit' ? tx.amount : 0.0);
+    });
+
+    return Column(
+      children: [
+        // 1. Search Box
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
+          child: Container(
+            height: 42,
             decoration: BoxDecoration(
               color: AegisCloudPalette.cloud,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: AegisCloudPalette.greyBorder),
+              borderRadius: BorderRadius.circular(22),
+              border: Border.all(color: AegisCloudPalette.greyBorder, width: 1.1),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
-                  blurRadius: 4,
+                  color: Colors.black.withValues(alpha: 0.03),
+                  blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
               ],
             ),
-            child: Icon(tx.icon, color: AegisCloudPalette.charcoal, size: 22),
+            child: TextField(
+              controller: _searchController,
+              onChanged: (_) => setState(() {}),
+              style: const TextStyle(fontSize: 13, color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w600),
+              decoration: InputDecoration(
+                hintText: 'Search merchant, category, amount...',
+                hintStyle: const TextStyle(fontSize: 12, color: AegisCloudPalette.textSecondary),
+                prefixIcon: const Icon(Icons.search_rounded, size: 18, color: AegisCloudPalette.charcoal),
+                suffixIcon: _searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.close_rounded, size: 16, color: AegisCloudPalette.charcoal),
+                        onPressed: () {
+                          _searchController.clear();
+                          setState(() {});
+                        },
+                      )
+                    : null,
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(vertical: 10),
+              ),
+            ),
           ),
-          title: Text(
-            tx.merchant,
-            style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w700, fontSize: 14),
-          ),
-          subtitle: Text(
-            '${card.issuer} (•• ${card.lastFour}) • ${DateFormat('MMM d').format(tx.date)}',
-            style: const TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 11),
-          ),
-          trailing: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.center,
+        ),
+
+        // 2. Top-Level Filter Row: Cards, Category, Range(date), Type, + Reset
+        SizedBox(
+          height: 38,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            physics: const BouncingScrollPhysics(),
             children: [
-              Text(
-                currency.format(tx.amount),
-                style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w800, fontSize: 14),
+              // Cards Filter
+              _buildFilterChip(
+                icon: Icons.credit_card_rounded,
+                label: selectedCardLabel,
+                isActive: _cardFilter != 'ALL',
+                onTap: () => _showCardFilterSheet(context, cards),
               ),
-              const SizedBox(height: 2),
-              Text(
-                tx.cashBackOrReward,
-                style: const TextStyle(color: Color(0xFF2E7D32), fontWeight: FontWeight.w700, fontSize: 10),
+
+              // Category Filter
+              _buildFilterChip(
+                icon: Icons.category_outlined,
+                label: selectedCatLabel,
+                isActive: _categoryFilter != 'ALL',
+                onTap: () => _showCategoryFilterSheet(context, categoriesList),
               ),
+
+              // Range (Date) Filter
+              _buildFilterChip(
+                icon: Icons.calendar_today_rounded,
+                label: selectedRangeLabel,
+                isActive: _rangeFilter != 'ALL',
+                onTap: () => _showRangeFilterSheet(context),
+              ),
+
+              // Type Filter
+              _buildFilterChip(
+                icon: Icons.swap_vert_rounded,
+                label: selectedTypeLabel,
+                isActive: _typeFilter != 'ALL',
+                onTap: () => _showTypeFilterSheet(context),
+              ),
+
+              // Reset Button
+              if (isAnyFilterActive)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _cardFilter = 'ALL';
+                      _categoryFilter = 'ALL';
+                      _rangeFilter = 'ALL';
+                      _typeFilter = 'ALL';
+                      _searchController.clear();
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: AegisCloudPalette.mintGreen.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(color: AegisCloudPalette.mintGreen),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.restart_alt_rounded, size: 14, color: Color(0xFF1E2818)),
+                        SizedBox(width: 4),
+                        Text(
+                          'Reset',
+                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: Color(0xFF1E2818)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
             ],
           ),
-        );
-      },
+        ),
+
+        // 3. Status Count & Total
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '${filteredTransactions.length} ${filteredTransactions.length == 1 ? 'TRANSACTION' : 'TRANSACTIONS'}',
+                style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w800,
+                  color: AegisCloudPalette.textSecondary,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              if (filteredTransactions.isNotEmpty)
+                Text(
+                  'Total Spend: ${currency.format(totalSpend)}',
+                  style: const TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    color: AegisCloudPalette.charcoal,
+                  ),
+                ),
+            ],
+          ),
+        ),
+
+        const Divider(color: AegisCloudPalette.greyBorder, height: 10),
+
+        // 4. Transactions List or Empty State
+        Expanded(
+          child: filteredTransactions.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 54,
+                        height: 54,
+                        decoration: BoxDecoration(
+                          color: AegisCloudPalette.cloud,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: AegisCloudPalette.greyBorder),
+                        ),
+                        child: const Icon(Icons.search_off_rounded, size: 28, color: AegisCloudPalette.textSecondary),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'No transactions match your filters.',
+                        style: TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w700, fontSize: 14),
+                      ),
+                      const SizedBox(height: 4),
+                      const Text(
+                        'Try searching for another merchant or resetting filters.',
+                        style: TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 12),
+                      ),
+                      const SizedBox(height: 14),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _cardFilter = 'ALL';
+                            _categoryFilter = 'ALL';
+                            _rangeFilter = 'ALL';
+                            _typeFilter = 'ALL';
+                            _searchController.clear();
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AegisCloudPalette.charcoal,
+                          foregroundColor: AegisCloudPalette.cloud,
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        ),
+                        child: const Text('Reset All Filters', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w800)),
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  itemCount: filteredTransactions.length,
+                  separatorBuilder: (_, _) => const Divider(color: AegisCloudPalette.greyBorder),
+                  itemBuilder: (context, idx) {
+                    final item = filteredTransactions[idx];
+                    final card = item['card'] as CreditCardModel;
+                    final tx = item['tx'] as CardTransaction;
+                    final isCredit = tx.type == 'credit';
+                    final isReward = tx.type == 'reward';
+
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                      leading: Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: isReward
+                              ? AegisCloudPalette.mintGreen.withValues(alpha: 0.2)
+                              : AegisCloudPalette.cloud,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isReward ? AegisCloudPalette.mintGreen : AegisCloudPalette.greyBorder,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.04),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          tx.icon,
+                          color: isReward
+                              ? const Color(0xFF1E2818)
+                              : (isCredit ? const Color(0xFF2E7D32) : AegisCloudPalette.charcoal),
+                          size: 22,
+                        ),
+                      ),
+                      title: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              tx.merchant,
+                              style: const TextStyle(color: AegisCloudPalette.charcoal, fontWeight: FontWeight.w700, fontSize: 14),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (isCredit || isReward) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                              decoration: BoxDecoration(
+                                color: isReward
+                                    ? AegisCloudPalette.mintGreen
+                                    : const Color(0xFF2E7D32).withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                isReward ? 'REWARD' : 'CREDIT',
+                                style: TextStyle(
+                                  fontSize: 8,
+                                  fontWeight: FontWeight.w900,
+                                  color: isReward ? const Color(0xFF1E2818) : const Color(0xFF2E7D32),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      subtitle: Text(
+                        '${card.issuer} (•• ${card.lastFour}) • ${DateFormat('MMM d').format(tx.date)} • ${tx.category}',
+                        style: const TextStyle(color: AegisCloudPalette.textSecondary, fontSize: 11),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            isCredit || isReward
+                                ? '+${currency.format(tx.amount.abs())}'
+                                : currency.format(tx.amount),
+                            style: TextStyle(
+                              color: isCredit || isReward ? const Color(0xFF2E7D32) : AegisCloudPalette.charcoal,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            tx.cashBackOrReward,
+                            style: const TextStyle(color: Color(0xFF2E7D32), fontWeight: FontWeight.w700, fontSize: 10),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ],
     );
   }
 
