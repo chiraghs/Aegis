@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: aegis-fintech
+    env: static
+    buildCommand: echo "Deploying pre-built Aegis Web application"
+    staticPublishPath: ./public_web
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
