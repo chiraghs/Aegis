@@ -59,7 +59,7 @@ class _GarageScreenState extends State<GarageScreen> {
       return;
     }
 
-    final isDark = appState.isDarkMode;
+
 
     showModalBottomSheet(
       context: context,
@@ -84,7 +84,7 @@ class _GarageScreenState extends State<GarageScreen> {
                       fontSize: 15,
                       fontWeight: FontWeight.w900,
                       letterSpacing: 1.5,
-                      color: isDark ? Colors.white : Colors.black,
+                       color: const Color(0xFF2B2B2B), // charcoal on light bg
                     ),
                   ),
                   IconButton(
@@ -107,7 +107,7 @@ class _GarageScreenState extends State<GarageScreen> {
                   hintText: 'e.g. 5YJ3E1EB8KF194821',
                   hintStyle: TextStyle(color: AppTheme.textSecondary, letterSpacing: 1),
                   filled: true,
-                  fillColor: isDark ? const Color(0xFF222634) : const Color(0xFFF3F5FA),
+                  fillColor: const Color(0xFFF3F5FA), // light input bg
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
                     borderSide: BorderSide.none,
@@ -169,8 +169,8 @@ class _GarageScreenState extends State<GarageScreen> {
                           }
                         },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDark ? Colors.white : Colors.black,
-                    foregroundColor: isDark ? Colors.black : Colors.white,
+                    backgroundColor: const Color(0xFF2B2B2B), // charcoal button on light bg
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                   ),
                   child: _isLoadingVin

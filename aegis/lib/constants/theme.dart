@@ -133,31 +133,31 @@ class ThemePalette {
     );
   }
 
-  /// Dark Palette: Stealth graphite & matte obsidian
+  /// Dark Palette: Light content surfaces (matching Cards screen), dark nav bar
   static const ThemePalette dark = ThemePalette(
     brightness: Brightness.dark,
-    background: Color(0xFF0C0D11),
-    surface: Color(0xFF14161E),
-    surfaceCard: Color(0xFF1A1D27),
-    surfaceCardElevated: Color(0xFF222634),
-    surfaceBorder: Color(0xFF2A2E3D),
-    surfaceBorderLight: Color(0xFF383D50),
-    goldAccent: Color(0xFFD4AF37), // Matte champagne brass
+    background: Color(0xFFEFF3ED),        // Same as Cards: AegisCloudPalette.grey
+    surface: Color(0xFFFFFFFF),           // Same as Cards: AegisCloudPalette.cloud
+    surfaceCard: Color(0xFFFFFFFF),       // White card surfaces
+    surfaceCardElevated: Color(0xFFE5ECE2), // Slightly tinted elevated
+    surfaceBorder: Color(0xFFE2E7DF),     // Same as Cards: AegisCloudPalette.greyBorder
+    surfaceBorderLight: Color(0xFFD6DDD2),
+    goldAccent: Color(0xFFD4AF37),        // Champagne brass
     goldAccentLight: Color(0xFFE6C875),
-    emeraldAccent: Color(0xFF7DE43A), // Aegis Mint Green
-    cyanAccent: Color(0xFF0EA5E9), // Slate cyan
-    crimsonAccent: Color(0xFFF43F5E), // Terracotta crimson
-    amberAccent: Color(0xFFF59E0B),
-    textPrimary: Color(0xFFF1F5F9),
-    textSecondary: Color(0xFF94A3B8),
-    textMuted: Color(0xFF64748B),
+    emeraldAccent: Color(0xFF4CAF7D),     // Aegis Mint Green (matches Cards mintGreen)
+    cyanAccent: Color(0xFF0369A1),
+    crimsonAccent: Color(0xFFBE123C),     // Berry crimson (readable on light bg)
+    amberAccent: Color(0xFFB45309),
+    textPrimary: Color(0xFF2B2B2B),       // Same as Cards: AegisCloudPalette.charcoal
+    textSecondary: Color(0xFF5F685B),     // Same as Cards: AegisCloudPalette.textSecondary
+    textMuted: Color(0xFF8F988A),
     goldGradient: LinearGradient(
-      colors: [Color(0xFFDFC27D), Color(0xFFB8860B)],
+      colors: [Color(0xFFC59B3C), Color(0xFF9E742E)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     ),
     blackEditionGradient: LinearGradient(
-      colors: [Color(0xFF222634), Color(0xFF14161E)],
+      colors: [Color(0xFF1E232E), Color(0xFF0F121A)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     ),
@@ -177,7 +177,7 @@ class ThemePalette {
       end: Alignment.bottomRight,
     ),
     cardOverlay: LinearGradient(
-      colors: [Color(0x14FFFFFF), Color(0x05FFFFFF)],
+      colors: [Color(0x08000000), Color(0x03000000)],
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
     ),

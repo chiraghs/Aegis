@@ -74,10 +74,10 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
                   children: screens,
                 ),
           bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: AppTheme.surface,
+        decoration: const BoxDecoration(
+          color: Color(0xFF14161E),        // Always dark nav bar
           border: Border(
-            top: BorderSide(color: AppTheme.surfaceBorder, width: 1),
+            top: BorderSide(color: Color(0xFF2A2E3D), width: 1),
           ),
         ),
         child: SafeArea(
@@ -103,7 +103,6 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
 
   Widget _buildNavItem({required IconData icon, required String label, required int index}) {
     final isSelected = _currentIndex == index;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return GestureDetector(
       onTap: () => _onTabSelected(index),
@@ -112,9 +111,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
         decoration: BoxDecoration(
-          color: isSelected
-              ? (isDark ? const Color(0xFF222820) : const Color(0xFFEFF8EA))
-              : Colors.transparent,
+          color: isSelected ? const Color(0xFF222820) : Colors.transparent,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -123,7 +120,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
             Icon(
               icon,
               size: 22,
-              color: isSelected ? const Color(0xFF7DE43A) : AppTheme.textMuted,
+              color: isSelected ? const Color(0xFF7DE43A) : const Color(0xFF64748B),
             ),
             const SizedBox(height: 3),
             Text(
@@ -131,9 +128,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
               style: TextStyle(
                 fontSize: 10,
                 fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
-                color: isSelected
-                    ? (isDark ? const Color(0xFF7DE43A) : const Color(0xFF2B2B2B))
-                    : AppTheme.textMuted,
+                color: isSelected ? const Color(0xFF7DE43A) : const Color(0xFF64748B),
               ),
             ),
           ],
