@@ -5,6 +5,7 @@ import 'cards_screen.dart';
 import 'garage_screen.dart';
 import 'networth_detail_screen.dart';
 import 'insurance_screen.dart';
+import 'rewards_screen.dart';
 
 class NavigationScaffold extends StatefulWidget {
   const NavigationScaffold({super.key});
@@ -27,7 +28,7 @@ class _NavigationScaffoldState extends State<NavigationScaffold> {
       case 0:
         return const NetWorthDetailScreen();
       case 1:
-        return const CardsScreen();
+        return const RewardsScreen(); // Companion Rewards & Coin Vault for Cards
       case 2:
         return const GarageScreen();
       case 3:
